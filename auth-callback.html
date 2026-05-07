@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Signing in… — MARLOWE</title>
+<meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400..700;1,9..144,400..500&family=Manrope:wght@300..700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+<!--
+  AUTH CALLBACK — landing target for:
+    1. OAuth provider redirects (Apple / Google)
+    2. Magic link email clicks
+    3. Mock-mode simulated clicks (?mock=apple|google|email&email=...)
+
+  TODO BACKEND: Supabase SDK auto-handles real sessions via URL hash parameters
+  (#access_token=...&refresh_token=...). After it sets the session, we just
+  redirect to MarloweAuth.consumeRedirectTarget(). No server-side processing
+  needed — Supabase manages it client-side.
+-->
+
+<style>
+:root {
+  --cream: #F5F1E8;
+  --cream-light: #FBF8F1;
+  --charcoal: #1F2937;
+  --charcoal-soft: #374151;
+  --ink: #111827;
+  --brass: #B8956A;
+  --brass-deep: #8E6F47;
+  --brass-light: #D4B896;
+  --line: rgba(31, 41, 55, 0.12);
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  font-family: 'Manrope', system-ui, sans-serif;
+  background: var(--cream);
+  color: var(--charcoal);
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+}
+
+.callback-card {
+  text-align: center;
+  max-width: 420px;
+  padding: 40px 32px;
+}
+
+.seal {
+  width: 88px;
+  height: 88px;
+  margin: 0 auto 28px;
+  border: 1.5px solid var(--brass);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  color: var(--brass-deep);
+}
+.seal::after {
+  content: '';
+  position: absolute;
+  inset: -10px;
+  border: 1px solid var(--line);
+  border-radius: 50%;
+  animation: pulse 2s ease-out infinite;
+}
+@keyframes pulse {
+  0% { opacity: 0.6; transform: scale(1); }
+  100% { opacity: 0; transform: scale(1.18); }
+}
+.seal svg { width: 38px; height: 38px; }
+
+.eyebrow {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--brass-deep);
+  margin-bottom: 14px;
+  display: block;
+}
+
+h1 {
+  font-family: 'Fraunces', serif;
+  font-variation-settings: 'opsz' 144;
+  font-size: 32px;
+  font-weight: 400;
+  font-style: italic;
+  color: var(--ink);
+  margin-bottom: 12px;
+}
+
+p {
+  font-size: 14px;
+  color: var(--charcoal-soft);
+  line-height: 1.55;
+}
+
+.error-state h1 { font-style: normal; }
+.error-state .seal { color: var(--charcoal); border-color: var(--charcoal-soft); }
+.error-state .seal::after { animation: none; }
+
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 14px 28px;
+  background: var(--charcoal);
+  color: var(--cream);
+  border: 1.5px solid var(--charcoal);
+  font-family: 'Manrope', sans-serif;
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  cursor: pointer;
+  text-decoration: none;
+  margin-top: 28px;
+}
+.btn-primary:hover { background: var(--cream); color: var(--charcoal); }
+</style>
+</head>
+<body>
+
+<div class="callback-card" id="loading-state">
+  <div class="seal">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M9 12l2 2 4-4M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0z"/>
+    </svg>
+  </div>
+  <span class="eyebrow">§ Signing you in</span>
+  <h1>Welcome back.</h1>
+  <p>One moment — we're verifying your link and getting your account ready.</p>
+</div>
+
+<div class="callback-card error-state" id="error-state" style="display: none;">
+  <div class="seal">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M12 6v6M12 16.5h.01"/>
+      <circle cx="12" cy="12" r="9"/>
+    </svg>
+  </div>
+  <span class="eyebrow">§ Sign-in error</span>
+  <h1 id="error-title">Link didn't work.</h1>
+  <p id="error-body">This link may have expired or already been used. Try requesting a new one.</p>
+  <a href="login.html" class="btn-primary">
+    Back to sign in
+    <span style="font-family: monospace;">→</span>
+  </a>
+</div>
+
+<script src="auth-state.js"></script>
+<script>
+(function () {
+  function getQuery(name) {
+    const m = window.location.search.match(new RegExp('[?&]' + name + '=([^&]+)'));
+    return m ? decodeURIComponent(m[1]) : null;
+  }
+
+  function showError(title, body) {
+    document.getElementById('loading-state').style.display = 'none';
+    const err = document.getElementById('error-state');
+    err.style.display = 'block';
+    if (title) document.getElementById('error-title').textContent = title;
+    if (body) document.getElementById('error-body').textContent = body;
+  }
+
+  // ============================================================
+  // MOCK MODE — handles ?mock=apple|google|email[&email=...]
+  //
+  // TODO BACKEND: in real flow, Supabase SDK detects the URL hash
+  // (#access_token=...) automatically on page load and sets the session.
+  // We just need to wait for that and then redirect.
+  // Pseudocode for real:
+  //   supabase.auth.onAuthStateChange((event, session) => {
+  //     if (event === 'SIGNED_IN') redirectAfter();
+  //   });
+  // ============================================================
+  const mockProvider = getQuery('mock');
+  const errorParam = getQuery('error');
+
+  if (errorParam) {
+    if (errorParam === 'expired') {
+      showError('Link expired.', 'Magic links last 15 minutes. Request a new one and try again.');
+    } else if (errorParam === 'oauth_failed') {
+      showError("Sign-in didn't go through.", "Something blocked the sign-in. Try again, or use email magic link instead.");
+    } else {
+      showError(); // default copy
+    }
+    return;
+  }
+
+  if (mockProvider) {
+    const emailFromQuery = getQuery('email');
+    try {
+      MarloweAuth._mockCompleteSignIn(mockProvider, emailFromQuery);
+      // Brief delay so user sees the welcome card, then redirect.
+      setTimeout(() => {
+        const target = MarloweAuth.consumeRedirectTarget('account.html');
+        window.location.replace(target);
+      }, 900);
+    } catch (e) {
+      showError();
+    }
+    return;
+  }
+
+  // Real flow placeholder: if Supabase SDK finishes hash parsing, getUser will return.
+  // Poll briefly.
+  let tries = 0;
+  const interval = setInterval(() => {
+    if (MarloweAuth.getUser()) {
+      clearInterval(interval);
+      const target = MarloweAuth.consumeRedirectTarget('account.html');
+      window.location.replace(target);
+    } else if (tries++ > 20) {
+      clearInterval(interval);
+      showError();
+    }
+  }, 200);
+})();
+</script>
+
+</body>
+</html>

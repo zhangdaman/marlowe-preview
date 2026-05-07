@@ -1,0 +1,624 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Checkout — MARLOWE</title>
+<meta name="description" content="Complete your Marlowe order — shipping address and payment.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400..700;1,9..144,400..500&family=Manrope:wght@300..700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+<!--
+  ====================================================================
+  BACKEND SWAP POINTS (search "TODO BACKEND" below):
+  1. Stripe publishable key — set as a global before this page or via
+     <meta name="stripe-pk" content="pk_xxx"> and read in JS.
+  2. POST /api/orders — when user clicks Place Order, send shipping +
+     cart payload, receive { orderId, clientSecret } from server.
+  3. stripe.confirmPayment() — use clientSecret to confirm via Stripe
+     Payment Element, then redirect to thank-you.html?order=...
+  ====================================================================
+-->
+
+<style>
+:root {
+  --cream: #F5F1E8;
+  --cream-light: #FBF8F1;
+  --paper: #EDE8DA;
+  --charcoal: #1F2937;
+  --charcoal-soft: #374151;
+  --ink: #111827;
+  --brass: #B8956A;
+  --brass-deep: #8E6F47;
+  --brass-light: #D4B896;
+  --line: rgba(31, 41, 55, 0.12);
+  --line-soft: rgba(31, 41, 55, 0.06);
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  font-family: 'Manrope', system-ui, sans-serif;
+  background: var(--cream);
+  color: var(--charcoal);
+  font-size: 15px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+}
+
+.container { max-width: 1240px; margin: 0 auto; padding: 0 32px; }
+@media (max-width: 768px) { .container { padding: 0 20px; } }
+
+.eyebrow {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--brass-deep);
+}
+
+/* Nav (minimal — checkout is single-purpose) ====================== */
+nav.checkout-nav {
+  background: var(--cream);
+  border-bottom: 1px solid var(--line-soft);
+  padding: 22px 0;
+}
+.nav-grid {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  gap: 40px;
+}
+.logo {
+  font-family: 'Fraunces', serif;
+  font-variation-settings: 'opsz' 144;
+  font-size: 24px;
+  font-weight: 500;
+  letter-spacing: 0.18em;
+  color: var(--ink);
+  text-decoration: none;
+  text-align: center;
+}
+.back-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  color: var(--charcoal-soft);
+  text-decoration: none;
+}
+.back-link:hover { color: var(--charcoal); }
+.secure-badge {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--charcoal-soft);
+  text-align: right;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 8px;
+}
+@media (max-width: 768px) {
+  .nav-grid { grid-template-columns: auto 1fr auto; gap: 16px; }
+  .secure-badge { font-size: 10px; }
+}
+
+/* Page layout ===================================================== */
+.checkout-page { padding: 60px 0 120px; }
+
+.checkout-header {
+  text-align: center;
+  margin-bottom: 56px;
+}
+.checkout-header .eyebrow { display: inline-block; margin-bottom: 14px; }
+.checkout-header h1 {
+  font-family: 'Fraunces', serif;
+  font-variation-settings: 'opsz' 144;
+  font-size: clamp(40px, 5vw, 56px);
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+  font-weight: 400;
+  color: var(--ink);
+}
+
+.checkout-grid {
+  display: grid;
+  grid-template-columns: 1.4fr 1fr;
+  gap: 80px;
+  align-items: start;
+}
+@media (max-width: 900px) {
+  .checkout-grid { grid-template-columns: 1fr; gap: 56px; }
+}
+
+/* Form ============================================================ */
+.section {
+  background: var(--cream-light);
+  border: 1px solid var(--line);
+  padding: 32px;
+  margin-bottom: 24px;
+}
+.section h2 {
+  font-family: 'Fraunces', serif;
+  font-size: 20px;
+  font-weight: 500;
+  color: var(--ink);
+  margin-bottom: 4px;
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+}
+.section h2::before {
+  content: attr(data-num);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 0.2em;
+  color: var(--brass-deep);
+  font-weight: 400;
+}
+.section-meta {
+  font-size: 13px;
+  color: var(--charcoal-soft);
+  margin-bottom: 24px;
+}
+
+.field-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+.field-row.three { grid-template-columns: 2fr 1fr 1fr; }
+.field-row.single { grid-template-columns: 1fr; }
+@media (max-width: 600px) {
+  .field-row, .field-row.three { grid-template-columns: 1fr; }
+}
+
+.field { display: flex; flex-direction: column; gap: 6px; }
+.field label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--brass-deep);
+}
+.field input, .field select {
+  font-family: 'Manrope', sans-serif;
+  font-size: 15px;
+  padding: 14px 16px;
+  background: var(--cream);
+  border: 1px solid var(--line);
+  color: var(--charcoal);
+  outline: none;
+  transition: border-color 200ms;
+}
+.field input:focus, .field select:focus { border-color: var(--brass-deep); }
+.field input::placeholder { color: var(--charcoal-soft); opacity: 0.5; }
+
+/* Stripe Payment Element placeholder ============================== */
+.payment-placeholder {
+  border: 1.5px dashed var(--line);
+  background: var(--paper);
+  padding: 40px 24px;
+  text-align: center;
+  margin-top: 8px;
+}
+.payment-placeholder-eyebrow {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--brass-deep);
+  margin-bottom: 12px;
+}
+.payment-placeholder-title {
+  font-family: 'Fraunces', serif;
+  font-size: 18px;
+  color: var(--ink);
+  margin-bottom: 8px;
+}
+.payment-placeholder p {
+  font-size: 13px;
+  color: var(--charcoal-soft);
+  max-width: 460px;
+  margin: 0 auto;
+}
+.payment-placeholder code {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  background: var(--cream);
+  padding: 2px 6px;
+  border: 1px solid var(--line);
+}
+
+/* Buttons ========================================================= */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 18px 36px;
+  font-family: 'Manrope', sans-serif;
+  font-weight: 500;
+  font-size: 14px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  text-decoration: none;
+  border: 1.5px solid transparent;
+  cursor: pointer;
+  transition: all 250ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+.btn-primary {
+  background: var(--charcoal);
+  color: var(--cream);
+  border-color: var(--charcoal);
+}
+.btn-primary:hover { background: var(--cream); color: var(--charcoal); }
+.btn-block { width: 100%; padding: 22px 32px; font-size: 15px; }
+.btn-arrow { transition: transform 250ms; }
+.btn:hover .btn-arrow { transform: translateX(4px); }
+
+/* Order summary =================================================== */
+.summary {
+  background: var(--ink);
+  color: var(--cream);
+  padding: 36px 32px;
+  position: sticky;
+  top: 24px;
+}
+.summary h3 {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--brass-light);
+  margin-bottom: 24px;
+}
+.summary-items {
+  border-bottom: 1px solid rgba(255,255,255,0.1);
+  padding-bottom: 20px;
+  margin-bottom: 8px;
+}
+.summary-item {
+  display: grid;
+  grid-template-columns: 56px 1fr auto;
+  gap: 14px;
+  padding: 12px 0;
+  align-items: center;
+}
+.summary-item-thumb {
+  width: 56px;
+  height: 68px;
+  background: var(--cream-light);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 6px;
+}
+.summary-item-thumb svg { width: 100%; height: 100%; display: block; }
+.summary-item-meta { font-size: 13px; line-height: 1.4; }
+.summary-item-meta strong { display: block; color: var(--cream); font-weight: 500; }
+.summary-item-meta span { color: rgba(245,241,232,0.55); font-size: 11px; }
+.summary-item-price {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 13px;
+}
+.summary-line {
+  display: flex;
+  justify-content: space-between;
+  padding: 12px 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  font-size: 14px;
+}
+.summary-line:last-of-type { border-bottom: none; }
+.summary-line.total {
+  padding-top: 18px;
+  margin-top: 8px;
+  border-top: 1px solid rgba(255, 255, 255, 0.2);
+  font-family: 'Fraunces', serif;
+  font-size: 22px;
+  font-weight: 500;
+}
+.summary-line.total span:last-child {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 20px;
+}
+.summary-line .muted { opacity: 0.55; font-size: 12px; }
+.summary-meta {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: rgba(245, 241, 232, 0.55);
+  margin-top: 24px;
+  line-height: 1.7;
+}
+@media (max-width: 900px) {
+  .summary { position: static; }
+}
+
+/* Place order CTA ================================================ */
+.place-order {
+  margin-top: 24px;
+}
+.place-order .btn-primary {
+  width: 100%;
+  padding: 22px 32px;
+  font-size: 15px;
+}
+.place-order-meta {
+  font-size: 12px;
+  color: var(--charcoal-soft);
+  text-align: center;
+  margin-top: 14px;
+}
+.place-order-meta a {
+  color: var(--brass-deep);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+</style>
+</head>
+<body>
+
+<nav class="checkout-nav">
+  <div class="container nav-grid">
+    <a href="cart.html" class="back-link">
+      <span style="font-family: monospace;">←</span>
+      Back to cart
+    </a>
+    <a href="index.html" class="logo">MARLOWE</a>
+    <div class="secure-badge">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+      Stripe Secured
+    </div>
+  </div>
+</nav>
+
+<main class="checkout-page">
+  <div class="container">
+
+    <header class="checkout-header">
+      <div class="eyebrow">§ Checkout</div>
+      <h1>One last step.</h1>
+    </header>
+
+    <div class="checkout-grid">
+
+      <!-- LEFT: Form -->
+      <form id="checkout-form" onsubmit="placeOrder(event)">
+
+        <div class="section">
+          <h2 data-num="§ 01">Contact</h2>
+          <p class="section-meta">We'll send your order confirmation, proof preview, and shipping notification here.</p>
+          <div class="field-row">
+            <div class="field">
+              <label for="email">Email</label>
+              <input type="email" id="email" name="email" required placeholder="you@example.com" autocomplete="email">
+            </div>
+            <div class="field">
+              <label for="phone">Phone</label>
+              <input type="tel" id="phone" name="phone" required placeholder="(555) 555-1234" autocomplete="tel">
+            </div>
+          </div>
+        </div>
+
+        <div class="section">
+          <h2 data-num="§ 02">Shipping address</h2>
+          <p class="section-meta">United States only. We'll ship via USPS Priority or UPS Ground depending on your address.</p>
+          <div class="field-row">
+            <div class="field">
+              <label for="first-name">First name</label>
+              <input type="text" id="first-name" name="first-name" required autocomplete="given-name">
+            </div>
+            <div class="field">
+              <label for="last-name">Last name</label>
+              <input type="text" id="last-name" name="last-name" required autocomplete="family-name">
+            </div>
+          </div>
+          <div class="field-row single">
+            <div class="field">
+              <label for="address1">Street address</label>
+              <input type="text" id="address1" name="address1" required placeholder="123 Main St" autocomplete="address-line1">
+            </div>
+          </div>
+          <div class="field-row single">
+            <div class="field">
+              <label for="address2">Apt, suite, etc. (optional)</label>
+              <input type="text" id="address2" name="address2" autocomplete="address-line2">
+            </div>
+          </div>
+          <div class="field-row three">
+            <div class="field">
+              <label for="city">City</label>
+              <input type="text" id="city" name="city" required autocomplete="address-level2">
+            </div>
+            <div class="field">
+              <label for="state">State</label>
+              <select id="state" name="state" required autocomplete="address-level1">
+                <option value="">—</option>
+                <option>AL</option><option>AK</option><option>AZ</option><option>AR</option>
+                <option>CA</option><option>CO</option><option>CT</option><option>DE</option>
+                <option>DC</option><option>FL</option><option>GA</option><option>HI</option>
+                <option>ID</option><option>IL</option><option>IN</option><option>IA</option>
+                <option>KS</option><option>KY</option><option>LA</option><option>ME</option>
+                <option>MD</option><option>MA</option><option>MI</option><option>MN</option>
+                <option>MS</option><option>MO</option><option>MT</option><option>NE</option>
+                <option>NV</option><option>NH</option><option>NJ</option><option>NM</option>
+                <option>NY</option><option>NC</option><option>ND</option><option>OH</option>
+                <option>OK</option><option>OR</option><option>PA</option><option>RI</option>
+                <option>SC</option><option>SD</option><option>TN</option><option>TX</option>
+                <option>UT</option><option>VT</option><option>VA</option><option>WA</option>
+                <option>WV</option><option>WI</option><option>WY</option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="zip">ZIP code</label>
+              <input type="text" id="zip" name="zip" required pattern="[0-9]{5}(-[0-9]{4})?" placeholder="94110" autocomplete="postal-code">
+            </div>
+          </div>
+        </div>
+
+        <div class="section">
+          <h2 data-num="§ 03">Payment</h2>
+          <p class="section-meta">Secured by Stripe. We never see or store your card number.</p>
+
+          <!-- TODO BACKEND: replace this placeholder with the real Stripe Payment
+               Element. After backend returns clientSecret from POST /api/orders,
+               mount stripe.elements({ clientSecret }).create('payment') here. -->
+          <div class="payment-placeholder" id="payment-element">
+            <div class="payment-placeholder-eyebrow">§ Payment Element</div>
+            <div class="payment-placeholder-title">Stripe Payment Element will mount here</div>
+            <p>This is a placeholder until the backend provides a Stripe publishable key and creates a Payment Intent. Replace the <code>#payment-element</code> div with a real Stripe-hosted card field.</p>
+          </div>
+        </div>
+
+        <div class="place-order">
+          <button type="submit" class="btn btn-primary btn-block">
+            Place Order
+            <span class="btn-arrow">→</span>
+          </button>
+          <div class="place-order-meta">
+            By placing your order you agree to our <a href="terms.html">Terms</a>, <a href="privacy.html">Privacy Policy</a>, and <a href="returns.html">Returns Policy</a>. Custom orders may be cancelled within 24 hours.
+          </div>
+        </div>
+
+      </form>
+
+      <!-- RIGHT: Order summary -->
+      <aside>
+        <div class="summary">
+          <h3>§ Order summary</h3>
+          <div class="summary-items" id="summary-items">
+            <!-- Populated by JS -->
+          </div>
+          <div class="summary-line">
+            <span>Subtotal</span>
+            <span id="sum-subtotal">$0.00</span>
+          </div>
+          <div class="summary-line">
+            <span>Shipping <span class="muted">U.S. standard</span></span>
+            <span>Free</span>
+          </div>
+          <div class="summary-line">
+            <span>Sales tax <span class="muted">est. on submit</span></span>
+            <span id="sum-tax">$0.00</span>
+          </div>
+          <div class="summary-line total">
+            <span>Total</span>
+            <span id="sum-total">$0.00</span>
+          </div>
+          <div class="summary-meta">
+            Engraved to order in California<br>
+            7–10 business days · Free U.S. shipping
+          </div>
+        </div>
+      </aside>
+
+    </div>
+  </div>
+</main>
+
+<script>
+const CART_KEY = 'marlowe_cart';
+
+function readCart() {
+  try { return JSON.parse(localStorage.getItem(CART_KEY) || '[]'); }
+  catch (e) { return []; }
+}
+function fmt(n) { return '$' + n.toFixed(2); }
+function escapeHTML(s) {
+  return String(s).replace(/[&<>"']/g, c => ({
+    '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
+  }[c]));
+}
+
+function renderSummary() {
+  const cart = readCart();
+  if (cart.length === 0) {
+    // Empty cart — bounce back
+    window.location.href = 'cart.html';
+    return;
+  }
+  const itemsEl = document.getElementById('summary-items');
+  itemsEl.innerHTML = cart.map(it => `
+    <div class="summary-item">
+      <div class="summary-item-thumb">${it.svg}</div>
+      <div class="summary-item-meta">
+        <strong>${escapeHTML(it.shapeName)}</strong>
+        <span>${escapeHTML(it.colorName)} · ${escapeHTML(it.petName)}${it.quantity > 1 ? ' · ×' + it.quantity : ''}</span>
+      </div>
+      <div class="summary-item-price">${fmt(it.unitPrice * it.quantity)}</div>
+    </div>
+  `).join('');
+
+  const subtotal = cart.reduce((sum, it) => sum + (it.unitPrice * it.quantity), 0);
+  document.getElementById('sum-subtotal').textContent = fmt(subtotal);
+  // Tax is calculated server-side (Stripe Tax / TaxJar) — keep $0.00 placeholder until then
+  document.getElementById('sum-tax').textContent = '$0.00';
+  document.getElementById('sum-total').textContent = fmt(subtotal);
+}
+
+function placeOrder(event) {
+  event.preventDefault();
+  const form = event.target;
+  const formData = new FormData(form);
+  const cart = readCart();
+
+  const payload = {
+    contact: {
+      email: formData.get('email'),
+      phone: formData.get('phone'),
+    },
+    shipping: {
+      firstName: formData.get('first-name'),
+      lastName: formData.get('last-name'),
+      address1: formData.get('address1'),
+      address2: formData.get('address2'),
+      city: formData.get('city'),
+      state: formData.get('state'),
+      zip: formData.get('zip'),
+      country: 'US',
+    },
+    items: cart.map(it => ({
+      shape: it.shape,
+      color: it.color,
+      petName: it.petName,
+      petPhone: it.petPhone,
+      tagId: it.tagId,
+      quantity: it.quantity,
+      unitPrice: it.unitPrice,
+    })),
+    subtotal: cart.reduce((sum, it) => sum + (it.unitPrice * it.quantity), 0),
+  };
+
+  // ============================================================
+  // TODO BACKEND: real flow
+  //   1. POST /api/orders with payload
+  //   2. Receive { orderId, clientSecret }
+  //   3. await stripe.confirmPayment({ elements, clientSecret,
+  //                                    confirmParams: { return_url: '...thank-you.html?order=' + orderId }})
+  //   4. On success Stripe redirects to thank-you.html
+  //   5. On failure show error in #payment-errors div
+  // ============================================================
+  // Mock flow — write payload to localStorage and redirect to thank-you
+  const orderId = 'M' + Date.now().toString(36).toUpperCase().slice(-6);
+  localStorage.setItem('marlowe_last_order', JSON.stringify({
+    orderId,
+    placedAt: new Date().toISOString(),
+    payload,
+  }));
+  // Clear cart on successful "submit"
+  localStorage.removeItem(CART_KEY);
+  window.location.href = 'thank-you.html?order=' + orderId;
+}
+
+renderSummary();
+</script>
+
+<script src="chat-widget.js" defer></script>
+</body>
+</html>

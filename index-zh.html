@@ -1,0 +1,1392 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MARLOWE — 配得上它的那枚牌。</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,400;1,9..144,500&family=Manrope:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Noto+Serif+SC:wght@300;400;500;600;700&family=Noto+Sans+SC:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --cream: #F5F1E8;
+  --cream-light: #FBF8F1;
+  --paper: #EDE8DA;
+  --charcoal: #1F2937;
+  --charcoal-soft: #374151;
+  --ink: #111827;
+  --brass: #B8956A;
+  --brass-deep: #8E6F47;
+  --brass-light: #D4B896;
+  --forest: #2D3E2C;
+  --rust: #8B2E2E;
+  --rose: #D4B5A0;
+  --line: rgba(31, 41, 55, 0.12);
+  --line-soft: rgba(31, 41, 55, 0.06);
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'Manrope', 'Noto Sans SC', sans-serif;
+  background: var(--cream);
+  color: var(--charcoal);
+  font-weight: 400;
+  line-height: 1.7;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1000;
+  opacity: 0.04;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' /%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  mix-blend-mode: multiply;
+}
+
+.serif { font-family: 'Fraunces', 'Noto Serif SC', serif; font-variation-settings: 'opsz' 144; }
+.mono { font-family: 'JetBrains Mono', 'Noto Sans SC', monospace; }
+
+h1, h2, h3, h4 {
+  font-family: 'Fraunces', 'Noto Serif SC', serif;
+  font-variation-settings: 'opsz' 144;
+  font-weight: 500;
+  letter-spacing: 0;
+  line-height: 1.2;
+  color: var(--ink);
+}
+
+.eyebrow {
+  font-family: 'JetBrains Mono', 'Noto Sans SC', monospace;
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  color: var(--brass-deep);
+  font-weight: 500;
+}
+
+.section-num {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 0.15em;
+  color: var(--charcoal);
+  opacity: 0.5;
+}
+
+.container { max-width: 1320px; margin: 0 auto; padding: 0 32px; }
+.container-narrow { max-width: 920px; margin: 0 auto; padding: 0 32px; }
+
+@media (max-width: 768px) {
+  .container, .container-narrow { padding: 0 20px; }
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 18px 36px;
+  font-family: 'Manrope', 'Noto Sans SC', sans-serif;
+  font-weight: 500;
+  font-size: 14px;
+  letter-spacing: 0.08em;
+  text-decoration: none;
+  border: 1.5px solid transparent;
+  cursor: pointer;
+  transition: all 250ms cubic-bezier(0.4, 0, 0.2, 1);
+  white-space: nowrap;
+}
+
+.btn-primary {
+  background: var(--charcoal);
+  color: var(--cream);
+  border-color: var(--charcoal);
+}
+.btn-primary:hover { background: var(--cream); color: var(--charcoal); }
+
+.btn-outline {
+  background: transparent;
+  color: var(--charcoal);
+  border-color: var(--charcoal);
+}
+.btn-outline:hover { background: var(--charcoal); color: var(--cream); }
+
+.btn-large { padding: 22px 48px; font-size: 14px; }
+.btn-arrow { transition: transform 250ms; }
+.btn:hover .btn-arrow { transform: translateX(4px); }
+
+/* Announcement bar */
+.announce {
+  background: var(--charcoal);
+  color: var(--cream);
+  padding: 11px 0;
+  font-size: 12px;
+  text-align: center;
+  letter-spacing: 0.06em;
+  font-weight: 400;
+}
+.announce span { opacity: 0.6; padding: 0 12px; }
+.announce strong { font-weight: 500; }
+
+/* Navigation */
+nav.main-nav {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: rgba(245, 241, 232, 0.95);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--line-soft);
+  padding: 22px 0;
+}
+
+.nav-grid {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  gap: 40px;
+}
+
+.nav-links {
+  display: flex;
+  gap: 36px;
+  align-items: center;
+  list-style: none;
+}
+
+.nav-links a {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--charcoal);
+  text-decoration: none;
+  transition: color 200ms;
+  position: relative;
+}
+.nav-links a:hover { color: var(--brass-deep); }
+
+.nav-right { display: flex; gap: 28px; justify-content: flex-end; align-items: center; }
+
+.lang-switch {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+.lang-switch a {
+  color: var(--charcoal-soft);
+  text-decoration: none;
+  padding: 4px 2px;
+  transition: color 200ms;
+}
+.lang-switch a:hover { color: var(--charcoal); }
+.lang-switch a.active {
+  color: var(--charcoal);
+  border-bottom: 1px solid var(--brass);
+}
+.lang-switch .lang-sep {
+  color: var(--charcoal-soft);
+  opacity: 0.4;
+}
+
+.auth-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: 'JetBrains Mono', 'Noto Sans SC', monospace;
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  color: var(--charcoal-soft);
+  text-decoration: none;
+  padding: 6px 12px;
+  border: 1px solid var(--line);
+  transition: all 200ms;
+}
+.auth-pill:hover {
+  border-color: var(--charcoal);
+  color: var(--charcoal);
+}
+.auth-pill-avatar {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: var(--brass);
+  color: var(--cream);
+  font-family: 'Fraunces', serif;
+  font-size: 10px;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-transform: uppercase;
+}
+
+.logo {
+  font-family: 'Fraunces', serif;
+  font-variation-settings: 'opsz' 144;
+  font-size: 24px;
+  font-weight: 500;
+  letter-spacing: 0.18em;
+  color: var(--ink);
+  text-decoration: none;
+  text-align: center;
+}
+
+.cart-link {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 14px;
+  color: var(--charcoal);
+  text-decoration: none;
+}
+
+@media (max-width: 768px) {
+  .nav-grid { grid-template-columns: auto 1fr auto; }
+  .nav-links { display: none; }
+  .nav-right { gap: 16px; }
+}
+
+/* Hero */
+.hero {
+  position: relative;
+  padding: 80px 0 100px;
+  overflow: hidden;
+}
+
+.hero-grid {
+  display: grid;
+  grid-template-columns: 1.1fr 1fr;
+  gap: 80px;
+  align-items: center;
+  min-height: 70vh;
+}
+
+.hero-content { max-width: 580px; }
+
+.hero-eyebrow {
+  margin-bottom: 28px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+.hero-eyebrow::after {
+  content: '';
+  width: 48px;
+  height: 1px;
+  background: var(--brass);
+}
+
+.hero-title {
+  font-family: 'Fraunces', 'Noto Serif SC', serif;
+  font-variation-settings: 'opsz' 144;
+  font-size: clamp(48px, 7vw, 84px);
+  line-height: 1.1;
+  letter-spacing: -0.01em;
+  font-weight: 500;
+  margin-bottom: 32px;
+  color: var(--ink);
+}
+
+.hero-title em {
+  font-style: italic;
+  font-weight: 500;
+  color: var(--brass-deep);
+}
+
+.hero-sub {
+  font-size: 17px;
+  line-height: 1.7;
+  color: var(--charcoal-soft);
+  margin-bottom: 48px;
+  max-width: 520px;
+}
+
+.hero-actions {
+  display: flex;
+  gap: 14px;
+  align-items: center;
+  flex-wrap: wrap;
+  margin-bottom: 32px;
+}
+
+.hero-meta {
+  font-family: 'JetBrains Mono', 'Noto Sans SC', monospace;
+  font-size: 12px;
+  letter-spacing: 0.05em;
+  color: var(--charcoal);
+  opacity: 0.6;
+  display: flex;
+  gap: 18px;
+  flex-wrap: wrap;
+}
+
+.hero-meta span::before {
+  content: '·';
+  margin-right: 18px;
+  opacity: 0.5;
+}
+.hero-meta span:first-child::before { content: ''; margin: 0; }
+
+/* Hero product display */
+.hero-product {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 540px;
+}
+
+.hero-product-glow {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at 50% 50%, rgba(184, 149, 106, 0.38) 0%, rgba(184, 149, 106, 0) 62%);
+  filter: blur(60px);
+  z-index: 0;
+  animation: heroGlowBreathe 7s ease-in-out infinite;
+  pointer-events: none;
+}
+@keyframes heroGlowBreathe {
+  0%, 100% { opacity: 0.65; transform: scale(1); }
+  50%      { opacity: 1;    transform: scale(1.08); }
+}
+
+.hero-product-photo {
+  position: relative;
+  width: 480px;
+  height: 480px;
+  transition: transform 700ms cubic-bezier(0.4, 0, 0.2, 1);
+  filter: drop-shadow(0 32px 56px rgba(31, 41, 55, 0.22))
+          drop-shadow(0 8px 16px rgba(31, 41, 55, 0.12));
+  z-index: 1;
+}
+.hero-product-photo:hover {
+  transform: translateY(-6px);
+}
+.hero-product-photo img {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: contain;
+}
+
+.hero-product-meta {
+  position: absolute;
+  right: 8px;
+  bottom: 16px;
+  font-family: 'JetBrains Mono', 'Noto Sans SC', monospace;
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--charcoal-soft);
+  opacity: 0.7;
+  text-align: right;
+  line-height: 1.7;
+  z-index: 2;
+}
+.hero-product-meta strong {
+  display: block;
+  color: var(--brass-deep);
+  font-weight: 500;
+  letter-spacing: 0.22em;
+}
+
+@media (max-width: 900px) {
+  .hero-grid { grid-template-columns: 1fr; gap: 64px; }
+  .hero-content { max-width: 100%; }
+  .hero-product { min-height: 380px; }
+  .hero-product-photo { width: 340px; height: 340px; }
+}
+
+/* Press strip */
+.press-strip {
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+  padding: 32px 0;
+  background: var(--cream);
+}
+
+.press-grid {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 40px;
+  flex-wrap: wrap;
+}
+
+.press-label {
+  font-family: 'JetBrains Mono', 'Noto Sans SC', monospace;
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  color: var(--charcoal);
+  opacity: 0.55;
+}
+
+.press-logos {
+  display: flex;
+  gap: 56px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.press-logos span {
+  font-family: 'Fraunces', 'Noto Serif SC', serif;
+  font-style: italic;
+  font-size: 18px;
+  color: var(--charcoal);
+  opacity: 0.45;
+  letter-spacing: -0.01em;
+}
+
+/* Section base */
+.section {
+  padding: 120px 0;
+  position: relative;
+}
+
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin-bottom: 80px;
+  gap: 40px;
+  flex-wrap: wrap;
+}
+
+.section-title {
+  font-size: clamp(36px, 5vw, 60px);
+  letter-spacing: 0;
+  max-width: 760px;
+  font-weight: 500;
+}
+.section-title em {
+  font-style: italic;
+  color: var(--brass-deep);
+}
+
+.section-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  align-items: flex-end;
+  text-align: right;
+}
+
+@media (max-width: 768px) {
+  .section { padding: 80px 0; }
+  .section-header { flex-direction: column; align-items: flex-start; margin-bottom: 56px; }
+  .section-meta { align-items: flex-start; text-align: left; }
+}
+
+/* Designer teaser */
+.designer-teaser {
+  background: var(--paper);
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+}
+
+.examples-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 32px;
+  margin-bottom: 56px;
+}
+
+.example-card {
+  background: var(--cream-light);
+  border: 1px solid var(--line);
+  padding: 32px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  transition: transform 300ms ease, box-shadow 300ms;
+}
+.example-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 24px 48px -16px rgba(31, 41, 55, 0.12);
+}
+
+.example-pair {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  gap: 16px;
+}
+
+.example-photo, .example-tag {
+  aspect-ratio: 1;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--paper);
+}
+.example-tag {
+  background: linear-gradient(135deg, #C9B58E, #8E6F47);
+  border-radius: 8px;
+}
+
+.example-arrow {
+  font-family: 'JetBrains Mono', monospace;
+  color: var(--brass-deep);
+  font-size: 18px;
+}
+
+.example-meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  border-top: 1px solid var(--line);
+  padding-top: 16px;
+}
+
+.example-name {
+  font-family: 'Fraunces', 'Noto Serif SC', serif;
+  font-size: 20px;
+  font-weight: 500;
+}
+
+.example-loc {
+  font-family: 'JetBrains Mono', 'Noto Sans SC', monospace;
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  color: var(--charcoal);
+  opacity: 0.55;
+}
+
+.designer-cta {
+  text-align: center;
+  padding-top: 16px;
+}
+
+@media (max-width: 768px) {
+  .examples-grid { grid-template-columns: 1fr; gap: 20px; }
+}
+
+/* How it works */
+.steps {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0;
+  border-top: 1px solid var(--line);
+}
+
+.step {
+  padding: 56px 32px 56px 0;
+  border-right: 1px solid var(--line);
+  position: relative;
+}
+.step:last-child { border-right: none; padding-right: 0; }
+.step:not(:first-child) { padding-left: 32px; }
+
+.step-num {
+  font-family: 'Fraunces', serif;
+  font-size: 64px;
+  font-weight: 300;
+  font-style: italic;
+  color: var(--brass);
+  line-height: 1;
+  margin-bottom: 28px;
+  display: block;
+}
+
+.step-title {
+  font-family: 'Fraunces', 'Noto Serif SC', serif;
+  font-size: 26px;
+  font-weight: 500;
+  margin-bottom: 16px;
+}
+
+.step-desc {
+  font-size: 15px;
+  line-height: 1.7;
+  color: var(--charcoal-soft);
+}
+
+@media (max-width: 900px) {
+  .steps { grid-template-columns: repeat(2, 1fr); }
+  .step { padding: 40px 20px; border-right: 1px solid var(--line); }
+  .step:nth-child(2n) { border-right: none; }
+  .step:nth-child(n+3) { border-top: 1px solid var(--line); }
+}
+@media (max-width: 560px) {
+  .steps { grid-template-columns: 1fr; }
+  .step, .step:last-child { padding: 32px 0; border-right: none; border-bottom: 1px solid var(--line); }
+}
+
+/* Why */
+.why-section {
+  background: var(--ink);
+  color: var(--cream);
+}
+
+.why-section h2 { color: var(--cream); }
+.why-section .eyebrow { color: var(--brass-light); }
+
+.why-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0;
+  border-top: 1px solid rgba(255,255,255,0.1);
+}
+
+.why-card {
+  padding: 64px 32px 64px 0;
+  border-right: 1px solid rgba(255,255,255,0.1);
+}
+.why-card:last-child { border-right: none; padding-right: 0; }
+.why-card:not(:first-child) { padding-left: 32px; }
+
+.why-callout {
+  margin-top: 64px;
+  padding: 36px 24px 8px;
+  border-top: 1px solid rgba(212, 184, 150, 0.18);
+  text-align: center;
+}
+.why-callout-eyebrow {
+  font-family: 'JetBrains Mono', 'Noto Sans SC', monospace;
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  color: var(--brass-light);
+  margin-bottom: 16px;
+  display: block;
+}
+.why-callout p {
+  font-size: 15px;
+  max-width: 580px;
+  margin: 0 auto 14px;
+  line-height: 1.75;
+  color: rgba(245, 241, 232, 0.72);
+}
+.why-callout .soon {
+  font-family: 'JetBrains Mono', 'Noto Sans SC', monospace;
+  font-size: 11px;
+  letter-spacing: 0.16em;
+  color: var(--brass);
+  opacity: 0.75;
+}
+
+.why-num {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 0.2em;
+  color: var(--brass-light);
+  margin-bottom: 32px;
+  display: block;
+}
+
+.why-title {
+  font-family: 'Fraunces', 'Noto Serif SC', serif;
+  font-size: 30px;
+  font-weight: 500;
+  margin-bottom: 20px;
+  color: var(--cream);
+  line-height: 1.3;
+}
+
+.why-desc {
+  font-size: 15px;
+  line-height: 1.8;
+  color: rgba(245, 241, 232, 0.7);
+}
+
+@media (max-width: 768px) {
+  .why-grid { grid-template-columns: 1fr; }
+  .why-card { padding: 40px 0; border-right: none; border-bottom: 1px solid rgba(255,255,255,0.1); }
+  .why-card:last-child { border-bottom: none; }
+}
+
+/* Story */
+.story { background: var(--cream); }
+
+.story-grid {
+  display: grid;
+  grid-template-columns: 5fr 7fr;
+  gap: 80px;
+  align-items: center;
+}
+
+.story-image {
+  aspect-ratio: 4/5;
+  background: var(--forest);
+  position: relative;
+  overflow: hidden;
+  border-radius: 2px;
+}
+
+.story-image::after {
+  content: '工坊';
+  position: absolute;
+  bottom: 20px;
+  left: 20px;
+  font-family: 'JetBrains Mono', 'Noto Sans SC', monospace;
+  font-size: 11px;
+  letter-spacing: 0.2em;
+  color: rgba(245, 241, 232, 0.5);
+}
+
+.story-content { max-width: 560px; }
+.story-content .eyebrow { margin-bottom: 24px; display: inline-block; }
+
+.story-content h2 {
+  font-size: clamp(36px, 5vw, 56px);
+  margin-bottom: 32px;
+  font-style: italic;
+  font-weight: 500;
+  line-height: 1.25;
+}
+
+.story-content p {
+  font-size: 16px;
+  line-height: 1.85;
+  margin-bottom: 24px;
+  color: var(--charcoal-soft);
+}
+
+.story-quote {
+  font-family: 'Fraunces', 'Noto Serif SC', serif;
+  font-style: italic;
+  font-size: 21px;
+  line-height: 1.6;
+  color: var(--ink);
+  border-left: 2px solid var(--brass);
+  padding-left: 24px;
+  margin: 32px 0;
+  font-weight: 400;
+}
+
+.story-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--charcoal);
+  text-decoration: none;
+  border-bottom: 1px solid var(--charcoal);
+  padding-bottom: 4px;
+  transition: color 200ms;
+}
+.story-link:hover { color: var(--brass-deep); border-color: var(--brass-deep); }
+
+@media (max-width: 900px) {
+  .story-grid { grid-template-columns: 1fr; gap: 48px; }
+}
+
+/* UGC */
+.pack {
+  background: var(--paper);
+  border-top: 1px solid var(--line);
+}
+
+.pack-grid {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 16px;
+  margin-top: 24px;
+}
+
+.pack-photo {
+  aspect-ratio: 1;
+  background: var(--cream-light);
+  border: 1px solid var(--line);
+  position: relative;
+  overflow: hidden;
+  cursor: pointer;
+  transition: transform 300ms;
+}
+.pack-photo:hover { transform: scale(1.03); }
+
+.pack-photo::after {
+  content: attr(data-name) ' · ' attr(data-loc);
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 12px;
+  background: linear-gradient(to top, var(--ink) 0%, transparent 100%);
+  color: var(--cream);
+  font-family: 'JetBrains Mono', 'Noto Sans SC', monospace;
+  font-size: 10px;
+  letter-spacing: 0.05em;
+  opacity: 0;
+  transition: opacity 250ms;
+}
+.pack-photo:hover::after { opacity: 1; }
+
+.pack-photo:nth-child(1) { background: var(--rose); grid-row: span 2; }
+.pack-photo:nth-child(2) { background: var(--brass-light); }
+.pack-photo:nth-child(3) { background: var(--forest); }
+.pack-photo:nth-child(4) { background: var(--charcoal-soft); }
+.pack-photo:nth-child(5) { background: var(--brass); grid-row: span 2; }
+.pack-photo:nth-child(6) { background: var(--rose); }
+.pack-photo:nth-child(7) { background: var(--paper); }
+.pack-photo:nth-child(8) { background: var(--brass-deep); }
+
+@media (max-width: 900px) {
+  .pack-grid { grid-template-columns: repeat(3, 1fr); }
+  .pack-photo:nth-child(1), .pack-photo:nth-child(5) { grid-row: span 1; }
+}
+
+/* Final CTA */
+.final-cta {
+  background: var(--forest);
+  color: var(--cream);
+  text-align: center;
+  padding: 140px 0;
+}
+
+.final-cta h2 {
+  color: var(--cream);
+  font-size: clamp(40px, 6.5vw, 76px);
+  margin-bottom: 32px;
+  font-style: italic;
+  font-weight: 500;
+  line-height: 1.2;
+}
+
+.final-cta p {
+  font-size: 17px;
+  color: rgba(245, 241, 232, 0.75);
+  max-width: 520px;
+  margin: 0 auto 56px;
+  line-height: 1.7;
+}
+
+.final-cta .btn-primary {
+  background: var(--cream);
+  color: var(--ink);
+  border-color: var(--cream);
+}
+.final-cta .btn-primary:hover {
+  background: transparent;
+  color: var(--cream);
+}
+
+/* Footer */
+footer {
+  background: var(--ink);
+  color: var(--cream);
+  padding: 80px 0 32px;
+}
+
+.footer-grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr 1fr 1fr;
+  gap: 48px;
+  margin-bottom: 80px;
+}
+
+.footer-brand .logo { color: var(--cream); display: block; margin-bottom: 16px; }
+.footer-brand p {
+  font-size: 14px;
+  color: rgba(245, 241, 232, 0.55);
+  max-width: 280px;
+  line-height: 1.7;
+}
+
+.footer-col h4 {
+  font-family: 'JetBrains Mono', 'Noto Sans SC', monospace;
+  font-size: 11px;
+  letter-spacing: 0.16em;
+  color: var(--brass-light);
+  margin-bottom: 24px;
+  font-weight: 500;
+}
+
+.footer-col ul { list-style: none; display: flex; flex-direction: column; gap: 14px; }
+.footer-col a {
+  color: rgba(245, 241, 232, 0.7);
+  text-decoration: none;
+  font-size: 14px;
+  transition: color 200ms;
+}
+.footer-col a:hover { color: var(--cream); }
+
+.footer-bottom {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 32px;
+  border-top: 1px solid rgba(255,255,255,0.1);
+  font-size: 12px;
+  color: rgba(245, 241, 232, 0.45);
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.footer-trust { display: flex; gap: 24px; }
+
+@media (max-width: 900px) {
+  .footer-grid { grid-template-columns: 1fr 1fr; gap: 40px; }
+  .footer-brand { grid-column: span 2; }
+}
+
+@media (max-width: 560px) {
+  .footer-grid { grid-template-columns: 1fr; }
+  .footer-brand { grid-column: span 1; }
+  .footer-bottom { flex-direction: column; align-items: flex-start; }
+}
+
+.reveal {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 800ms cubic-bezier(0.4, 0, 0.2, 1), transform 800ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+.reveal.in { opacity: 1; transform: translateY(0); }
+
+</style>
+</head>
+<body>
+
+<!-- 顶部公告 -->
+<div class="announce">
+  <strong>加州手工铸造</strong>
+  <span>·</span>
+  下单后 7–10 个工作日发货
+  <span>·</span>
+  美区订单满 $75 免运费
+</div>
+
+<!-- 导航 -->
+<nav class="main-nav">
+  <div class="container nav-grid">
+    <ul class="nav-links">
+      <li><a href="designer-zh.html">设计你的牌</a></li>
+      <li><a href="#how">工艺流程</a></li>
+      <li><a href="#story">品牌故事</a></li>
+    </ul>
+    <a href="#" class="logo">MARLOWE</a>
+    <div class="nav-right">
+      <a href="cart.html" class="cart-link">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4zM3 6h18M16 10a4 4 0 0 1-8 0"/></svg>
+        购物车 (<span class="cart-count">0</span>)
+      </a>
+      <a href="login.html" class="auth-pill" id="nav-auth-pill" data-i18n-signin="登录">登录</a>
+      <div class="lang-switch" aria-label="Language">
+        <a href="index.html">EN</a>
+        <span class="lang-sep" aria-hidden="true">/</span>
+        <a href="index-zh.html" class="active">中</a>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<!-- Hero -->
+<section class="hero">
+  <div class="container hero-grid">
+    <div class="hero-content reveal in">
+      <div class="hero-eyebrow eyebrow">2025 创立 · 加州手工</div>
+      <h1 class="hero-title">你的狗。<br>铸入<em>金属。</em></h1>
+      <p class="hero-sub">
+        一张照片，化为一枚独一无二的肖像——钛合金按单雕刻，
+        浅浮雕与影雕双工艺。一只狗，一枚牌。比牵引绳更长久。
+      </p>
+      <div class="hero-actions">
+        <a href="designer-zh.html" class="btn btn-primary btn-large">
+          打开设计器
+          <span class="btn-arrow">→</span>
+        </a>
+        <a href="#how" class="btn btn-outline">了解工艺流程</a>
+      </div>
+      <div class="hero-meta">
+        <span>$79 起</span>
+        <span>免费刻字</span>
+        <span>终身质保</span>
+      </div>
+    </div>
+
+    <!-- Hero 产品展示 -->
+    <div class="hero-product reveal in">
+      <div class="hero-product-glow"></div>
+      <div class="hero-product-photo">
+        <img src="page-hero.png" alt="罗威纳犬佩戴 Marlowe 钛合金肖像铭牌" loading="eager">
+      </div>
+      <div class="hero-product-meta">
+        <strong>独一无二</strong>
+        第 0247 枚 · Ranger
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 媒体背书 -->
+<div class="press-strip">
+  <div class="container press-grid">
+    <div class="press-label">媒体报道</div>
+    <div class="press-logos">
+      <span>Outside</span>
+      <span>Field &amp; Stream</span>
+      <span>Wired</span>
+      <span>The Wildest</span>
+      <span>Apartment Therapy</span>
+    </div>
+    <div class="press-label">已铸造 2,400+ 枚</div>
+  </div>
+</div>
+
+<!-- 设计器 teaser -->
+<section class="section designer-teaser">
+  <div class="container">
+    <div class="section-header">
+      <div>
+        <div class="eyebrow" style="margin-bottom: 16px;">免费试用</div>
+        <h2 class="section-title">一分钟内，看见 <em>它的牌。</em></h2>
+      </div>
+      <div class="section-meta">
+        <span class="section-num">§ 01 / 设计器</span>
+        <span class="eyebrow" style="opacity: 0.6;">无需注册</span>
+      </div>
+    </div>
+
+    <div class="examples-grid">
+      <div class="example-card">
+        <div class="example-pair">
+          <div class="example-photo">
+            <svg viewBox="0 0 100 100" width="60%" height="60%" xmlns="http://www.w3.org/2000/svg">
+              <g stroke="#1F2937" fill="none" stroke-width="1.5">
+                <path d="M30,45 Q30,28 48,26 Q70,24 79,36 Q85,45 83,58 Q80,70 73,74 L70,82 L65,78 L60,86 L55,80 L50,84 L44,78 Q35,74 31,64 Q28,54 30,45 Z"/>
+                <circle cx="59" cy="45" r="1.5" fill="#1F2937"/>
+                <ellipse cx="79" cy="46" rx="3" ry="2.5" fill="#1F2937"/>
+              </g>
+            </svg>
+          </div>
+          <div class="example-arrow">→</div>
+          <div class="example-tag">
+            <div style="color: rgba(245,241,232,0.9); font-family: 'Fraunces', serif; font-size: 14px; letter-spacing: 1px;">SADIE</div>
+          </div>
+        </div>
+        <div class="example-meta">
+          <span class="example-name">Sadie</span>
+          <span class="example-loc">拉布拉多 · 布鲁克林</span>
+        </div>
+      </div>
+
+      <div class="example-card">
+        <div class="example-pair">
+          <div class="example-photo" style="background: var(--rose);">
+            <svg viewBox="0 0 100 100" width="60%" height="60%" xmlns="http://www.w3.org/2000/svg">
+              <g stroke="#1F2937" fill="none" stroke-width="1.5">
+                <path d="M28,40 Q28,22 50,20 Q72,18 80,30 Q85,38 84,52 Q82,68 76,74 L72,82 L66,78 L60,84 L54,80 L48,84 L42,80 Q32,76 28,62 Q26,50 28,40 Z"/>
+                <path d="M30,28 Q24,18 30,12 Q42,15 40,30 Z" fill="#1F2937" opacity="0.85"/>
+                <path d="M75,28 Q82,18 78,10 Q66,12 70,28 Z" fill="#1F2937" opacity="0.85"/>
+                <circle cx="42" cy="42" r="1.5" fill="#1F2937"/>
+                <circle cx="65" cy="42" r="1.5" fill="#1F2937"/>
+                <ellipse cx="54" cy="55" rx="3" ry="2" fill="#1F2937"/>
+              </g>
+            </svg>
+          </div>
+          <div class="example-arrow">→</div>
+          <div class="example-tag" style="background: linear-gradient(135deg, #4A5568, #2D3748);">
+            <div style="color: rgba(245,241,232,0.9); font-family: 'Fraunces', serif; font-size: 14px; letter-spacing: 1px;">MAX</div>
+          </div>
+        </div>
+        <div class="example-meta">
+          <span class="example-name">Max</span>
+          <span class="example-loc">可卡 · 奥斯汀</span>
+        </div>
+      </div>
+
+      <div class="example-card">
+        <div class="example-pair">
+          <div class="example-photo" style="background: var(--brass-light);">
+            <svg viewBox="0 0 100 100" width="60%" height="60%" xmlns="http://www.w3.org/2000/svg">
+              <g stroke="#1F2937" fill="none" stroke-width="1.5">
+                <path d="M32,42 Q30,25 50,22 Q72,20 80,32 Q86,42 83,56 Q80,70 73,76 L68,84 L62,80 L56,86 L50,82 L44,80 Q34,76 30,64 Q28,52 32,42 Z"/>
+                <path d="M30,30 Q22,22 26,12 Q40,15 38,30 Z" fill="#1F2937" opacity="0.7"/>
+                <circle cx="46" cy="44" r="1.5" fill="#1F2937"/>
+                <circle cx="65" cy="44" r="1.5" fill="#1F2937"/>
+                <ellipse cx="56" cy="58" rx="3" ry="2" fill="#1F2937"/>
+                <path d="M50,68 Q56,72 62,68" stroke-width="1"/>
+              </g>
+            </svg>
+          </div>
+          <div class="example-arrow">→</div>
+          <div class="example-tag" style="background: linear-gradient(135deg, #C7C0B5, #8C8478);">
+            <div style="color: rgba(245,241,232,0.9); font-family: 'Fraunces', serif; font-size: 14px; letter-spacing: 1px;">RILEY</div>
+          </div>
+        </div>
+        <div class="example-meta">
+          <span class="example-name">Riley</span>
+          <span class="example-loc">金毛 · 波特兰</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="designer-cta">
+      <a href="designer-zh.html" class="btn btn-primary btn-large">
+        上传你的狗的照片
+        <span class="btn-arrow">→</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- 工艺流程 -->
+<section class="section" id="how">
+  <div class="container">
+    <div class="section-header">
+      <div>
+        <div class="eyebrow" style="margin-bottom: 16px;">工艺流程</div>
+        <h2 class="section-title">从一张照片，<br>到<em>永恒的纪念。</em></h2>
+      </div>
+      <div class="section-meta">
+        <span class="section-num">§ 02 / 流程</span>
+        <span class="eyebrow" style="opacity: 0.6;">四个步骤 · 一枚牌</span>
+      </div>
+    </div>
+
+    <div class="steps">
+      <div class="step">
+        <span class="step-num">01</span>
+        <h3 class="step-title">上传</h3>
+        <p class="step-desc">一张清晰的照片。手机拍的就行，正面或侧脸都可以。</p>
+      </div>
+      <div class="step">
+        <span class="step-num">02</span>
+        <h3 class="step-title">设计</h3>
+        <p class="step-desc">系统会自动生成一枚独一无二的浮雕画像。一分钟内即可预览。</p>
+      </div>
+      <div class="step">
+        <span class="step-num">03</span>
+        <h3 class="step-title">雕刻</h3>
+        <p class="step-desc">钛合金精密雕刻：浅浮雕成型，影雕勾画细节，抛光后包装，7–10 天发货。</p>
+      </div>
+      <div class="step">
+        <span class="step-num">04</span>
+        <h3 class="step-title">送达</h3>
+        <p class="step-desc">手工打钢印，亚麻布袋包装，送到门口。即可挂上项圈，伴它日常出行。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 为什么 -->
+<section class="section why-section">
+  <div class="container">
+    <div class="section-header">
+      <div>
+        <div class="eyebrow" style="margin-bottom: 16px;">不一样的造法</div>
+        <h2 class="section-title">为什么<br>这枚<em style="color: var(--brass-light);">不一样。</em></h2>
+      </div>
+      <div class="section-meta">
+        <span class="section-num" style="color: rgba(245,241,232,0.5);">§ 03 / 慢工出细活</span>
+      </div>
+    </div>
+
+    <div class="why-grid">
+      <div class="why-card">
+        <span class="why-num">A</span>
+        <h3 class="why-title">每一枚<br>独一无二</h3>
+        <p class="why-desc">没有两只一样的狗，每一刻也不一样。每一次生成的肖像都是为它当下这个版本专属创作——铸造完成后绝不复用。</p>
+      </div>
+      <div class="why-card">
+        <span class="why-num">B</span>
+        <h3 class="why-title">更好的材料<br>更少的浪费</h3>
+        <p class="why-desc">按需雕刻意味着我们不囤货。我们用航天级钛合金——比钢更轻、低致敏、永不生锈。每一枚都从原料开始切割、为这次定制专属铸造。</p>
+      </div>
+      <div class="why-card">
+        <span class="why-num">C</span>
+        <h3 class="why-title">为长久<br>而生</h3>
+        <p class="why-desc">钛合金，抛光至镜面。肖像由浅浮雕与影雕共同雕成——这是金属精雕的传统工艺——不会褪色或磨平。每年为它订一枚、为家里每只狗一枚、或万一遗失备一枚——我们都在。</p>
+      </div>
+    </div>
+
+    <div class="why-callout">
+      <span class="why-callout-eyebrow">§ 同款再订 · 成长纪念 · 备用件</span>
+      <p>我们随订单存档你的设计——回头直接 reorder，不必重新上传照片。</p>
+      <span class="soon">客户账户与回购 · 即将上线</span>
+    </div>
+  </div>
+</section>
+
+<!-- 故事 -->
+<section class="section story" id="story">
+  <div class="container story-grid">
+    <div class="story-image">
+      <svg viewBox="0 0 400 500" xmlns="http://www.w3.org/2000/svg" style="width: 100%; height: 100%;">
+        <rect width="400" height="500" fill="#2D3E2C"/>
+        <g stroke="#B8956A" fill="none" stroke-width="1" opacity="0.3">
+          <line x1="0" y1="100" x2="400" y2="100"/>
+          <line x1="0" y1="200" x2="400" y2="200"/>
+          <line x1="0" y1="300" x2="400" y2="300"/>
+          <line x1="0" y1="400" x2="400" y2="400"/>
+          <line x1="100" y1="0" x2="100" y2="500"/>
+          <line x1="200" y1="0" x2="200" y2="500"/>
+          <line x1="300" y1="0" x2="300" y2="500"/>
+        </g>
+        <g transform="translate(200, 250)" stroke="#D4B896" fill="none" stroke-width="2">
+          <path d="M-50,-60 L50,-60 L60,-40 L50,-20 L50,40 Q50,80 0,100 Q-50,80 -50,40 L-50,-20 L-60,-40 L-50,-60 Z" fill="#D4B896" opacity="0.15"/>
+          <circle cx="0" cy="-50" r="4"/>
+          <circle cx="0" cy="20" r="20" stroke-width="1.5"/>
+          <text x="0" y="65" text-anchor="middle" font-family="Fraunces, serif" font-size="12" fill="#D4B896">MARLOWE</text>
+        </g>
+      </svg>
+    </div>
+    <div class="story-content">
+      <div class="eyebrow">我们的故事</div>
+      <h2>一切，<br>始于一枚比狗更长寿的牌。</h2>
+      <p>
+        我父亲在俄勒冈州 Bend 镇外的牧场养着一只工作犬，叫 Mac，一只拉布拉多。
+        我八岁那年，他从厨房抽屉里拿出 Mac 的黄铜牌给我看——实心金属，
+        在工作项圈上戴了十五年，名字依然清晰。Mac 早已离去，那枚牌还在抽屉里。
+      </p>
+      <p class="story-quote">
+        "我想要一枚真正担得起责任的牌。我找不到，所以我们造了一枚。"
+      </p>
+      <p>
+        我们只做一件事，把它做好。每一枚牌都在加州的工坊精密雕刻于钛合金之上，
+        浅浮雕勾轮廓、影雕呈细节——这是金属精雕的传统工艺——所以纹路与金属同寿。
+        为它日复一日的佩戴而生。比牵引绳更长久。
+      </p>
+      <a href="#" class="story-link">
+        阅读完整故事
+        <span style="font-family: monospace;">→</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- UGC -->
+<section class="section pack">
+  <div class="container">
+    <div class="section-header">
+      <div>
+        <div class="eyebrow" style="margin-bottom: 16px;">我们的狗群</div>
+        <h2 class="section-title">已被全美 2,400+ 只狗<br><em>佩戴回家。</em></h2>
+      </div>
+      <div class="section-meta">
+        <span class="section-num">§ 04 / 狗群</span>
+      </div>
+    </div>
+    <div class="pack-grid">
+      <div class="pack-photo" data-name="Cooper" data-loc="波士顿"></div>
+      <div class="pack-photo" data-name="Luna" data-loc="丹佛"></div>
+      <div class="pack-photo" data-name="Bear" data-loc="西雅图"></div>
+      <div class="pack-photo" data-name="Daisy" data-loc="奥斯汀"></div>
+      <div class="pack-photo" data-name="Murphy" data-loc="波特兰"></div>
+      <div class="pack-photo" data-name="Pepper" data-loc="布鲁克林"></div>
+      <div class="pack-photo" data-name="Bandit" data-loc="艾士维尔"></div>
+      <div class="pack-photo" data-name="Olive" data-loc="麦迪逊"></div>
+    </div>
+  </div>
+</section>
+
+<!-- 终极 CTA -->
+<section class="final-cta">
+  <div class="container-narrow">
+    <h2>准备好为它<em>设计了吗？</em></h2>
+    <p>免费预览，确认后再付款。加州手工铸造。</p>
+    <a href="designer-zh.html" class="btn btn-primary btn-large">
+      打开设计器
+      <span class="btn-arrow">→</span>
+    </a>
+  </div>
+</section>
+
+<!-- 页脚 -->
+<footer>
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <a href="#" class="logo">MARLOWE</a>
+        <p>钛合金肖像铭牌。在加州，一次精密雕刻一枚。</p>
+      </div>
+      <div class="footer-col">
+        <h4>购物</h4>
+        <ul>
+          <li><a href="designer-zh.html">设计器</a></li>
+          <li><a href="#">礼品卡</a></li>
+          <li><a href="#">保养与修复</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>关于</h4>
+        <ul>
+          <li><a href="#story">品牌故事</a></li>
+          <li><a href="#how">工艺流程</a></li>
+          <li><a href="#">可持续性</a></li>
+          <li><a href="#">媒体报道</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>帮助</h4>
+        <ul>
+          <li><a href="shipping.html">物流</a></li>
+          <li><a href="returns.html">退换货</a></li>
+          <li><a href="contact.html">联系我们</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>条款</h4>
+        <ul>
+          <li><a href="privacy.html">隐私政策</a></li>
+          <li><a href="terms.html">服务条款</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2025 Marlowe &amp; Co. 用心制造 · 加州，美国</span>
+      <div class="footer-trust">
+        <span>Stripe 加密支付</span>
+        <span>SSL 加密</span>
+        <span>30 天质量保证</span>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script>
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('in');
+    }
+  });
+}, { threshold: 0.1, rootMargin: '0px 0px -10% 0px' });
+
+document.querySelectorAll('.reveal, .section-header, .step, .why-card, .example-card').forEach(el => {
+  el.classList.add('reveal');
+  observer.observe(el);
+});
+
+// 实时同步购物车数量
+(function updateCartCount() {
+  try {
+    const cart = JSON.parse(localStorage.getItem('marlowe_cart') || '[]');
+    const total = cart.reduce((n, it) => n + (it.quantity || 1), 0);
+    document.querySelectorAll('.cart-count').forEach(el => el.textContent = total);
+  } catch (e) {}
+})();
+</script>
+
+<script src="auth-state.js"></script>
+<script>
+// 登录态 nav pill
+(function updateAuthPill() {
+  const pill = document.getElementById('nav-auth-pill');
+  if (!pill || !window.MarloweAuth) return;
+  function paint(user) {
+    if (user) {
+      const initial = (user.email || '?').charAt(0).toUpperCase();
+      const handle = (user.email || '').split('@')[0];
+      pill.href = 'account.html';
+      pill.innerHTML = `<span class="auth-pill-avatar">${initial}</span><span>${handle}</span>`;
+    } else {
+      pill.href = 'login.html';
+      pill.innerHTML = pill.dataset.i18nSignin || '登录';
+    }
+  }
+  paint(MarloweAuth.getUser());
+  MarloweAuth.onAuthChange(paint);
+})();
+</script>
+
+<script src="chat-widget.js" defer></script>
+</body>
+</html>

@@ -1,0 +1,346 @@
+# Chat Bot — FAQ Spec & UX
+
+> v1 scripted bot (button-based). No AI, no backend. Pure frontend, served from `chat-widget.js`. Future AI upgrade path documented at the bottom.
+
+---
+
+## 1. Design principles
+
+1. **Heritage tone, not techy.** No green pulsing bubble, no emoji, no "Hi! 👋". Brass icon, charcoal text, Fraunces serif for greeting.
+2. **Button-only.** No free-form input box (v1). Users click pre-written topic chips → see canned answer → see related sub-chips or back / email.
+3. **Don't interrupt.** No auto-popup, no "we noticed you've been here for 30s". Folded by default, opens only on click.
+4. **Fallback always visible.** Every screen shows "Email support@marlowe.example, reply within 1 business day" as last-resort exit.
+5. **Bilingual.** Auto-detects `document.documentElement.lang` (en/zh) → loads matching FAQ.
+6. **Stateless.** No history persisted. Each page-load is a fresh session. Deferred to v1.5+.
+
+## 2. Visual spec
+
+### Folded state (default)
+- Position: fixed, right: 24px, bottom: 24px, z-index: 200
+- Size: ~120×44 pill button
+- Style: `background: var(--charcoal); color: var(--cream)` + small chat-bubble SVG icon (1.5px stroke, no fill) + text "Help" / "客服"
+- Hover: slight `translateY(-2px)` + shadow
+
+### Open state
+- Position: fixed, right: 24px, bottom: 24px
+- Size: 380×560 (mobile: full width minus 24px gutter, max-height 80vh)
+- Style: `background: var(--cream-light)` + 1px charcoal border + slight `box-shadow: 0 24px 48px -16px rgba(0,0,0,0.18)`
+- Header: brass-deep band with title "Marlowe — How can we help?" / "Marlowe 客服" + close X
+- Body: scrollable message list
+- Footer: pinned topic chips (when at root) OR "← Back" / "Email support" buttons (deeper levels)
+
+### Message style
+- Bot bubble: cream-light bg, charcoal text, Fraunces serif body for warm tone, 14px line-height 1.55
+- "User clicked X" trace: just shows the chip text in JetBrains Mono small caps, dimmed (no fake user bubble — we know it was a click, not a typed message)
+- Bot avatar: a simple "§" mark in brass, no animal / no emoji
+
+## 3. Conversation flow
+
+```
+Open
+  ↓
+Greeting bot message
+  ↓
+8 topic chips
+  ↓ (click topic)
+Topic intro bot message + 1-3 sub-question chips + "← Back" + "Email support"
+  ↓ (click sub-question)
+Answer bot message (1-3 sentences) + optional "Read full policy: [link]"
+  + "Ask another question" + "Email support"
+```
+
+Every leaf answer ends with two persistent options: **Ask another question** (returns to topic root) and **Email support** (opens `mailto:`).
+
+## 4. FAQ content — English
+
+### Greeting
+> Hi, I'm Marlowe's helper. What can I help with today?
+
+### Topic 1 — Shipping & delivery
+
+**How long does delivery take?**
+> Production takes 7–10 business days. Shipping adds 3–5 business days. Most U.S. orders arrive within 11–16 business days from order placement.
+> Read full policy: [Shipping](shipping.html)
+
+**Where do you ship?**
+> All 50 U.S. states + D.C., U.S. military addresses (APO/FPO/DPO), and U.S. territories. We don't ship internationally yet.
+
+**Can I track my order?**
+> Yes. We email a tracking number the day your tag ships, usually via USPS Priority or UPS Ground.
+
+### Topic 2 — Cancellations & changes
+
+**How do I cancel?**
+> You can cancel any order, for any reason, within 24 hours of placing it. Email support@marlowe.example with your order number. After 24 hours, your tag enters production and the order is locked.
+> Read full policy: [Returns](returns.html)
+
+**Can I change my shipping address?**
+> Yes, within the 24-hour cancellation window. Email us with your order number and the new address.
+
+**Can I change the design after ordering?**
+> The Designer's real-time preview is your final approval. Once 24 hours pass, the design is locked. We can't change spelling, swap shapes, or update the engraving after that point.
+
+### Topic 3 — Returns & exchanges
+
+**What's covered?**
+> Manufacturing defects, engraving errors that don't match what you submitted, wrong shape or finish shipped, and damage in transit. Contact us within 14 days of delivery.
+> Read full policy: [Returns](returns.html)
+
+**How do I start a return?**
+> Email support@marlowe.example within 14 days of delivery with your order number and clear photos of the issue. We respond within 1 business day and send a prepaid shipping label if a return is approved.
+
+**Will I get a refund or a remake?**
+> Our default is to remake the tag at no cost to you. If a remake isn't possible — same defect twice, or you no longer want the tag — we issue a full refund through Stripe.
+
+### Topic 4 — The Designer & AI
+
+**How does the AI portrait work?**
+> Upload a clear photo of your dog. Our system converts it into a halftone (point-pattern) grayscale portrait suitable for engraving on metal. The Designer shows you a real-time preview; what you see is what we engrave.
+
+**What if I don't like the AI portrait?**
+> You can regenerate as many times as you like before checkout (within reasonable limits). Once you've placed the order and the 24-hour window passes, the design is locked.
+
+**Can I regenerate the portrait?**
+> Yes — in the final preview screen, click "Try a different portrait" to run the AI again. Same shape, finish, and engraving; fresh portrait.
+
+**Will it look exactly like my dog?**
+> The halftone process is a stylization — like a fine engraving made from a photo, not a photo-realistic copy. The Designer preview shows you the actual portrait that will be engraved. If you don't love it, don't proceed to checkout.
+
+### Topic 5 — Materials & care
+
+**What's the tag made of?**
+> Aerospace-grade titanium. Lighter than steel, hypoallergenic, and will not rust. We use precision low-relief engraving for the outline and halftone engraving for photo-level detail.
+
+**Will it rust or fade?**
+> No. Titanium does not rust. The engraving is cut into the metal — not printed — so it won't wear off with daily use.
+
+**How do I clean it?**
+> Wipe with a soft cloth. For deeper cleaning, use mild soap and water; rinse and dry. Avoid bleach or abrasive polishes.
+
+**How do I attach it to a collar?**
+> Use any standard split ring or S-hook. The suspension hole fits 6mm rings comfortably.
+
+### Topic 6 — My pet's photo
+
+**What do you do with my photo?**
+> We process it through our AI pipeline (Replicate or equivalent) to generate the halftone portrait used on your tag. The portrait is stored as part of your order record. Your original photo is deleted one year after your order ships.
+> Read full policy: [Privacy](privacy.html)
+
+**Will my photo train AI models?**
+> No. We never use customer photos to train AI models — ours or anyone else's.
+
+**How long do you keep my photo?**
+> Original uploaded photos: deleted one year after your order ships. Halftone portraits: kept with your order record (7 years for tax compliance).
+
+**Can I delete my photo?**
+> Yes. Email privacy@marlowe.example to request deletion. We respond within 30 days.
+
+### Topic 7 — Account & login
+
+**How do I sign in?**
+> We use passwordless sign-in. Click "Sign in" and enter your email — we'll email a one-click link. Or use "Continue with Apple" / "Continue with Google" for instant sign-in. No password to remember.
+
+**I don't remember signing up — do I have an account?**
+> If you've ever generated a portrait or placed an order with us, you already have an account tied to that email. Enter the same email at sign-in and we'll send a fresh link.
+
+**Can I check out without signing in?**
+> Yes — adding to cart and checking out work without an account. The only step that requires sign-in is generating an AI portrait, since each generation has a real cost. Signing in also saves your design so you can reorder.
+
+**How do I delete my account?**
+> Email privacy@marlowe.example with the subject "Delete my account". We respond within 30 days. Linked orders are anonymized for tax compliance; saved designs and uploaded photos are deleted.
+
+### Topic 8 — Pricing & payment
+
+**How much does a tag cost?**
+> $79 for any combination of shape (Shield, Octagon, Disc) and finish (5 options). Free engraving included. Free U.S. standard shipping included.
+
+**What payment methods do you accept?**
+> Credit and debit cards, Apple Pay, and Google Pay — processed securely by Stripe. We never see or store your card number.
+
+**Are there any discounts?**
+> Not currently. We make every tag to order in California — there's no inventory clearance to discount.
+
+**Is there sales tax?**
+> Sales tax is calculated at checkout based on your shipping address, per U.S. state requirements.
+
+### Topic 9 — Talk to a person
+
+> We respond within 1 business day, often sooner.
+>
+> - **Order & product help** — support@marlowe.example
+> - **Privacy & data requests** — privacy@marlowe.example
+> - **Press & wholesale** — press@marlowe.example
+
+## 5. FAQ content — 中文（zh 页面用）
+
+### Greeting
+> 你好，我是 Marlowe 客服助手。需要哪方面的帮助？
+
+### 主题 1 — 物流与配送
+
+**多久能收到？**
+> 生产需 7–10 个工作日，物流再加 3–5 个工作日。大多数美区订单从下单到收货约 11–16 个工作日。
+> 详见 [物流政策](shipping.html)
+
+**发货范围？**
+> 美国 50 州 + DC + 军方地址（APO/FPO/DPO）+ 美属领地。暂不发国际。
+
+**能追踪订单吗？**
+> 可以。发货当天我们会邮件发送 USPS Priority 或 UPS Ground 的追踪号。
+
+### 主题 2 — 取消与修改
+
+**如何取消订单？**
+> 下单后 24 小时内可任意取消。邮件 support@marlowe.example 加订单号。超过 24 小时订单进入生产，无法取消。
+> 详见 [退换货政策](returns.html)
+
+**能改收货地址吗？**
+> 可以——在 24 小时取消窗口内。邮件附上订单号和新地址即可。
+
+**下单后能改设计吗？**
+> Designer 实时预览即视为你的最终确认。24 小时窗口关闭后，设计锁定，不能改刻字、形状或表面。
+
+### 主题 3 — 退换货
+
+**什么情况支持退换？**
+> 制造缺陷、刻字错误（与你提交的不一致）、发错形状或表面、物流损坏。收货后 14 天内联系我们。
+> 详见 [退换货政策](returns.html)
+
+**如何申请退换？**
+> 收货 14 天内邮件 support@marlowe.example，附订单号和问题照片。我们 1 个工作日内回复。如批准，我们寄出预付运费的退货标签。
+
+**退款还是重做？**
+> 我们的默认方案是免费重做。如果无法重做（同样问题反复出现、或你不再想要），我们通过 Stripe 全额退款。
+
+### 主题 4 — 设计器与 AI
+
+**AI 肖像怎么生成？**
+> 上传一张清晰的宠物照片，系统转换为适合金属雕刻的灰阶影雕图。Designer 实时预览，所见即所刻。
+
+**如果不喜欢 AI 肖像怎么办？**
+> 下单前可无限次重新生成（合理范围内）。下单后 24 小时窗口关闭，设计就锁定了。
+
+**怎么重新生成？**
+> 在最终预览页点击"换一张肖像"即可重新跑 AI。形状/底色/刻字保持不变，只换肖像。
+
+**会跟我家狗完全一样吗？**
+> 影雕本质是一种"风格化处理"——像照片精度的金属雕刻，不是照片复制。Designer 预览中看到的就是最终雕刻效果。如果不喜欢，不要进入结账。
+
+### 主题 5 — 材质与保养
+
+**牌是什么材质？**
+> 航天级钛合金。比钢更轻、低致敏、永不生锈。浅浮雕勾轮廓，影雕呈现照片级细节。
+
+**会生锈或褪色吗？**
+> 不会。钛合金不锈，刻字是切刻而非印刷，日常使用不会磨平。
+
+**怎么清洁？**
+> 用软布擦拭。需要深度清洁可用温和肥皂水冲洗后擦干。避免漂白剂或粗糙的抛光剂。
+
+**怎么扣到项圈上？**
+> 标准分裂环或 S 钩都行。悬挂孔适配 6mm 环。
+
+### 主题 6 — 我的宠物照片
+
+**你们怎么处理我的照片？**
+> 经过 AI pipeline（Replicate 或等效服务）处理为影雕肖像，作为订单记录保存。原始上传照片在订单发货 1 年后删除。
+> 详见 [隐私政策](privacy.html)
+
+**会用我的照片训练 AI 模型吗？**
+> 不会。我们绝不使用客户照片训练 AI 模型——无论是我们的还是别人的。
+
+**照片保留多久？**
+> 原始上传照片：发货后 1 年删除。影雕肖像：随订单记录保留（税务合规要求 7 年）。
+
+**能删除我的照片吗？**
+> 可以。邮件 privacy@marlowe.example 申请删除，我们 30 天内响应。
+
+### 主题 7 — 账户与登录
+
+**怎么登录？**
+> 我们用的是无密码登录。点"登录"输入邮箱，我们会发一封一键登录的邮件。或者使用"Apple 继续"/"Google 继续"一键登录。无需记密码。
+
+**我没记得注册过——我有账户吗？**
+> 如果你之前生成过肖像或下过单，那个邮箱就是你的账户。输入同一个邮箱，我们会发新的登录链接。
+
+**能不登录就结账吗？**
+> 可以——加入购物车和结账不需要账户。只有"生成 AI 肖像"这一步需要登录，因为每次生成都有真实成本。登录后我们会保存你的设计，方便日后再订。
+
+**怎么删除我的账户？**
+> 邮件 privacy@marlowe.example，主题写"删除账户"。我们 30 天内响应。关联订单做匿名化处理（税务合规要保留）；保存的设计与上传的照片会删除。
+
+### 主题 8 — 价格与支付
+
+**一枚多少钱？**
+> $79，任意形状（盾形 / 八角 / 圆形）+ 任意表面（5 种）的组合都是统一价。免费刻字。美区免标准运费。
+
+**支持哪些支付方式？**
+> 信用卡、借记卡、Apple Pay、Google Pay——由 Stripe 安全处理。我们不接触也不存储你的卡号。
+
+**有折扣吗？**
+> 目前没有。每一枚都是按单制造，没有库存清仓的折扣空间。
+
+**要交销售税吗？**
+> 销售税在结账时根据你的收货地址自动计算，符合美国各州规定。
+
+### 主题 9 — 联系真人
+
+> 我们 1 个工作日内回复，通常更快。
+>
+> - **订单与产品** — support@marlowe.example
+> - **隐私与数据请求** — privacy@marlowe.example
+> - **媒体与合作** — press@marlowe.example
+
+## 6. Trigger conditions for "Email support"
+
+Show the email-support escape hatch on every screen, not just the deepest leaf:
+
+- Greeting screen — small "Or email support@..." link below the topic chips
+- Topic intro — "← Back" + "Email support" buttons
+- Leaf answer — "Ask another question" + "Email support" buttons
+
+Rationale: never trap the user in the bot. Heritage brand cardinal rule = if AI/bot can't help, real human is one click away.
+
+## 7. Where the widget mounts
+
+| Page | Mount? | Why |
+|---|---|---|
+| `index.html` / `index-zh.html` | ✅ | Decision gate — answer "is this the right product for me?" |
+| `designer.html` / `designer-zh.html` | ✅ | High-friction page — AI / customization questions |
+| `cart.html` | ✅ | Pre-checkout doubt — answers shipping / pricing |
+| `checkout.html` | ✅ | Pre-payment objections — payment / security |
+| `thank-you.html` | ✅ | Post-purchase reassurance — what's next |
+| `privacy.html` / `terms.html` / `returns.html` / `shipping.html` / `contact.html` | ❌ | Users reading legal want to focus, not be interrupted |
+
+## 8. v1.5+ upgrade path → AI
+
+Same widget UI, swap the response source:
+
+1. Replace the inline FAQ data with a `POST /api/chat` call
+2. Backend reads user message + system prompt (this entire `chat-bot.md` + product-plan.md + 4 legal pages as RAG context)
+3. LLM (Claude Sonnet or equivalent) generates response
+4. Add `<input>` box for free-form questions (currently disabled)
+5. Add Cloudflare Turnstile for chat (similar to generate API rate limit)
+6. Persist chat history (localStorage 7d + backend 90d)
+7. Slack integration when LLM confidence < threshold → human handoff
+
+Estimated v1.5 cost: ~$0.005/message LLM cost. 1000 chats/month ≈ $5/month — still cheaper than any SaaS option.
+
+## 9. Maintenance
+
+When any of the following changes, **update this file first** (single source of truth), then `chat-widget.js` re-pulls its data from here:
+
+- Pricing ($79 anywhere → search and replace)
+- Cancellation window (24h)
+- Shipping range (US-only currently)
+- Photo retention (1 year)
+- Tax policy
+- Email addresses
+
+This file is the canonical FAQ. The widget is its UI projection.
+
+---
+
+## Changelog
+
+- **2026-05-07** — Initial spec, scripted bot v1, button-only.

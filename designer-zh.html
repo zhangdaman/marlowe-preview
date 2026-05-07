@@ -1,0 +1,1687 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>设计器 — MARLOWE</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,400;1,9..144,500&family=Manrope:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Noto+Serif+SC:wght@300;400;500;600;700&family=Noto+Sans+SC:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --cream: #F5F1E8;
+  --cream-light: #FBF8F1;
+  --paper: #EDE8DA;
+  --charcoal: #1F2937;
+  --charcoal-soft: #374151;
+  --ink: #111827;
+  --brass: #B8956A;
+  --brass-deep: #8E6F47;
+  --brass-light: #D4B896;
+  --forest: #2D3E2C;
+  --rust: #8B2E2E;
+  --rose: #D4B5A0;
+  --line: rgba(31, 41, 55, 0.12);
+  --line-soft: rgba(31, 41, 55, 0.06);
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: 'Manrope', 'Noto Sans SC', sans-serif;
+  background: var(--cream);
+  color: var(--charcoal);
+  line-height: 1.7;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1000;
+  opacity: 0.04;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' /%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  mix-blend-mode: multiply;
+}
+
+h1, h2, h3, h4 {
+  font-family: 'Fraunces', 'Noto Serif SC', serif;
+  font-variation-settings: 'opsz' 144;
+  font-weight: 500;
+  letter-spacing: 0;
+  line-height: 1.2;
+  color: var(--ink);
+}
+
+.eyebrow {
+  font-family: 'JetBrains Mono', 'Noto Sans SC', monospace;
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  color: var(--brass-deep);
+  font-weight: 500;
+}
+
+.container { max-width: 1280px; margin: 0 auto; padding: 0 32px; }
+@media (max-width: 768px) { .container { padding: 0 20px; } }
+
+/* Top bar */
+.top-bar {
+  background: var(--charcoal);
+  color: var(--cream);
+  padding: 11px 0;
+  font-size: 12px;
+  text-align: center;
+  letter-spacing: 0.05em;
+}
+
+nav.main-nav {
+  background: var(--cream);
+  border-bottom: 1px solid var(--line-soft);
+  padding: 22px 0;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  backdrop-filter: blur(12px);
+  background: rgba(245, 241, 232, 0.95);
+}
+
+.nav-grid {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  gap: 40px;
+}
+
+.logo {
+  font-family: 'Fraunces', serif;
+  font-size: 24px;
+  font-weight: 500;
+  letter-spacing: 0.18em;
+  color: var(--ink);
+  text-decoration: none;
+}
+
+.back-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  color: var(--charcoal-soft);
+  text-decoration: none;
+  transition: color 200ms;
+}
+.back-link:hover { color: var(--charcoal); }
+
+.progress-pill {
+  display: flex;
+  gap: 8px;
+  justify-self: end;
+  align-items: center;
+  font-family: 'JetBrains Mono', 'Noto Sans SC', monospace;
+  font-size: 12px;
+  color: var(--charcoal-soft);
+}
+.progress-dots {
+  display: flex;
+  gap: 6px;
+}
+.dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--line);
+  transition: background 300ms;
+}
+.dot.active { background: var(--brass); }
+.dot.done { background: var(--charcoal); }
+
+.nav-cluster {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  justify-self: end;
+}
+
+.lang-switch {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+.lang-switch a {
+  color: var(--charcoal-soft);
+  text-decoration: none;
+  padding: 4px 2px;
+  transition: color 200ms;
+}
+.lang-switch a:hover { color: var(--charcoal); }
+.lang-switch a.active {
+  color: var(--charcoal);
+  border-bottom: 1px solid var(--brass);
+}
+.lang-switch .lang-sep {
+  color: var(--charcoal-soft);
+  opacity: 0.4;
+}
+
+@media (max-width: 768px) {
+  .nav-grid { grid-template-columns: auto 1fr auto; gap: 16px; }
+  .progress-pill { font-size: 11px; }
+  .progress-pill span:not(.progress-dots) { display: none; }
+  .nav-cluster { gap: 14px; }
+  .lang-switch { font-size: 10px; }
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 18px 36px;
+  font-family: 'Manrope', 'Noto Sans SC', sans-serif;
+  font-weight: 500;
+  font-size: 14px;
+  letter-spacing: 0.05em;
+  text-decoration: none;
+  border: 1.5px solid transparent;
+  cursor: pointer;
+  transition: all 250ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.btn-primary {
+  background: var(--charcoal);
+  color: var(--cream);
+  border-color: var(--charcoal);
+}
+.btn-primary:hover { background: var(--cream); color: var(--charcoal); }
+
+.btn-block { width: 100%; padding: 22px 32px; font-size: 15px; }
+.btn-arrow { transition: transform 250ms; }
+.btn:hover .btn-arrow { transform: translateX(4px); }
+
+/* Stage container */
+.stage {
+  min-height: calc(100vh - 110px);
+  padding: 60px 0;
+  display: none;
+}
+.stage.active { display: block; }
+
+/* STAGE 1: UPLOAD */
+.stage-header {
+  text-align: center;
+  max-width: 640px;
+  margin: 0 auto 56px;
+}
+
+.stage-header h1 {
+  font-size: clamp(36px, 5vw, 56px);
+  margin-bottom: 20px;
+  font-weight: 500;
+  line-height: 1.25;
+}
+.stage-header h1 em {
+  font-style: italic;
+  color: var(--brass-deep);
+}
+
+.stage-header p {
+  font-size: 17px;
+  color: var(--charcoal-soft);
+  max-width: 540px;
+  margin: 0 auto;
+  line-height: 1.7;
+}
+
+.upload-container { max-width: 720px; margin: 0 auto; }
+
+.dropzone {
+  background: var(--cream-light);
+  border: 1.5px dashed var(--brass);
+  border-radius: 4px;
+  padding: 80px 40px;
+  text-align: center;
+  cursor: pointer;
+  transition: all 250ms;
+  position: relative;
+}
+.dropzone:hover {
+  background: var(--paper);
+  border-color: var(--brass-deep);
+}
+.dropzone.dragging {
+  background: var(--paper);
+  border-color: var(--charcoal);
+  border-style: solid;
+}
+
+.dropzone-icon {
+  width: 64px;
+  height: 64px;
+  margin: 0 auto 24px;
+  color: var(--brass-deep);
+}
+
+.dropzone-title {
+  font-family: 'Fraunces', 'Noto Serif SC', serif;
+  font-size: 26px;
+  font-weight: 500;
+  margin-bottom: 10px;
+}
+
+.dropzone-sub {
+  font-size: 14px;
+  color: var(--charcoal-soft);
+  margin-bottom: 24px;
+}
+
+.dropzone-formats {
+  font-family: 'JetBrains Mono', 'Noto Sans SC', monospace;
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  color: var(--brass-deep);
+}
+
+.tips {
+  margin-top: 56px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 32px;
+  padding: 32px;
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+}
+
+.tip {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+  font-size: 14px;
+  line-height: 1.65;
+  color: var(--charcoal-soft);
+}
+
+.tip-icon {
+  flex-shrink: 0;
+  color: var(--brass);
+  margin-top: 2px;
+}
+
+.samples {
+  margin-top: 48px;
+  text-align: center;
+}
+
+.samples-label {
+  font-family: 'JetBrains Mono', 'Noto Sans SC', monospace;
+  font-size: 12px;
+  letter-spacing: 0.1em;
+  color: var(--charcoal-soft);
+  margin-bottom: 20px;
+}
+
+.sample-row {
+  display: flex;
+  gap: 16px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.sample {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background: var(--paper);
+  border: 2px solid transparent;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 250ms;
+  overflow: hidden;
+}
+.sample:hover {
+  border-color: var(--brass);
+  transform: scale(1.05);
+}
+
+@media (max-width: 768px) {
+  .tips { grid-template-columns: 1fr; gap: 16px; padding: 24px 0; }
+  .dropzone { padding: 56px 24px; }
+}
+
+/* STAGE 2: LOADING */
+.loading-container {
+  max-width: 480px;
+  margin: 0 auto;
+  text-align: center;
+  padding: 80px 20px;
+}
+
+.loading-tag {
+  width: 200px;
+  height: 240px;
+  margin: 0 auto 40px;
+  position: relative;
+}
+
+.loading-tag svg {
+  width: 100%;
+  height: 100%;
+  filter: drop-shadow(0 16px 32px rgba(184, 149, 106, 0.3));
+}
+
+.pulse-ring {
+  position: absolute;
+  inset: 0;
+  border: 2px solid var(--brass);
+  border-radius: 8px;
+  opacity: 0;
+  animation: pulse 2s ease-out infinite;
+}
+@keyframes pulse {
+  0% { transform: scale(1); opacity: 0.6; }
+  100% { transform: scale(1.3); opacity: 0; }
+}
+
+.loading-title {
+  font-family: 'Fraunces', 'Noto Serif SC', serif;
+  font-size: 30px;
+  font-weight: 500;
+  margin-bottom: 16px;
+  font-style: italic;
+}
+
+.loading-status {
+  font-family: 'JetBrains Mono', 'Noto Sans SC', monospace;
+  font-size: 13px;
+  letter-spacing: 0.15em;
+  color: var(--brass-deep);
+  height: 16px;
+  transition: opacity 400ms;
+}
+
+.progress-bar {
+  margin-top: 40px;
+  height: 2px;
+  background: var(--line);
+  position: relative;
+  overflow: hidden;
+}
+
+.progress-fill {
+  position: absolute;
+  inset: 0;
+  background: var(--brass);
+  width: 0;
+  transition: width 800ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* STAGE 3: CUSTOMIZE */
+.customize-grid {
+  display: grid;
+  grid-template-columns: 1.1fr 1fr;
+  gap: 80px;
+  align-items: start;
+}
+
+.preview-col {
+  position: sticky;
+  top: 120px;
+}
+
+.preview-frame {
+  background: linear-gradient(135deg, var(--paper) 0%, var(--cream-light) 100%);
+  border: 1px solid var(--line);
+  aspect-ratio: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 60px;
+  position: relative;
+  overflow: hidden;
+}
+
+.preview-frame::before {
+  content: '';
+  position: absolute;
+  inset: 16px;
+  border: 1px solid var(--line-soft);
+  pointer-events: none;
+}
+
+.preview-frame::after {
+  content: '01 / 实时预览';
+  position: absolute;
+  top: 24px;
+  left: 24px;
+  font-family: 'JetBrains Mono', 'Noto Sans SC', monospace;
+  font-size: 11px;
+  letter-spacing: 0.15em;
+  color: var(--brass-deep);
+}
+
+.preview-tag {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  filter: drop-shadow(0 24px 48px rgba(31, 41, 55, 0.18));
+  transition: transform 400ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.preview-tag svg { width: 80%; height: 80%; }
+
+.preview-controls {
+  margin-top: 24px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 13px;
+}
+
+.preview-meta {
+  font-family: 'JetBrains Mono', 'Noto Sans SC', monospace;
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  color: var(--charcoal-soft);
+}
+
+.regen-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: none;
+  border: 1px solid var(--line);
+  padding: 10px 18px;
+  font-family: 'Manrope', 'Noto Sans SC', sans-serif;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--charcoal-soft);
+  cursor: pointer;
+  letter-spacing: 0.04em;
+  transition: all 200ms;
+}
+.regen-btn:hover { border-color: var(--charcoal); color: var(--charcoal); }
+
+/* Customization */
+.customize-col { padding-bottom: 40px; }
+
+.cust-section {
+  border-bottom: 1px solid var(--line);
+  padding: 32px 0;
+}
+.cust-section:first-child { padding-top: 0; }
+
+.cust-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 20px;
+}
+
+.cust-label {
+  font-family: 'JetBrains Mono', 'Noto Sans SC', monospace;
+  font-size: 12px;
+  letter-spacing: 0.1em;
+  color: var(--charcoal);
+  font-weight: 500;
+}
+
+.cust-tag {
+  font-family: 'JetBrains Mono', 'Noto Sans SC', monospace;
+  font-size: 11px;
+  color: var(--brass-deep);
+  letter-spacing: 0.05em;
+}
+
+/* Swatches */
+.swatches {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 12px;
+}
+
+.swatch {
+  cursor: pointer;
+  border: 1px solid var(--line);
+  background: var(--cream-light);
+  padding: 12px 8px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  transition: all 200ms;
+  position: relative;
+}
+.swatch:hover { border-color: var(--brass); }
+.swatch.selected { border-color: var(--charcoal); border-width: 2px; padding: 11px 7px; }
+
+.swatch-circle {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: 1px solid rgba(0,0,0,0.2);
+}
+
+.swatch-name {
+  font-size: 11px;
+  font-weight: 500;
+  text-align: center;
+  line-height: 1.3;
+}
+
+.swatch.selected::after {
+  content: '✓';
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: var(--charcoal);
+  color: var(--cream);
+  font-size: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Shape selector */
+.shape-row {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+}
+.shape-icon {
+  width: 36px;
+  height: 44px;
+  color: var(--charcoal);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.shape-icon svg { width: 100%; height: 100%; display: block; }
+
+/* Engraving */
+.input-group {
+  margin-bottom: 16px;
+}
+
+.input-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 8px;
+}
+
+.input-label {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--charcoal);
+}
+
+.input-counter {
+  font-family: 'JetBrains Mono', 'Noto Sans SC', monospace;
+  font-size: 11px;
+  color: var(--charcoal-soft);
+}
+
+.input-field {
+  width: 100%;
+  background: var(--cream-light);
+  border: 1px solid var(--line);
+  padding: 14px 16px;
+  font-family: 'Manrope', 'Noto Sans SC', sans-serif;
+  font-size: 15px;
+  color: var(--charcoal);
+  transition: border-color 200ms;
+}
+.input-field:focus {
+  outline: none;
+  border-color: var(--brass-deep);
+}
+.input-field::placeholder { color: var(--charcoal-soft); opacity: 0.5; }
+
+/* Auth modal (shown when guest clicks Generate) */
+.auth-modal {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 300;
+  align-items: center;
+  justify-content: center;
+}
+.auth-modal.open { display: flex; }
+.auth-modal-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(17, 24, 39, 0.55);
+  backdrop-filter: blur(4px);
+}
+.auth-modal-card {
+  position: relative;
+  background: var(--cream-light);
+  border: 1px solid var(--charcoal);
+  max-width: 440px;
+  width: calc(100% - 32px);
+  max-height: 90vh;
+  overflow-y: auto;
+  padding: 44px 36px 36px;
+  box-shadow: 0 32px 64px -16px rgba(17, 24, 39, 0.35);
+  animation: authSlideIn 250ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+@keyframes authSlideIn {
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.auth-modal-close {
+  position: absolute;
+  top: 14px; right: 14px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--charcoal-soft);
+  padding: 6px;
+}
+.auth-modal-close:hover { color: var(--charcoal); }
+.auth-modal-close svg { width: 18px; height: 18px; }
+.auth-modal-eyebrow {
+  font-family: 'JetBrains Mono', 'Noto Sans SC', monospace;
+  font-size: 11px;
+  letter-spacing: 0.2em;
+  color: var(--brass-deep);
+  margin-bottom: 12px;
+  display: block;
+}
+.auth-modal-title {
+  font-family: 'Fraunces', 'Noto Serif SC', serif;
+  font-size: 28px;
+  line-height: 1.2;
+  font-weight: 400;
+  color: var(--ink);
+  margin-bottom: 10px;
+}
+.auth-modal-title em { font-style: italic; color: var(--brass-deep); }
+.auth-modal-lede {
+  font-size: 13px;
+  color: var(--charcoal-soft);
+  line-height: 1.7;
+  margin-bottom: 24px;
+}
+.auth-modal-oauth {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 18px;
+}
+.oauth-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 12px 16px;
+  background: var(--cream);
+  border: 1.5px solid var(--charcoal);
+  font-family: 'Manrope', 'Noto Sans SC', sans-serif;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--charcoal);
+  cursor: pointer;
+  transition: all 200ms;
+}
+.oauth-btn:hover { background: var(--charcoal); color: var(--cream); }
+.oauth-btn svg { width: 17px; height: 17px; flex-shrink: 0; }
+.auth-modal-divider {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 14px 0;
+  font-family: 'JetBrains Mono', 'Noto Sans SC', monospace;
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  color: var(--charcoal-soft);
+}
+.auth-modal-divider::before, .auth-modal-divider::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--line);
+}
+.auth-modal-helper {
+  font-size: 11px;
+  color: var(--charcoal-soft);
+  margin-top: 16px;
+  text-align: center;
+  line-height: 1.65;
+}
+.auth-modal-helper a { color: var(--brass-deep); text-decoration: underline; text-underline-offset: 3px; }
+.auth-modal-inbox { text-align: center; padding: 8px 0; }
+.auth-modal-inbox h3 {
+  font-family: 'Fraunces', 'Noto Serif SC', serif;
+  font-style: italic;
+  font-size: 22px;
+  color: var(--ink);
+  margin-bottom: 8px;
+}
+.auth-modal-inbox p {
+  font-size: 13px;
+  color: var(--charcoal-soft);
+  line-height: 1.7;
+  margin-bottom: 14px;
+}
+.auth-modal-inbox strong { color: var(--charcoal); }
+.auth-modal-mock-link {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--brass-deep);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  cursor: pointer;
+  background: none;
+  border: none;
+  padding: 0;
+  margin-top: 6px;
+}
+.auth-modal-mock-link:hover { color: var(--charcoal); }
+
+/* Summary */
+.summary {
+  background: var(--ink);
+  color: var(--cream);
+  padding: 28px;
+  margin-top: 32px;
+}
+
+.summary-line {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 12px;
+  font-size: 14px;
+  color: rgba(245, 241, 232, 0.75);
+}
+
+.summary-line.total {
+  border-top: 1px solid rgba(255,255,255,0.15);
+  padding-top: 16px;
+  margin-top: 16px;
+  font-family: 'Fraunces', 'Noto Serif SC', serif;
+  font-size: 22px;
+  color: var(--cream);
+  margin-bottom: 24px;
+  font-weight: 500;
+}
+
+.summary .btn-primary {
+  background: var(--cream);
+  color: var(--ink);
+  border-color: var(--cream);
+}
+.summary .btn-primary:hover {
+  background: var(--brass);
+  color: var(--cream);
+  border-color: var(--brass);
+}
+
+.summary-meta {
+  margin-top: 16px;
+  font-family: 'JetBrains Mono', 'Noto Sans SC', monospace;
+  font-size: 11px;
+  letter-spacing: 0.05em;
+  color: rgba(245, 241, 232, 0.6);
+  text-align: center;
+  line-height: 1.7;
+}
+
+@media (max-width: 900px) {
+  .customize-grid { grid-template-columns: 1fr; gap: 40px; }
+  .preview-col { position: static; }
+  .swatches { grid-template-columns: repeat(3, 1fr); }
+}
+
+/* Footer */
+.footer-mini {
+  background: var(--paper);
+  padding: 32px 0;
+  border-top: 1px solid var(--line);
+  text-align: center;
+  font-family: 'JetBrains Mono', 'Noto Sans SC', monospace;
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  color: var(--charcoal-soft);
+}
+
+.footer-mini span { padding: 0 12px; }
+
+</style>
+</head>
+<body>
+
+<!-- 顶部公告 -->
+<div class="top-bar">
+  <strong style="font-weight: 500;">按需铸造</strong>
+  <span style="opacity: 0.5; padding: 0 12px;">·</span>
+  下单后 7–10 个工作日发货
+  <span style="opacity: 0.5; padding: 0 12px;">·</span>
+  铸造前会发送终稿邮件给你确认
+</div>
+
+<!-- 导航 -->
+<nav class="main-nav">
+  <div class="container nav-grid">
+    <a href="index-zh.html" class="back-link">
+      <span style="font-family: monospace;">←</span>
+      返回首页
+    </a>
+    <a href="index-zh.html" class="logo">MARLOWE</a>
+    <div class="nav-cluster">
+      <div class="lang-switch" aria-label="Language">
+        <a href="designer.html">EN</a>
+        <span class="lang-sep" aria-hidden="true">/</span>
+        <a href="designer-zh.html" class="active">中</a>
+      </div>
+      <div class="progress-pill">
+        <span>第 <span id="step-num">1</span> / 3 步</span>
+        <div class="progress-dots">
+          <div class="dot active" id="dot-1"></div>
+          <div class="dot" id="dot-2"></div>
+          <div class="dot" id="dot-3"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<!-- ================================================================== -->
+<!-- 阶段 1: 上传                                                        -->
+<!-- ================================================================== -->
+<div class="stage active" id="stage-1">
+  <div class="container">
+    <div class="stage-header">
+      <div class="eyebrow" style="margin-bottom: 16px;">设计器</div>
+      <h1>来为<em>它的牌</em>开始设计吧。</h1>
+      <p>上传一张清晰的照片。系统将在一分钟内为你生成一枚独一无二的浮雕画像。</p>
+    </div>
+
+    <div class="upload-container">
+      <div class="dropzone" id="dropzone" onclick="document.getElementById('file-input').click()">
+        <div class="dropzone-icon">
+          <svg width="64" height="64" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="8" y="12" width="48" height="40" rx="2"/>
+            <circle cx="22" cy="26" r="4"/>
+            <path d="M8 44l12-12 14 14M40 38l8-8 8 8"/>
+          </svg>
+        </div>
+        <div class="dropzone-title">拖拽照片到这里，或点击上传</div>
+        <div class="dropzone-sub">正面、光线充足的照片效果最好</div>
+        <div class="dropzone-formats">JPG · PNG · HEIC · 不超过 10MB</div>
+        <input type="file" id="file-input" accept="image/*" style="display: none;" onchange="handleUpload(this.files[0])">
+      </div>
+
+      <div class="tips">
+        <div class="tip">
+          <div class="tip-icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19 11a7 7 0 1 1-14 0"/></svg>
+          </div>
+          <div><strong style="color: var(--charcoal);">看向镜头。</strong>正面或 3/4 侧脸效果最好。</div>
+        </div>
+        <div class="tip">
+          <div class="tip-icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
+          </div>
+          <div><strong style="color: var(--charcoal);">光线充足。</strong>白天的自然光或明亮室内光。避免重影。</div>
+        </div>
+        <div class="tip">
+          <div class="tip-icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M9 12l2 2 4-4"/></svg>
+          </div>
+          <div><strong style="color: var(--charcoal);">单只入镜。</strong>如果有多只，我们会让你选定主角。</div>
+        </div>
+      </div>
+
+      <div class="samples">
+        <div class="samples-label">没有合适的照片？试试下面这些</div>
+        <div class="sample-row">
+          <div class="sample" onclick="useSample('lab')">
+            <svg viewBox="0 0 100 100" width="80%" height="80%" xmlns="http://www.w3.org/2000/svg">
+              <g stroke="#1F2937" fill="none" stroke-width="1.5">
+                <path d="M30,45 Q30,28 48,26 Q70,24 79,36 Q85,45 83,58 Q80,70 73,74 L70,82 L65,78 L60,86 L55,80 L50,84 L44,78 Q35,74 31,64 Q28,54 30,45 Z"/>
+                <circle cx="59" cy="45" r="1.5" fill="#1F2937"/>
+                <ellipse cx="79" cy="46" rx="3" ry="2.5" fill="#1F2937"/>
+              </g>
+            </svg>
+          </div>
+          <div class="sample" onclick="useSample('golden')" style="background: var(--brass-light);">
+            <svg viewBox="0 0 100 100" width="80%" height="80%" xmlns="http://www.w3.org/2000/svg">
+              <g stroke="#1F2937" fill="none" stroke-width="1.5">
+                <path d="M32,42 Q30,25 50,22 Q72,20 80,32 Q86,42 83,56 Q80,70 73,76 L68,84 L62,80 L56,86 L50,82 L44,80 Q34,76 30,64 Q28,52 32,42 Z"/>
+                <path d="M30,30 Q22,22 26,12 Q40,15 38,30 Z" fill="#1F2937" opacity="0.7"/>
+                <circle cx="46" cy="44" r="1.5" fill="#1F2937"/>
+                <ellipse cx="65" cy="58" rx="3" ry="2" fill="#1F2937"/>
+              </g>
+            </svg>
+          </div>
+          <div class="sample" onclick="useSample('cocker')" style="background: var(--rose);">
+            <svg viewBox="0 0 100 100" width="80%" height="80%" xmlns="http://www.w3.org/2000/svg">
+              <g stroke="#1F2937" fill="none" stroke-width="1.5">
+                <path d="M28,40 Q28,22 50,20 Q72,18 80,30 Q85,38 84,52 Q82,68 76,74 L72,82 L66,78 L60,84 L54,80 L48,84 L42,80 Q32,76 28,62 Q26,50 28,40 Z"/>
+                <path d="M30,28 Q24,18 30,12 Q42,15 40,30 Z" fill="#1F2937" opacity="0.85"/>
+                <path d="M75,28 Q82,18 78,10 Q66,12 70,28 Z" fill="#1F2937" opacity="0.85"/>
+                <circle cx="42" cy="42" r="1.5" fill="#1F2937"/>
+                <circle cx="65" cy="42" r="1.5" fill="#1F2937"/>
+              </g>
+            </svg>
+          </div>
+          <div class="sample" onclick="useSample('shepherd')" style="background: var(--charcoal-soft);">
+            <svg viewBox="0 0 100 100" width="80%" height="80%" xmlns="http://www.w3.org/2000/svg">
+              <g stroke="#F5F1E8" fill="none" stroke-width="1.5">
+                <path d="M30,48 Q30,28 50,25 Q72,22 80,36 Q86,46 83,58 Q80,70 73,74 L68,84 L62,80 L56,86 L50,82 L44,80 Q34,74 30,64 Q26,55 30,48 Z"/>
+                <path d="M28,28 Q22,15 32,8 Q42,18 38,32 Z" fill="#F5F1E8" opacity="0.8"/>
+                <path d="M76,28 Q86,15 80,8 Q66,18 70,32 Z" fill="#F5F1E8" opacity="0.8"/>
+                <circle cx="44" cy="48" r="1.5" fill="#F5F1E8"/>
+                <ellipse cx="68" cy="58" rx="2.5" ry="2" fill="#F5F1E8"/>
+              </g>
+            </svg>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ================================================================== -->
+<!-- 阶段 2: 定制（形状 / 底色 / 刻字 + 占位预览）                       -->
+<!-- ================================================================== -->
+<div class="stage" id="stage-2">
+  <div class="container">
+    <div class="customize-grid">
+      <!-- 左：占位预览 -->
+      <div class="preview-col">
+        <div class="preview-frame">
+          <div class="preview-tag" id="preview-tag">
+            <!-- 由 renderPreview() 注入占位预览 -->
+          </div>
+        </div>
+        <div class="preview-controls">
+          <span class="preview-meta">实时预览 · 肖像将在生成后呈现</span>
+        </div>
+      </div>
+
+      <!-- 右：定制选项 -->
+      <div class="customize-col">
+        <div class="cust-section">
+          <div class="cust-header">
+            <span class="cust-label">A — 选择形状</span>
+            <span class="cust-tag">3 款</span>
+          </div>
+          <div class="shape-row">
+            <div class="swatch selected" onclick="setShape(this, 'shield')">
+              <div class="shape-icon">
+                <svg viewBox="0 0 50 60" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M21,2 L29,2 L29,5 L39,5 L42,10 L39,13 L39,37 Q39,49 25,57 Q11,49 11,37 L11,13 L8,10 L11,5 L21,5 Z"
+                        fill="none" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round"/>
+                </svg>
+              </div>
+              <div class="swatch-name">盾形</div>
+            </div>
+            <div class="swatch" onclick="setShape(this, 'octagon')">
+              <div class="shape-icon">
+                <svg viewBox="0 0 50 60" xmlns="http://www.w3.org/2000/svg">
+                  <circle cx="25" cy="7" r="3" fill="none" stroke="currentColor" stroke-width="1.2"/>
+                  <path d="M21,10 L29,10 L31,17 L40,26 L40,38 L31,47 L19,47 L10,38 L10,26 L19,17 L21,10 Z"
+                        fill="none" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round"/>
+                </svg>
+              </div>
+              <div class="swatch-name">八角</div>
+            </div>
+            <div class="swatch" onclick="setShape(this, 'disc')">
+              <div class="shape-icon">
+                <svg viewBox="0 0 50 60" xmlns="http://www.w3.org/2000/svg">
+                  <circle cx="25" cy="7" r="3" fill="none" stroke="currentColor" stroke-width="1.2"/>
+                  <path d="M22,10 L28,10 L29,15 L21,15 Z" fill="none" stroke="currentColor" stroke-width="1.2"/>
+                  <circle cx="25" cy="34" r="19" fill="none" stroke="currentColor" stroke-width="1.2"/>
+                </svg>
+              </div>
+              <div class="swatch-name">圆形</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="cust-section">
+          <div class="cust-header">
+            <span class="cust-label">B — 选择金属底色</span>
+            <span class="cust-tag">5 种可选</span>
+          </div>
+          <div class="swatches">
+            <div class="swatch" onclick="setColor(this, 'brass')">
+              <div class="swatch-circle" style="background: linear-gradient(135deg, #E8D4AB 0%, #8E6F47 100%);"></div>
+              <div class="swatch-name">古铜</div>
+            </div>
+            <div class="swatch selected" onclick="setColor(this, 'silver')">
+              <div class="swatch-circle" style="background: linear-gradient(135deg, #F2F4F6 0%, #3A3F46 100%);"></div>
+              <div class="swatch-name">钛合金银</div>
+            </div>
+            <div class="swatch" onclick="setColor(this, 'teal')">
+              <div class="swatch-circle" style="background: linear-gradient(135deg, #5A8A8C 0%, #1F4346 100%);"></div>
+              <div class="swatch-name">午夜青</div>
+            </div>
+            <div class="swatch" onclick="setColor(this, 'charcoal')">
+              <div class="swatch-circle" style="background: linear-gradient(135deg, #4A5568 0%, #1A202C 100%);"></div>
+              <div class="swatch-name">炭黑</div>
+            </div>
+            <div class="swatch" onclick="setColor(this, 'copper')">
+              <div class="swatch-circle" style="background: linear-gradient(135deg, #D4763E 0%, #6B3010 100%);"></div>
+              <div class="swatch-name">复古铜</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="cust-section">
+          <div class="cust-header">
+            <span class="cust-label">C — 刻字</span>
+            <span class="cust-tag">免费</span>
+          </div>
+          <div class="input-group">
+            <div class="input-row">
+              <span class="input-label">宠物名</span>
+              <span class="input-counter"><span id="name-count">5</span>/12</span>
+            </div>
+            <input type="text" class="input-field" id="pet-name" maxlength="12" value="SADIE" oninput="updatePreview()" placeholder="你的狗的名字">
+          </div>
+          <div class="input-group">
+            <div class="input-row">
+              <span class="input-label">联系电话</span>
+              <span class="input-counter">美区格式</span>
+            </div>
+            <input type="tel" class="input-field" id="pet-phone" value="555·814·2901" oninput="updatePreview()" placeholder="555-555-1234">
+          </div>
+        </div>
+
+        <div class="summary">
+          <div class="summary-line">
+            <span><span id="product-name">盾形铭牌</span></span>
+            <span><span id="finish-name">钛合金银</span></span>
+          </div>
+          <div class="summary-line">
+            <span>刻字</span>
+            <span>已包含</span>
+          </div>
+          <div class="summary-line total">
+            <span>合计</span>
+            <span>$<span id="total-price">79</span>.00</span>
+          </div>
+          <button class="btn btn-primary btn-block" id="generate-btn" onclick="onGeneratePortrait()">
+            生成肖像
+            <span class="btn-arrow">→</span>
+          </button>
+          <div class="summary-meta">
+            生成完成后会让你确认最终效果再下单。<br>
+            7–10 个工作日交付 · 美区免运费
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ================================================================== -->
+<!-- 阶段 3: 生成 + 确认（loading-view 默认 → final-view 切换）           -->
+<!-- ================================================================== -->
+<div class="stage" id="stage-3">
+
+  <!-- 3.A — Loading view（默认可见） -->
+  <div class="loading-container" id="loading-view">
+    <div class="loading-tag">
+      <svg viewBox="0 0 200 240" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <radialGradient id="loadMetal" cx="40%" cy="25%">
+            <stop offset="0%"   stop-color="#F2F4F6"/>
+            <stop offset="35%"  stop-color="#C8CDD3"/>
+            <stop offset="70%"  stop-color="#7A8089"/>
+            <stop offset="100%" stop-color="#3A3F46"/>
+          </radialGradient>
+        </defs>
+        <path d="M85,8 L115,8 L115,22 L155,22 L168,40 L156,52 L156,148 Q156,198 100,228 Q44,198 44,148 L44,52 L32,40 L45,22 L85,22 Z" fill="url(#loadMetal)" stroke="#2A2F36" stroke-width="0.9"/>
+        <circle cx="100" cy="14" r="4.5" fill="#0A0C10"/>
+        <circle cx="100" cy="100" r="32" fill="#1A1D22" stroke="#0A0C10" stroke-width="0.8"/>
+        <circle cx="100" cy="100" r="14" fill="#5A6066" opacity="0.5">
+          <animate attributeName="r" values="14;26;14" dur="2s" repeatCount="indefinite"/>
+        </circle>
+      </svg>
+      <div class="pulse-ring"></div>
+    </div>
+    <h2 class="loading-title">正在为<span id="pet-name-loading">你的狗</span>雕刻画像…</h2>
+    <div class="loading-status" id="loading-status">读取照片中</div>
+    <div class="progress-bar">
+      <div class="progress-fill" id="progress-fill"></div>
+    </div>
+  </div>
+
+  <!-- 3.B — Final view（生成完成后切换可见） -->
+  <div class="container" id="final-view" style="display: none;">
+    <div class="customize-grid">
+      <div class="preview-col">
+        <div class="preview-frame">
+          <div class="preview-tag" id="preview-tag-final">
+            <!-- 由 renderFinalPreview() 注入含影雕的最终预览 -->
+          </div>
+        </div>
+        <div class="preview-controls">
+          <span class="preview-meta">独一无二编号 · #<span id="tag-id">A8K2-9X1</span></span>
+          <button class="regen-btn" onclick="regenerate()">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
+            换一张肖像
+          </button>
+        </div>
+      </div>
+
+      <div class="customize-col">
+        <div class="summary">
+          <div class="summary-line">
+            <span><span id="product-name-final">盾形铭牌</span></span>
+            <span><span id="finish-name-final">钛合金银</span></span>
+          </div>
+          <div class="summary-line">
+            <span>刻字</span>
+            <span>已包含</span>
+          </div>
+          <div class="summary-line total">
+            <span>合计</span>
+            <span>$79.00</span>
+          </div>
+          <button class="btn btn-primary btn-block" onclick="addToCart()">
+            加入购物车
+            <span class="btn-arrow">→</span>
+          </button>
+          <button onclick="goToStage(2)" style="background: none; border: none; color: var(--charcoal-soft); font-family: inherit; font-size: 13px; cursor: pointer; text-decoration: underline; text-underline-offset: 4px; padding: 16px 0 0; display: block; margin: 0 auto;">← 返回修改</button>
+          <div class="summary-meta" style="margin-top: 16px;">
+            7–10 个工作日交付 · 美区免运费<br>
+            铸造前会发送设计终稿给你确认
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- Auth modal（未登录访客点生成时弹出） -->
+<div class="auth-modal" id="auth-modal" role="dialog" aria-modal="true">
+  <div class="auth-modal-overlay" onclick="closeAuthModal()"></div>
+  <div class="auth-modal-card">
+    <button class="auth-modal-close" onclick="closeAuthModal()" aria-label="关闭">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+    </button>
+    <div class="auth-modal-eyebrow">§ 还差一步</div>
+    <h2 class="auth-modal-title">登录后即可<em>生成肖像。</em></h2>
+    <p class="auth-modal-lede">我们会把这次设计存到你的账户——以后每个年龄、每只狗、或者备用一枚都可以一键再订。</p>
+
+    <div class="auth-modal-oauth">
+      <button class="oauth-btn apple" onclick="MarloweAuth.signInWithProvider('apple')">
+        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill="currentColor"><path d="M17.05 20.28c-.98.95-2.05.88-3.08.4-1.09-.5-2.09-.52-3.24 0-1.44.62-2.2.44-3.06-.4C2.79 15.25 3.51 7.59 9.05 7.31c1.35.07 2.29.74 3.08.8 1.18-.24 2.31-.93 3.57-.84 1.51.12 2.65.72 3.4 1.8-3.12 1.87-2.38 5.98.48 7.13-.57 1.5-1.31 2.99-2.54 4.09l.01-.01zM12.03 7.25c-.15-2.23 1.66-4.07 3.74-4.25.29 2.58-2.34 4.5-3.74 4.25z"/></svg>
+        使用 Apple 继续
+      </button>
+      <button class="oauth-btn" onclick="MarloweAuth.signInWithProvider('google')">
+        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>
+        使用 Google 继续
+      </button>
+    </div>
+
+    <div class="auth-modal-divider">或使用邮箱</div>
+
+    <form id="modal-magic-form" onsubmit="onModalMagicSubmit(event)">
+      <input type="email" class="input-field" id="modal-email" required placeholder="you@example.com" autocomplete="email">
+      <button type="submit" class="btn btn-primary btn-block" id="modal-magic-btn" style="margin-top: 12px;">
+        发送登录链接
+        <span class="btn-arrow">→</span>
+      </button>
+    </form>
+
+    <p class="auth-modal-helper">
+      继续即代表同意我们的<a href="terms.html">服务条款</a>与<a href="privacy.html">隐私政策</a>。
+    </p>
+  </div>
+</div>
+
+<!-- 页脚 -->
+<div class="footer-mini">
+  <span>© Marlowe &amp; Co.</span>
+  <span>·</span>
+  <span>用心制造 · 加州</span>
+  <span>·</span>
+  <span>30 天质量保证</span>
+</div>
+
+<script>
+const state = {
+  stage: 1,
+  shape: 'shield',
+  color: 'silver',
+  petName: 'SADIE',
+  petPhone: '555·814·2901',
+};
+
+// 钛合金底材 — 5 种表面处理（同基材 + PVD / 阳极氧化）
+const colorMap = {
+  silver:   { bg: '#F2F4F6', mid: '#B8BEC4', dark: '#3A3F46', medallion: '#1A1D22', text: '#1A1D22' },
+  brass:    { bg: '#E8D4AB', mid: '#B8956A', dark: '#5C4427', medallion: '#2A1B0A', text: '#3D2D17' },
+  teal:     { bg: '#5A8A8C', mid: '#2D5A5C', dark: '#0F2E30', medallion: '#061A1B', text: '#FBF8F1' },
+  charcoal: { bg: '#4A5568', mid: '#2D3748', dark: '#0F1419', medallion: '#05080B', text: '#FBF8F1' },
+  copper:   { bg: '#D4763E', mid: '#A0501F', dark: '#4A1F08', medallion: '#1F0A02', text: '#F5F1E8' },
+};
+
+const colorNames = {
+  brass: '古铜',
+  silver: '钛合金银',
+  teal: '午夜青',
+  charcoal: '炭黑',
+  copper: '复古铜',
+};
+
+const shapeNames = {
+  shield: '盾形铭牌',
+  octagon: '八角铭牌',
+  disc: '圆形铭牌',
+};
+
+function goToStage(n) {
+  document.querySelectorAll('.stage').forEach(s => s.classList.remove('active'));
+  document.getElementById('stage-' + n).classList.add('active');
+  document.getElementById('step-num').textContent = n;
+  for (let i = 1; i <= 3; i++) {
+    const dot = document.getElementById('dot-' + i);
+    dot.classList.remove('active', 'done');
+    if (i < n) dot.classList.add('done');
+    if (i === n) dot.classList.add('active');
+  }
+  state.stage = n;
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+const dropzone = document.getElementById('dropzone');
+['dragenter', 'dragover'].forEach(evt => {
+  dropzone.addEventListener(evt, e => {
+    e.preventDefault();
+    dropzone.classList.add('dragging');
+  });
+});
+['dragleave', 'drop'].forEach(evt => {
+  dropzone.addEventListener(evt, e => {
+    e.preventDefault();
+    dropzone.classList.remove('dragging');
+  });
+});
+dropzone.addEventListener('drop', e => {
+  if (e.dataTransfer.files.length) handleUpload(e.dataTransfer.files[0]);
+});
+
+function handleUpload(file) {
+  if (!file) return;
+  state.uploadedFile = file;
+  goToStage(2);
+  renderPreview();
+}
+
+function useSample(breed) {
+  state.uploadedFile = { name: breed + '.jpg' };
+  goToStage(2);
+  renderPreview();
+}
+
+// 用户在 stage-2 customize 面板点 "生成肖像" CTA
+// 已登录 → 直接生成；未登录 → 弹登录模态
+function onGeneratePortrait() {
+  const user = window.MarloweAuth ? MarloweAuth.getUser() : null;
+  if (user) {
+    startGeneration();
+  } else {
+    openAuthModal();
+  }
+}
+
+// ============================================
+// Auth modal 控制（未登录 generate 时弹）
+// ============================================
+function openAuthModal() {
+  if (window.MarloweAuth) {
+    MarloweAuth.setRedirectTarget(window.location.pathname + '#stage-2');
+  }
+  const modal = document.getElementById('auth-modal');
+  if (modal) modal.classList.add('open');
+  const emailInput = document.getElementById('modal-email');
+  if (emailInput) setTimeout(() => emailInput.focus(), 250);
+}
+
+function closeAuthModal() {
+  const modal = document.getElementById('auth-modal');
+  if (modal) modal.classList.remove('open');
+  const card = modal && modal.querySelector('.auth-modal-card');
+  if (card && card.dataset.inboxState === '1') {
+    card.dataset.inboxState = '0';
+    renderModalInitialState();
+  }
+}
+
+async function onModalMagicSubmit(event) {
+  event.preventDefault();
+  const emailEl = document.getElementById('modal-email');
+  const btn = document.getElementById('modal-magic-btn');
+  const email = emailEl.value.trim();
+  btn.disabled = true;
+
+  const result = await MarloweAuth.signInWithMagicLink(email);
+  if (result.error) {
+    btn.disabled = false;
+    alert('邮箱格式不对，请再试一次。');
+    return;
+  }
+  renderModalInboxState(email);
+}
+
+function renderModalInboxState(email) {
+  const card = document.querySelector('#auth-modal .auth-modal-card');
+  if (!card) return;
+  card.dataset.inboxState = '1';
+  const safeEmail = email.replace(/[<>"&]/g, '');
+  card.innerHTML = `
+    <button class="auth-modal-close" onclick="closeAuthModal()" aria-label="关闭">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+    </button>
+    <div class="auth-modal-inbox">
+      <div class="auth-modal-eyebrow">§ 检查邮箱</div>
+      <h3>一封邮件，一次点击。</h3>
+      <p>登录链接已发送到 <strong>${safeEmail}</strong>。点击邮件里的链接即可完成登录。链接 15 分钟内有效。</p>
+      <button class="auth-modal-mock-link" onclick="onModalMockClick('${encodeURIComponent(email)}')">
+        [Mock] 点击模拟邮件链接 →
+      </button>
+    </div>
+  `;
+}
+
+function renderModalInitialState() {
+  const card = document.querySelector('#auth-modal .auth-modal-card');
+  if (!card) return;
+  card.innerHTML = `
+    <button class="auth-modal-close" onclick="closeAuthModal()" aria-label="关闭">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+    </button>
+    <div class="auth-modal-eyebrow">§ 还差一步</div>
+    <h2 class="auth-modal-title">登录后即可<em>生成肖像。</em></h2>
+    <p class="auth-modal-lede">我们会把这次设计存到你的账户——以后每个年龄、每只狗、或者备用一枚都可以一键再订。</p>
+    <div class="auth-modal-oauth">
+      <button class="oauth-btn apple" onclick="MarloweAuth.signInWithProvider('apple')">
+        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill="currentColor"><path d="M17.05 20.28c-.98.95-2.05.88-3.08.4-1.09-.5-2.09-.52-3.24 0-1.44.62-2.2.44-3.06-.4C2.79 15.25 3.51 7.59 9.05 7.31c1.35.07 2.29.74 3.08.8 1.18-.24 2.31-.93 3.57-.84 1.51.12 2.65.72 3.4 1.8-3.12 1.87-2.38 5.98.48 7.13-.57 1.5-1.31 2.99-2.54 4.09l.01-.01zM12.03 7.25c-.15-2.23 1.66-4.07 3.74-4.25.29 2.58-2.34 4.5-3.74 4.25z"/></svg>
+        使用 Apple 继续
+      </button>
+      <button class="oauth-btn" onclick="MarloweAuth.signInWithProvider('google')">
+        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>
+        使用 Google 继续
+      </button>
+    </div>
+    <div class="auth-modal-divider">或使用邮箱</div>
+    <form id="modal-magic-form" onsubmit="onModalMagicSubmit(event)">
+      <input type="email" class="input-field" id="modal-email" required placeholder="you@example.com" autocomplete="email">
+      <button type="submit" class="btn btn-primary btn-block" id="modal-magic-btn" style="margin-top: 12px;">
+        发送登录链接
+        <span class="btn-arrow">→</span>
+      </button>
+    </form>
+    <p class="auth-modal-helper">继续即代表同意我们的<a href="terms.html">服务条款</a>与<a href="privacy.html">隐私政策</a>。</p>
+  `;
+}
+
+function onModalMockClick(emailEnc) {
+  window.location.href = 'auth-callback.html?mock=email&email=' + emailEnc;
+}
+
+function startGeneration() {
+  goToStage(3);
+  // 重置 stage-3 view（如果之前生成过）
+  document.getElementById('loading-view').style.display = 'block';
+  document.getElementById('final-view').style.display = 'none';
+  document.getElementById('pet-name-loading').textContent = state.petName ? '它' : '你的狗';
+
+  const statuses = [
+    '读取照片中',
+    '勾勒浮雕轮廓',
+    '雕琢面部细节',
+    '调校金属色调',
+    '打磨边缘细节',
+  ];
+
+  let i = 0;
+  const statusEl = document.getElementById('loading-status');
+  const fillEl = document.getElementById('progress-fill');
+  fillEl.style.width = '0%';
+
+  const interval = setInterval(() => {
+    if (i < statuses.length) {
+      statusEl.style.opacity = 0;
+      setTimeout(() => {
+        statusEl.textContent = statuses[i];
+        statusEl.style.opacity = 1;
+        fillEl.style.width = ((i + 1) / statuses.length * 100) + '%';
+        i++;
+      }, 200);
+    } else {
+      clearInterval(interval);
+      setTimeout(() => {
+        renderFinalPreview();
+        document.getElementById('loading-view').style.display = 'none';
+        document.getElementById('final-view').style.display = 'block';
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }, 600);
+    }
+  }, 1100);
+}
+
+function svgDefs(c) {
+  return `
+    <defs>
+      <radialGradient id="prMetal" cx="40%" cy="25%">
+        <stop offset="0%"   stop-color="${c.bg}"/>
+        <stop offset="35%"  stop-color="${c.bg}" stop-opacity="0.65"/>
+        <stop offset="70%"  stop-color="${c.mid}"/>
+        <stop offset="100%" stop-color="${c.dark}"/>
+      </radialGradient>
+      <radialGradient id="prMedallion" cx="50%" cy="40%">
+        <stop offset="0%"   stop-color="${c.dark}"/>
+        <stop offset="100%" stop-color="${c.medallion}"/>
+      </radialGradient>
+      <pattern id="prHalftone" x="0" y="0" width="2.4" height="2.4" patternUnits="userSpaceOnUse">
+        <circle cx="1.2" cy="1.2" r="0.45" fill="#5A6066" opacity="0.5"/>
+      </pattern>
+    </defs>
+  `;
+}
+
+function svgMedallion(c, cx, cy, r, generated) {
+  const ring = `
+    <circle cx="${cx}" cy="${cy}" r="${r}" fill="url(#prMedallion)" stroke="${c.dark}" stroke-width="0.8"/>
+    <circle cx="${cx}" cy="${cy}" r="${r}" fill="url(#prHalftone)"/>
+    <circle cx="${cx}" cy="${cy}" r="${r - 3}" fill="none" stroke="#5A6166" stroke-width="0.3" opacity="0.45"/>
+  `;
+  if (!generated) {
+    return ring + `
+      <text x="${cx}" y="${cy - 1}" text-anchor="middle" fill="#6E7378" font-family="JetBrains Mono, monospace" font-size="6.5" letter-spacing="1.6">PORTRAIT</text>
+      <text x="${cx}" y="${cy + 9}" text-anchor="middle" fill="#6E7378" font-family="JetBrains Mono, monospace" font-size="6.5" letter-spacing="1.6">PENDING</text>
+    `;
+  }
+  return ring + `
+    <g transform="translate(${cx}, ${cy})">
+      <path d="M-14,-13 Q-22,-5 -17,7 Q-12,4 -10,-11 Z" fill="#4A4F56" opacity="0.95"/>
+      <path d="M-22,5 Q-22,-12 -8,-19 Q9,-23 19,-15 Q24,-8 22,3 Q22,11 17,16 L12,18 Q-3,18 -16,12 Q-22,10 -22,5 Z" fill="#8A8F96"/>
+      <path d="M-6,-17 Q5,-20 13,-16 Q9,-15 -2,-15 Z" fill="#B0B5BC" opacity="0.7"/>
+      <path d="M13,-2 L22,0 L23,4 L19,7 L13,5 Z" fill="#6E7378"/>
+      <ellipse cx="22" cy="2" rx="2.2" ry="1.6" fill="#1A1D22"/>
+      <circle cx="2" cy="-9" r="1" fill="#1A1D22"/>
+      <path d="M-12,11 Q0,16 12,14" stroke="#3A3F46" stroke-width="0.5" fill="none" opacity="0.6"/>
+      <path d="M-18,12 L-14,18 L-8,16 L-4,18 L1,17" stroke="#5A5F66" stroke-width="0.45" fill="none" opacity="0.7"/>
+    </g>
+  `;
+}
+
+function svgLoop(c) {
+  return `
+    <circle cx="100" cy="28" r="12" fill="url(#prMetal)" stroke="${c.dark}" stroke-width="0.9"/>
+    <circle cx="100" cy="28" r="5" fill="#0A0C10"/>
+    <circle cx="100" cy="28" r="5" fill="none" stroke="#FFFFFF" stroke-width="0.4" opacity="0.45"/>
+  `;
+}
+
+const shapeRenderers = {
+  shield: (c, name, phone, generated) => `
+    <svg viewBox="0 0 200 240" xmlns="http://www.w3.org/2000/svg">
+      ${svgDefs(c)}
+      <path d="M85,8 L115,8 L115,22 L155,22 L168,40 L156,52 L156,148 Q156,198 100,228 Q44,198 44,148 L44,52 L32,40 L45,22 L85,22 Z" fill="url(#prMetal)" stroke="${c.dark}" stroke-width="0.9"/>
+      <path d="M89,15 L111,15 L111,28 L150,28 L160,42 L150,52 L150,146 Q150,194 100,222 Q50,194 50,146 L50,52 L40,42 L50,28 L89,28 Z" fill="none" stroke="${c.dark}" stroke-width="0.4" opacity="0.4"/>
+      <path d="M50,28 L88,15 L100,15 Q70,22 56,42 Z" fill="#FFFFFF" opacity="0.18"/>
+      <circle cx="100" cy="14" r="4.5" fill="#0A0C10"/>
+      <circle cx="100" cy="14" r="4.5" fill="none" stroke="#FFFFFF" stroke-width="0.4" opacity="0.45"/>
+      ${svgMedallion(c, 100, 100, 32, generated)}
+      <text x="100" y="160" text-anchor="middle" font-family="Fraunces, serif" font-size="17" font-weight="500" fill="${c.text}" letter-spacing="3">${name}</text>
+      <text x="100" y="178" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="8.5" fill="${c.text}" opacity="0.85" letter-spacing="2.2">${phone}</text>
+      <g transform="translate(100, 202)" fill="${c.text}" opacity="0.7">
+        <ellipse cx="0"    cy="2"  rx="3.5" ry="4.2"/>
+        <ellipse cx="-5"   cy="-2" rx="2.1" ry="2.6"/>
+        <ellipse cx="5"    cy="-2" rx="2.1" ry="2.6"/>
+        <ellipse cx="-2.5" cy="-6" rx="1.7" ry="2.1"/>
+        <ellipse cx="2.5"  cy="-6" rx="1.7" ry="2.1"/>
+      </g>
+    </svg>
+  `,
+
+  octagon: (c, name, phone, generated) => `
+    <svg viewBox="0 0 200 240" xmlns="http://www.w3.org/2000/svg">
+      ${svgDefs(c)}
+      <path d="M88,40 L112,40 L120,65 L155,97 L155,143 L123,175 L77,175 L45,143 L45,97 L80,65 L88,40 Z" fill="url(#prMetal)" stroke="${c.dark}" stroke-width="0.9"/>
+      <path d="M85,55 L115,55 L150,90 L150,140 L118,170 L82,170 L50,140 L50,90 L85,55 Z" fill="none" stroke="${c.dark}" stroke-width="0.4" opacity="0.4"/>
+      <path d="M50,90 L82,55 L100,55 Q70,75 60,100 Z" fill="#FFFFFF" opacity="0.16"/>
+      ${svgLoop(c)}
+      ${svgMedallion(c, 100, 110, 28, generated)}
+      <text x="100" y="156" text-anchor="middle" font-family="Fraunces, serif" font-size="14" font-weight="500" fill="${c.text}" letter-spacing="2.5">${name}</text>
+      <text x="100" y="168" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="7.5" fill="${c.text}" opacity="0.85" letter-spacing="2">${phone}</text>
+    </svg>
+  `,
+
+  disc: (c, name, phone, generated) => `
+    <svg viewBox="0 0 200 240" xmlns="http://www.w3.org/2000/svg">
+      ${svgDefs(c)}
+      <path d="M88,40 L112,40 L114,60 L86,60 Z" fill="url(#prMetal)" stroke="${c.dark}" stroke-width="0.9"/>
+      <circle cx="100" cy="130" r="68" fill="url(#prMetal)" stroke="${c.dark}" stroke-width="0.9"/>
+      <circle cx="100" cy="130" r="62" fill="none" stroke="${c.dark}" stroke-width="0.4" opacity="0.4"/>
+      <path d="M55,105 Q60,82 80,68 Q70,82 65,115 Z" fill="#FFFFFF" opacity="0.16"/>
+      ${svgLoop(c)}
+      ${svgMedallion(c, 100, 118, 28, generated)}
+      <text x="100" y="166" text-anchor="middle" font-family="Fraunces, serif" font-size="15" font-weight="500" fill="${c.text}" letter-spacing="2.5">${name}</text>
+      <text x="100" y="180" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="8" fill="${c.text}" opacity="0.85" letter-spacing="2">${phone}</text>
+      <g transform="translate(100, 192)" fill="${c.text}" opacity="0.7">
+        <ellipse cx="0"    cy="2"  rx="3"   ry="3.6"/>
+        <ellipse cx="-4.5" cy="-2" rx="1.8" ry="2.2"/>
+        <ellipse cx="4.5"  cy="-2" rx="1.8" ry="2.2"/>
+        <ellipse cx="-2"   cy="-5.5" rx="1.5" ry="1.8"/>
+        <ellipse cx="2"    cy="-5.5" rx="1.5" ry="1.8"/>
+      </g>
+    </svg>
+  `,
+};
+
+function renderPreview() {
+  const c = colorMap[state.color];
+  const name = state.petName.toUpperCase().slice(0, 12);
+  const phone = state.petPhone.slice(0, 14);
+  document.getElementById('preview-tag').innerHTML = shapeRenderers[state.shape](c, name, phone, false);
+  document.getElementById('finish-name').textContent = colorNames[state.color];
+  document.getElementById('product-name').textContent = shapeNames[state.shape];
+  updateTotal();
+}
+
+function renderFinalPreview() {
+  const c = colorMap[state.color];
+  const name = state.petName.toUpperCase().slice(0, 12);
+  const phone = state.petPhone.slice(0, 14);
+  document.getElementById('preview-tag-final').innerHTML = shapeRenderers[state.shape](c, name, phone, true);
+  document.getElementById('finish-name-final').textContent = colorNames[state.color];
+  document.getElementById('product-name-final').textContent = shapeNames[state.shape];
+}
+
+function setShape(el, shape) {
+  el.parentElement.querySelectorAll('.swatch').forEach(s => s.classList.remove('selected'));
+  el.classList.add('selected');
+  state.shape = shape;
+  renderPreview();
+}
+
+function setColor(el, color) {
+  el.parentElement.querySelectorAll('.swatch').forEach(s => s.classList.remove('selected'));
+  el.classList.add('selected');
+  state.color = color;
+  renderPreview();
+}
+
+function updatePreview() {
+  state.petName = document.getElementById('pet-name').value;
+  state.petPhone = document.getElementById('pet-phone').value;
+  document.getElementById('name-count').textContent = state.petName.length;
+  renderPreview();
+}
+
+function updateTotal() {
+  const base = 79;
+  document.getElementById('total-price').textContent = base;
+}
+
+function regenerate() {
+  // 新的独一无二编号
+  const code = Math.random().toString(36).slice(2, 6).toUpperCase() + '-' +
+               Math.random().toString(36).slice(2, 5).toUpperCase();
+  document.getElementById('tag-id').textContent = code;
+  // 重新生成 — 形状/底色/刻字保持不变，重出一张影雕
+  startGeneration();
+}
+
+// ============================================
+// 加入购物车 — 序列化当前设计写入 localStorage
+// ============================================
+function addToCart() {
+  const c = colorMap[state.color];
+  const name = state.petName.toUpperCase().slice(0, 12);
+  const phone = state.petPhone.slice(0, 14);
+  const tagIdEl = document.getElementById('tag-id');
+
+  const item = {
+    id: Date.now().toString(36) + Math.random().toString(36).slice(2, 6),
+    tagId: tagIdEl ? tagIdEl.textContent : '',
+    shape: state.shape,
+    color: state.color,
+    shapeName: shapeNames[state.shape],
+    colorName: colorNames[state.color],
+    petName: state.petName,
+    petPhone: state.petPhone,
+    svg: shapeRenderers[state.shape](c, name, phone, true),
+    unitPrice: 79,
+    quantity: 1,
+    addedAt: new Date().toISOString(),
+  };
+
+  const cart = JSON.parse(localStorage.getItem('marlowe_cart') || '[]');
+  cart.push(item);
+  localStorage.setItem('marlowe_cart', JSON.stringify(cart));
+
+  window.location.href = 'cart.html';
+}
+</script>
+
+<script src="auth-state.js"></script>
+<script src="chat-widget.js" defer></script>
+</body>
+</html>

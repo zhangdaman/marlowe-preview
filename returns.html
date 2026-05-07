@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Returns Policy — MARLOWE</title>
+<meta name="description" content="Marlowe's returns policy: custom titanium tags are made to order. We cover defects, errors on our end, and shipping damage.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400..700;1,9..144,400..500&family=Manrope:wght@300..700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+<style>
+:root {
+  --cream: #F5F1E8;
+  --cream-light: #FBF8F1;
+  --paper: #EDE8DA;
+  --charcoal: #1F2937;
+  --charcoal-soft: #374151;
+  --ink: #111827;
+  --brass: #B8956A;
+  --brass-deep: #8E6F47;
+  --brass-light: #D4B896;
+  --line: rgba(31, 41, 55, 0.12);
+  --line-soft: rgba(31, 41, 55, 0.06);
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: 'Manrope', system-ui, sans-serif;
+  background: var(--cream);
+  color: var(--charcoal);
+  font-size: 16px;
+  line-height: 1.7;
+  -webkit-font-smoothing: antialiased;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+}
+
+.container { max-width: 1320px; margin: 0 auto; padding: 0 32px; }
+@media (max-width: 768px) { .container { padding: 0 20px; } }
+
+.eyebrow {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--brass-deep);
+}
+
+nav.main-nav {
+  background: rgba(245, 241, 232, 0.95);
+  border-bottom: 1px solid var(--line-soft);
+  padding: 22px 0;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  backdrop-filter: blur(12px);
+}
+.nav-grid {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  gap: 40px;
+}
+.logo {
+  font-family: 'Fraunces', serif;
+  font-variation-settings: 'opsz' 144;
+  font-size: 24px;
+  font-weight: 500;
+  letter-spacing: 0.18em;
+  color: var(--ink);
+  text-decoration: none;
+  text-align: center;
+}
+.back-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  color: var(--charcoal-soft);
+  text-decoration: none;
+  transition: color 200ms;
+}
+.back-link:hover { color: var(--charcoal); }
+
+.nav-cta {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 24px;
+}
+.nav-cta a {
+  font-size: 13px;
+  color: var(--charcoal-soft);
+  text-decoration: none;
+  transition: color 200ms;
+}
+.nav-cta a:hover { color: var(--brass-deep); }
+
+@media (max-width: 768px) {
+  .nav-grid { grid-template-columns: auto 1fr auto; gap: 16px; }
+}
+
+.legal-page { padding: 80px 0 120px; }
+.legal-content { max-width: 720px; margin: 0 auto; }
+
+.legal-header { margin-bottom: 56px; text-align: center; }
+.legal-header .eyebrow { margin-bottom: 18px; display: inline-block; }
+.legal-header h1 {
+  font-family: 'Fraunces', serif;
+  font-variation-settings: 'opsz' 144;
+  font-size: clamp(40px, 5vw, 56px);
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+  font-weight: 400;
+  color: var(--ink);
+  margin-bottom: 16px;
+}
+.last-updated {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--charcoal-soft);
+  opacity: 0.7;
+}
+
+.legal-intro {
+  font-size: 18px;
+  line-height: 1.7;
+  color: var(--charcoal-soft);
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+  padding: 32px 0;
+  margin-bottom: 56px;
+}
+
+.legal-content h2 {
+  font-family: 'Fraunces', serif;
+  font-size: 26px;
+  font-weight: 500;
+  color: var(--ink);
+  margin-top: 56px;
+  margin-bottom: 20px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--line);
+  display: flex;
+  align-items: baseline;
+  gap: 14px;
+}
+.legal-content h2::before {
+  content: attr(data-num);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 0.2em;
+  color: var(--brass-deep);
+  text-transform: uppercase;
+  font-weight: 400;
+  flex-shrink: 0;
+}
+.legal-content h3 {
+  font-family: 'Fraunces', serif;
+  font-size: 18px;
+  font-weight: 500;
+  color: var(--ink);
+  margin-top: 28px;
+  margin-bottom: 8px;
+}
+.legal-content p { margin-bottom: 16px; color: var(--charcoal-soft); }
+.legal-content p strong { color: var(--charcoal); font-weight: 600; }
+.legal-content ul {
+  list-style: none;
+  margin-bottom: 16px;
+  padding-left: 0;
+}
+.legal-content ul li {
+  position: relative;
+  padding-left: 24px;
+  margin-bottom: 10px;
+  color: var(--charcoal-soft);
+}
+.legal-content ul li::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 14px;
+  width: 12px;
+  height: 1px;
+  background: var(--brass);
+}
+.legal-content a {
+  color: var(--brass-deep);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  text-decoration-thickness: 0.5px;
+}
+.legal-content a:hover { color: var(--charcoal); }
+
+.legal-callout {
+  background: var(--cream-light);
+  border: 1px solid var(--line);
+  padding: 24px 28px;
+  margin: 28px 0;
+  font-size: 15px;
+}
+.legal-callout strong { display: block; margin-bottom: 6px; color: var(--ink); }
+
+.two-col {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 32px;
+  margin: 32px 0;
+}
+.two-col-item {
+  border: 1px solid var(--line);
+  padding: 24px 28px;
+  background: var(--cream-light);
+}
+.two-col-item.yes { border-left: 3px solid var(--brass-deep); }
+.two-col-item.no { border-left: 3px solid var(--charcoal); }
+.two-col-item h3 {
+  margin-top: 0;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--charcoal);
+  margin-bottom: 16px;
+  font-weight: 500;
+}
+.two-col-item.yes h3 { color: var(--brass-deep); }
+.two-col-item ul { margin-bottom: 0; }
+.two-col-item ul li { font-size: 14px; line-height: 1.6; }
+@media (max-width: 700px) {
+  .two-col { grid-template-columns: 1fr; gap: 16px; }
+}
+
+.legal-related {
+  max-width: 720px;
+  margin: 80px auto 0;
+  padding-top: 40px;
+  border-top: 1px solid var(--line);
+}
+.legal-related .eyebrow { margin-bottom: 16px; display: inline-block; }
+.legal-related ul {
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 28px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+.legal-related a {
+  color: var(--charcoal-soft);
+  text-decoration: none;
+  transition: color 200ms;
+}
+.legal-related a:hover { color: var(--charcoal); border-bottom: 1px solid var(--brass); padding-bottom: 2px; }
+
+footer {
+  background: var(--ink);
+  color: var(--cream);
+  padding: 80px 0 40px;
+}
+.footer-grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr 1fr 1fr;
+  gap: 60px;
+  margin-bottom: 60px;
+}
+.footer-brand p {
+  font-size: 14px;
+  color: rgba(245, 241, 232, 0.6);
+  max-width: 280px;
+  margin-top: 16px;
+}
+.footer-brand .logo { color: var(--cream); }
+.footer-col h4 {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--brass-light);
+  margin-bottom: 20px;
+}
+.footer-col ul { list-style: none; }
+.footer-col ul li { margin-bottom: 10px; }
+.footer-col ul a {
+  color: rgba(245, 241, 232, 0.7);
+  text-decoration: none;
+  font-size: 14px;
+  transition: color 200ms;
+}
+.footer-col ul a:hover { color: var(--cream); }
+.footer-bottom {
+  padding-top: 32px;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 12px;
+  color: rgba(245, 241, 232, 0.5);
+}
+.footer-trust { display: flex; gap: 24px; }
+@media (max-width: 1024px) {
+  .footer-grid { grid-template-columns: 1fr 1fr; gap: 40px; }
+  .footer-brand { grid-column: span 2; }
+}
+@media (max-width: 600px) {
+  .footer-grid { grid-template-columns: 1fr; }
+  .footer-brand { grid-column: span 1; }
+  .footer-bottom { flex-direction: column; align-items: flex-start; gap: 16px; }
+}
+</style>
+</head>
+<body>
+
+<nav class="main-nav">
+  <div class="container nav-grid">
+    <a href="index.html" class="back-link">
+      <span style="font-family: monospace;">←</span>
+      Back to home
+    </a>
+    <a href="index.html" class="logo">MARLOWE</a>
+    <div class="nav-cta">
+      <a href="designer.html">Open The Designer</a>
+    </div>
+  </div>
+</nav>
+
+<main class="legal-page">
+  <article class="legal-content">
+
+    <header class="legal-header">
+      <div class="eyebrow">§ Legal</div>
+      <h1>Returns Policy</h1>
+      <p class="last-updated">Last updated · May 6, 2026</p>
+    </header>
+
+    <p class="legal-intro">
+      Each Marlowe tag is engraved to order. There's no inventory, no second copy. Because of that, we treat returns differently than a typical online store: we don't accept returns for change of mind, but we stand behind any tag we make wrong. Read this whole page before you order.
+    </p>
+
+    <h2 data-num="§ 01">The basics</h2>
+    <p><strong>Custom goods are final sale, with two exceptions:</strong></p>
+    <ul>
+      <li>You cancel within 24 hours of placing the order (before production)</li>
+      <li>The tag arrives defective, incorrect, or damaged in transit</li>
+    </ul>
+    <p>Everything below explains how those work.</p>
+
+    <h2 data-num="§ 02">The 24-hour cancellation window</h2>
+    <div class="legal-callout">
+      <strong>You can cancel any order, for any reason, within 24 hours of placing it.</strong>
+      Email <a href="mailto:support@marlowe.example">support@marlowe.example</a> with your order number. We'll refund you in full, usually within 3 business days. After 24 hours, your tag enters production and the order is locked.
+    </div>
+    <p>This is your moment to fix typos, change shapes, or change your mind. Use it. Once that window closes, we can't reverse the engraving.</p>
+
+    <h2 data-num="§ 03">What we cover after production</h2>
+    <p>If your tag falls into any of these categories, contact us within 14 days of delivery and we'll make it right at no cost to you.</p>
+
+    <div class="two-col">
+      <div class="two-col-item yes">
+        <h3>We cover</h3>
+        <ul>
+          <li>Manufacturing defects (cracks, warping, finish flaws)</li>
+          <li>Engraving errors that don't match what you submitted</li>
+          <li>Wrong shape, finish, or item shipped</li>
+          <li>Damage in transit (open the package within 7 days and tell us)</li>
+        </ul>
+      </div>
+      <div class="two-col-item no">
+        <h3>We don't cover</h3>
+        <ul>
+          <li>Change of mind after the 24-hour window</li>
+          <li>Typos or errors in what you typed</li>
+          <li>Subjective dislike of the AI-generated portrait (the Designer preview is your final approval)</li>
+          <li>Normal wear, scratches from use, or finish patina over time</li>
+          <li>Loss after delivery</li>
+        </ul>
+      </div>
+    </div>
+
+    <h2 data-num="§ 04">Why "AI portrait dislike" isn't covered</h2>
+    <p>This one needs explaining, because it's where most disputes come from in custom-portrait products.</p>
+    <p>The Designer shows you a real-time preview of exactly what will be engraved on your tag — same halftone portrait, same shape, same finish, same engraving. <strong>What you see in the Designer is what we engrave.</strong> If you don't love the portrait, don't proceed to checkout.</p>
+    <p>Once you've placed an order and the 24-hour window passes, the design is locked. We can't accept returns for "the portrait doesn't look like my dog enough" — by ordering, you've confirmed it does.</p>
+
+    <h2 data-num="§ 05">How to start a return</h2>
+    <p>If your tag falls under <a href="#cover">what we cover</a>, here's the process:</p>
+    <ul>
+      <li><strong>Step 1.</strong> Email <a href="mailto:support@marlowe.example">support@marlowe.example</a> within 14 days of delivery. Include your order number and clear photos of the issue.</li>
+      <li><strong>Step 2.</strong> We respond within 1 business day to confirm the issue and authorize a return or remake.</li>
+      <li><strong>Step 3.</strong> If a return is needed, we send you a prepaid USPS shipping label. Drop the tag in any USPS box.</li>
+      <li><strong>Step 4.</strong> Once we receive it, we inspect the tag and start the remake within 2 business days. New tag ships in 7–10 business days.</li>
+    </ul>
+
+    <h2 data-num="§ 06">Remake first, refund second</h2>
+    <p>For covered issues, our default is to <strong>remake the tag at no cost to you</strong>. We exist to make every dog get the right tag — not to issue refunds and walk away.</p>
+    <p>If a remake isn't possible (you no longer want the tag, the same defect happens twice, or we can't fulfill the original order), we issue a full refund through Stripe. Refunds typically clear in 5–10 business days, depending on your bank.</p>
+
+    <h2 data-num="§ 07">Damage in transit</h2>
+    <p>If your tag arrives damaged, photograph the package and the tag before doing anything else and email us within 7 days of delivery. We'll file the carrier claim and replace your tag — you don't need to deal with USPS or UPS.</p>
+
+    <h2 data-num="§ 08">Lost packages</h2>
+    <p>If tracking shows your tag as delivered but you can't find it:</p>
+    <ul>
+      <li>Check with neighbors, building management, and porch areas</li>
+      <li>Wait 48 hours — sometimes carriers mark items delivered before they actually drop them</li>
+      <li>If still missing, email us. We'll work with the carrier and send a replacement at our cost</li>
+    </ul>
+
+    <h2 data-num="§ 09">Return shipping</h2>
+    <ul>
+      <li><strong>Our error</strong> (defect, wrong item, damage): we pay all shipping</li>
+      <li><strong>Buyer error inside the 24-hour window:</strong> no shipping needed (we just cancel before production)</li>
+      <li><strong>Buyer error outside the window:</strong> not eligible for return</li>
+    </ul>
+
+    <h2 data-num="§ 10">Refund timing</h2>
+    <p>Once a refund is approved, we issue it through Stripe to the original payment method. Refunds usually appear in 5–10 business days, depending on your bank.</p>
+
+    <h2 data-num="§ 11">Contact</h2>
+    <ul>
+      <li><strong>Returns and remakes:</strong> <a href="mailto:support@marlowe.example">support@marlowe.example</a> (include order number)</li>
+      <li><strong>Atelier address:</strong> [Atelier address — California] (do not ship returns here without a label from us)</li>
+    </ul>
+
+  </article>
+
+  <aside class="legal-related">
+    <div class="container">
+      <div style="max-width: 720px; margin: 0 auto;">
+        <div class="eyebrow">Related</div>
+        <ul>
+          <li><a href="shipping.html">Shipping Policy</a></li>
+          <li><a href="terms.html">Terms of Service</a></li>
+          <li><a href="privacy.html">Privacy Policy</a></li>
+          <li><a href="contact.html">Contact</a></li>
+        </ul>
+      </div>
+    </div>
+  </aside>
+
+</main>
+
+<footer>
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <a href="index.html" class="logo">MARLOWE</a>
+        <p>Titanium portrait tags, engraved one at a time in California.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Shop</h4>
+        <ul>
+          <li><a href="designer.html">The Designer</a></li>
+          <li><a href="#">Gift Cards</a></li>
+          <li><a href="#">Care &amp; Repair</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>About</h4>
+        <ul>
+          <li><a href="index.html#story">Our Story</a></li>
+          <li><a href="index.html#how">How It Works</a></li>
+          <li><a href="#">Press</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Help</h4>
+        <ul>
+          <li><a href="shipping.html">Shipping</a></li>
+          <li><a href="returns.html">Returns</a></li>
+          <li><a href="contact.html">Contact</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Legal</h4>
+        <ul>
+          <li><a href="privacy.html">Privacy</a></li>
+          <li><a href="terms.html">Terms</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2026 Marlowe &amp; Co. Made with care · California, USA.</span>
+      <div class="footer-trust">
+        <span>Stripe Secured</span>
+        <span>SSL Protected</span>
+        <span>30-Day Quality Guarantee</span>
+      </div>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
