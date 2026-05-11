@@ -7,6 +7,7 @@
 > **后端 API 规约**：[docs/api-generate.md](docs/api-generate.md)（generate 防滥用 + Stripe + 限流）
 > **客服聊天机器人**：[docs/chat-bot.md](docs/chat-bot.md)（FAQ 内容 EN/ZH + UX 规约 + AI 升级路径）；widget 实现 [chat-widget.js](chat-widget.js)，挂载在 7 个核心页面（首页/designer/cart/checkout/thank-you），不挂法律页
 > **账户系统 / 登录注册**：[docs/auth.md](docs/auth.md)（Magic link + Apple/Google OAuth + Supabase Auth，渐进强制——cart 仍 guest，generate 需登录）；shared wrapper [auth-state.js](auth-state.js)
+> **皮革项圈（companion accessory）**：[docs/collars.md](docs/collars.md)（3 色 × 5 尺寸 × $49，按单制造跟牌一起发货；[collars.html](collars.html) 产品页；cart 自动支持 productType:'tag'\|'collar'）
 
 ---
 
@@ -31,7 +32,7 @@
 
 **目标客户**：35-55 岁养狗家庭，家庭年收入 $80K+，欣赏 heritage / craft 美学，主流犬种为拉布拉多、金毛、工作犬
 
-**客单价**：$79（占位，砍 NFC 后未重新定价，留到上线前决策）
+**客单价**：**$109 USD**（2026-05-07 拍板，美国市场）
 
 **生产周期**：下单后 7-10 个工作日
 
@@ -39,21 +40,23 @@
 
 ## 2. 产品形态（v1）
 
-**SKU 矩阵：3 形状 × 5 表面 = 15 SKU**，统一定价 $79。
+**SKU 矩阵**：
+- **主产品（牌）**：v1 仅盾形 × 5 表面处理 = **5 SKU**，统一定价 **$109 USD**（八角 / 圆形代码保留，UI 暂隐藏，v1.5 解锁后变 15 SKU）
+- **配件（项圈）**：3 颜色 × 5 尺寸 = **15 SKU**，统一定价 **$49 USD**（可选购买，跟牌按单一起生产 + 一起发货；详见 [docs/collars.md](docs/collars.md)）
 
 - **底材统一**：航天级钛合金（同一基材，CNC 切割 + 镜面抛光）
-- **3 种形状**（工厂已落实物，designer A 步选择）：
-  - **Shield 盾形**（带侧翼装饰耳，顶部一体凸起穿孔，最 heritage / iconic — designer 默认）
-  - **Octagon 八角**（八边等长，独立焊接环 loop + 颈部连接）
-  - **Disc 圆形**（圆盘 + 独立焊接环 loop + 颈部连接）
-- **5 种表面处理**（同一钛合金基材 + PVD 镀膜 / 阳极氧化，designer B 步选择）：
-  - **Antiqued Silver**（钛合金本色抛光 — designer 默认，实物对应款）
-  - **Antiqued Brass**（古铜 PVD）
-  - **Midnight Teal**（青色阳极氧化）
-  - **Charcoal Black**（DLC 涂层）
-  - **Vintage Copper**（玫瑰金 / 铜色 PVD）
+- **形状（v1 只上盾形，八角 / 圆形 v1.5 解锁）**：
+  - **Shield 盾形**（带侧翼装饰耳，顶部一体凸起穿孔 — v1 唯一上线形状）
+  - **Octagon 八角**（八边等长，独立焊接环 loop + 颈部连接）— 代码保留，UI 隐藏
+  - **Disc 圆形**（圆盘 + 独立焊接环 loop + 颈部连接）— 代码保留，UI 隐藏
+- **5 种表面处理**（同一钛合金基材 + PVD 镀膜 / 阳极氧化，designer A 步选择）：
+  - **Titanium Silver / 钛本色**（钛合金本色抛光 — designer 默认，实物对应款）
+  - **Champagne Gold / 香槟金**（浅暖金 PVD）
+  - **Sky Blue / 钛蓝**（钛合金阳极氧化标志色）
+  - **Storm Black / 深炭黑**（DLC 涂层）
+  - **Rose Copper / 玫瑰铜**（玫瑰铜 PVD）
 - **核心工艺**：浅浮雕（low-relief）成型轮廓 + 影雕（halftone）呈现照片级灰阶细节
-- 免费刻字（宠物名 + 联系电话，designer C 步输入）
+- 免费刻字（宠物名 + 联系电话，designer B 步输入）
 - AI 生成可雕刻的灰阶肖像画像（依据用户上传照片）
 - 按单生产，无库存
 - **无芯片、无订阅、无配套 app**（v2 才引入）

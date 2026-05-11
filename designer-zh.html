@@ -842,6 +842,135 @@ nav.main-nav {
   line-height: 1.7;
 }
 
+/* Collar add-on (stage-2 inside .summary) =========================== */
+.collar-addon {
+  background: rgba(245, 241, 232, 0.06);
+  border: 1px solid rgba(245, 241, 232, 0.14);
+  margin-bottom: 20px;
+}
+.collar-toggle {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  padding: 16px 18px;
+  cursor: pointer;
+}
+.collar-toggle input[type="checkbox"] {
+  margin-top: 3px;
+  width: 16px;
+  height: 16px;
+  cursor: pointer;
+  accent-color: var(--brass);
+  flex-shrink: 0;
+}
+.collar-toggle .tg-label {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  line-height: 1.5;
+}
+.collar-toggle .tg-title {
+  font-family: 'Fraunces', 'Noto Serif SC', serif;
+  font-size: 16px;
+  font-weight: 500;
+  color: var(--cream);
+}
+.collar-toggle .tg-sub {
+  font-size: 12px;
+  color: rgba(245, 241, 232, 0.6);
+}
+.collar-toggle .tg-sub strong { color: var(--brass-light); font-weight: 500; }
+.collar-opts {
+  border-top: 1px solid rgba(245, 241, 232, 0.1);
+  padding: 14px 18px 16px;
+  display: none;
+}
+.collar-opts.active { display: block; }
+.collar-opt-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 6px 0;
+  flex-wrap: wrap;
+}
+.collar-opt-row .opt-label {
+  font-family: 'JetBrains Mono', 'Noto Sans SC', monospace;
+  font-size: 10px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--brass-light);
+  width: 48px;
+  flex-shrink: 0;
+}
+.collar-swatches { display: flex; gap: 8px; }
+.cs-swatch {
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  border: 1.5px solid rgba(245, 241, 232, 0.2);
+  cursor: pointer;
+  padding: 0;
+  transition: transform 150ms, border-color 200ms, box-shadow 200ms;
+  background: transparent;
+}
+.cs-swatch.tan    { background: linear-gradient(135deg, #D4A574 0%, #A07845 100%); }
+.cs-swatch.saddle { background: linear-gradient(135deg, #7A4A28 0%, #4A2D15 100%); }
+.cs-swatch.black  { background: linear-gradient(135deg, #2A2A2A 0%, #0D0D0D 100%); }
+.cs-swatch:hover { transform: scale(1.08); }
+.cs-swatch.selected {
+  border-color: var(--brass-light);
+  box-shadow: 0 0 0 2px var(--ink), 0 0 0 3px var(--brass);
+}
+.collar-sizes { display: flex; gap: 6px; flex-wrap: wrap; }
+.cs-size {
+  padding: 7px 12px;
+  background: transparent;
+  border: 1px solid rgba(245, 241, 232, 0.2);
+  font-family: 'Manrope', 'Noto Sans SC', sans-serif;
+  font-size: 12px;
+  font-weight: 500;
+  color: rgba(245, 241, 232, 0.8);
+  cursor: pointer;
+  transition: all 200ms;
+}
+.cs-size:hover { border-color: var(--brass-light); color: var(--cream); }
+.cs-size.selected {
+  background: var(--brass);
+  color: var(--ink);
+  border-color: var(--brass);
+}
+.collar-opt-meta {
+  font-size: 11px;
+  color: rgba(245, 241, 232, 0.55);
+  padding-top: 10px;
+  line-height: 1.6;
+}
+.collar-opt-meta a {
+  color: var(--brass-light);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+/* Stripe BNPL messaging (mock) */
+.bnpl-messaging {
+  margin-top: 14px;
+  padding: 12px 14px;
+  border: 1px solid rgba(245, 241, 232, 0.18);
+  font-family: 'Manrope', 'Noto Sans SC', sans-serif;
+  font-size: 12px;
+  text-align: center;
+  color: rgba(245, 241, 232, 0.85);
+  line-height: 1.5;
+}
+.bnpl-messaging strong { font-weight: 500; color: var(--cream); }
+.bnpl-brands {
+  margin-top: 6px;
+  font-family: 'JetBrains Mono', 'Noto Sans SC', monospace;
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  color: var(--brass-light);
+}
+
 @media (max-width: 900px) {
   .customize-grid { grid-template-columns: 1fr; gap: 40px; }
   .preview-col { position: static; }
@@ -1018,76 +1147,43 @@ nav.main-nav {
 
       <!-- 右：定制选项 -->
       <div class="customize-col">
-        <div class="cust-section">
-          <div class="cust-header">
-            <span class="cust-label">A — 选择形状</span>
-            <span class="cust-tag">3 款</span>
-          </div>
-          <div class="shape-row">
-            <div class="swatch selected" onclick="setShape(this, 'shield')">
-              <div class="shape-icon">
-                <svg viewBox="0 0 50 60" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M21,2 L29,2 L29,5 L39,5 L42,10 L39,13 L39,37 Q39,49 25,57 Q11,49 11,37 L11,13 L8,10 L11,5 L21,5 Z"
-                        fill="none" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round"/>
-                </svg>
-              </div>
-              <div class="swatch-name">盾形</div>
-            </div>
-            <div class="swatch" onclick="setShape(this, 'octagon')">
-              <div class="shape-icon">
-                <svg viewBox="0 0 50 60" xmlns="http://www.w3.org/2000/svg">
-                  <circle cx="25" cy="7" r="3" fill="none" stroke="currentColor" stroke-width="1.2"/>
-                  <path d="M21,10 L29,10 L31,17 L40,26 L40,38 L31,47 L19,47 L10,38 L10,26 L19,17 L21,10 Z"
-                        fill="none" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round"/>
-                </svg>
-              </div>
-              <div class="swatch-name">八角</div>
-            </div>
-            <div class="swatch" onclick="setShape(this, 'disc')">
-              <div class="shape-icon">
-                <svg viewBox="0 0 50 60" xmlns="http://www.w3.org/2000/svg">
-                  <circle cx="25" cy="7" r="3" fill="none" stroke="currentColor" stroke-width="1.2"/>
-                  <path d="M22,10 L28,10 L29,15 L21,15 Z" fill="none" stroke="currentColor" stroke-width="1.2"/>
-                  <circle cx="25" cy="34" r="19" fill="none" stroke="currentColor" stroke-width="1.2"/>
-                </svg>
-              </div>
-              <div class="swatch-name">圆形</div>
-            </div>
-          </div>
-        </div>
+        <!--
+          v1 只上盾形。形状选择 UI 暂时隐藏，底层 JS (setShape / shapeRenderers)
+          和 octagon / disc 的数据仍保留，v2 扩 SKU 时取消注释即可恢复。
+        -->
 
         <div class="cust-section">
           <div class="cust-header">
-            <span class="cust-label">B — 选择金属底色</span>
+            <span class="cust-label">A — 选择金属底色</span>
             <span class="cust-tag">5 种可选</span>
           </div>
           <div class="swatches">
             <div class="swatch" onclick="setColor(this, 'brass')">
               <div class="swatch-circle" style="background: linear-gradient(135deg, #E8D4AB 0%, #8E6F47 100%);"></div>
-              <div class="swatch-name">古铜</div>
+              <div class="swatch-name">香槟金</div>
             </div>
             <div class="swatch selected" onclick="setColor(this, 'silver')">
               <div class="swatch-circle" style="background: linear-gradient(135deg, #F2F4F6 0%, #3A3F46 100%);"></div>
-              <div class="swatch-name">钛合金银</div>
+              <div class="swatch-name">钛本色</div>
             </div>
             <div class="swatch" onclick="setColor(this, 'teal')">
               <div class="swatch-circle" style="background: linear-gradient(135deg, #5A8A8C 0%, #1F4346 100%);"></div>
-              <div class="swatch-name">午夜青</div>
+              <div class="swatch-name">钛蓝</div>
             </div>
             <div class="swatch" onclick="setColor(this, 'charcoal')">
               <div class="swatch-circle" style="background: linear-gradient(135deg, #4A5568 0%, #1A202C 100%);"></div>
-              <div class="swatch-name">炭黑</div>
+              <div class="swatch-name">深炭黑</div>
             </div>
             <div class="swatch" onclick="setColor(this, 'copper')">
               <div class="swatch-circle" style="background: linear-gradient(135deg, #D4763E 0%, #6B3010 100%);"></div>
-              <div class="swatch-name">复古铜</div>
+              <div class="swatch-name">玫瑰铜</div>
             </div>
           </div>
         </div>
 
         <div class="cust-section">
           <div class="cust-header">
-            <span class="cust-label">C — 刻字</span>
+            <span class="cust-label">B — 刻字</span>
             <span class="cust-tag">免费</span>
           </div>
           <div class="input-group">
@@ -1107,18 +1203,38 @@ nav.main-nav {
         </div>
 
         <div class="summary">
-          <div class="summary-line">
-            <span><span id="product-name">盾形铭牌</span></span>
-            <span><span id="finish-name">钛合金银</span></span>
+          <!-- 配套项圈（可选） -->
+          <div class="collar-addon">
+            <label class="collar-toggle">
+              <input type="checkbox" id="collar-opt-in" onchange="toggleCollarOpt(this.checked)">
+              <span class="tg-label">
+                <span class="tg-title">搭配一条皮革项圈</span>
+                <span class="tg-sub">植鞣牛皮 + 钛合金五金 · <strong>+ $49</strong> · 一起发货</span>
+              </span>
+            </label>
+            <div class="collar-opts" id="collar-opts">
+              <div class="collar-opt-row">
+                <span class="opt-label">颜色</span>
+                <div class="collar-swatches">
+                  <button type="button" class="cs-swatch tan selected" data-color="tan" onclick="setCollarColor('tan')" aria-label="原棕"></button>
+                  <button type="button" class="cs-swatch saddle" data-color="saddle" onclick="setCollarColor('saddle')" aria-label="马鞍棕"></button>
+                  <button type="button" class="cs-swatch black" data-color="black" onclick="setCollarColor('black')" aria-label="墨黑"></button>
+                </div>
+              </div>
+              <div class="collar-opt-row">
+                <span class="opt-label">尺寸</span>
+                <div class="collar-sizes">
+                  <button type="button" class="cs-size" data-size="xs" onclick="setCollarSize('xs')">XS</button>
+                  <button type="button" class="cs-size" data-size="s" onclick="setCollarSize('s')">S</button>
+                  <button type="button" class="cs-size selected" data-size="m" onclick="setCollarSize('m')">M</button>
+                  <button type="button" class="cs-size" data-size="l" onclick="setCollarSize('l')">L</button>
+                  <button type="button" class="cs-size" data-size="xl" onclick="setCollarSize('xl')">XL</button>
+                </div>
+              </div>
+              <div class="collar-opt-meta" id="collar-opt-meta">M · 颈围 35–50 cm · 标准拉布拉多 / 柯基 / 边境牧羊犬 · <a href="collars-zh.html" target="_blank">完整尺寸表</a></div>
+            </div>
           </div>
-          <div class="summary-line">
-            <span>刻字</span>
-            <span>已包含</span>
-          </div>
-          <div class="summary-line total">
-            <span>合计</span>
-            <span>$<span id="total-price">79</span>.00</span>
-          </div>
+
           <button class="btn btn-primary btn-block" id="generate-btn" onclick="onGeneratePortrait()">
             生成肖像
             <span class="btn-arrow">→</span>
@@ -1188,20 +1304,29 @@ nav.main-nav {
         <div class="summary">
           <div class="summary-line">
             <span><span id="product-name-final">盾形铭牌</span></span>
-            <span><span id="finish-name-final">钛合金银</span></span>
+            <span><span id="finish-name-final">钛本色</span></span>
           </div>
           <div class="summary-line">
             <span>刻字</span>
             <span>已包含</span>
           </div>
+          <div class="summary-line" id="collar-summary-line" style="display: none;">
+            <span><span id="collar-summary-label">皮革项圈 · 原棕 · M</span></span>
+            <span>+ $49.00</span>
+          </div>
           <div class="summary-line total">
             <span>合计</span>
-            <span>$79.00</span>
+            <span>$<span id="total-final">109</span>.00</span>
           </div>
           <button class="btn btn-primary btn-block" onclick="addToCart()">
             加入购物车
             <span class="btn-arrow">→</span>
           </button>
+          <!-- TODO BACKEND: 替换为 Stripe Payment Method Messaging Element -->
+          <div class="bnpl-messaging" id="bnpl-mount-stage3">
+            也可分 4 期，每期 <strong id="bnpl-installment">$27.25</strong> 免息
+            <div class="bnpl-brands">Klarna · Afterpay · Affirm</div>
+          </div>
           <button onclick="goToStage(2)" style="background: none; border: none; color: var(--charcoal-soft); font-family: inherit; font-size: 13px; cursor: pointer; text-decoration: underline; text-underline-offset: 4px; padding: 16px 0 0; display: block; margin: 0 auto;">← 返回修改</button>
           <div class="summary-meta" style="margin-top: 16px;">
             7–10 个工作日交付 · 美区免运费<br>
@@ -1268,6 +1393,22 @@ const state = {
   color: 'silver',
   petName: 'SADIE',
   petPhone: '555·814·2901',
+  collar: { optedIn: false, color: 'tan', size: 'm' },
+};
+
+// 项圈数据
+const COLLAR_COLOR_NAMES = { tan: '原棕', saddle: '马鞍棕', black: '墨黑' };
+const COLLAR_PALETTES = {
+  tan:    { strap: '#C29562', shadow: '#8A5E2F', edge: '#6B4520', thread: '#E8D4B0' },
+  saddle: { strap: '#5C3819', shadow: '#3A220E', edge: '#241407', thread: '#D6B584' },
+  black:  { strap: '#1F1F1F', shadow: '#0A0A0A', edge: '#050505', thread: '#5C5043' },
+};
+const COLLAR_SIZE_INFO = {
+  xs: { range: '颈围 25–33 cm', breeds: '吉娃娃、约克夏、小型犬' },
+  s:  { range: '颈围 30–40 cm', breeds: '比格、法斗、小型梗类' },
+  m:  { range: '颈围 35–50 cm', breeds: '标准拉布拉多、柯基、边境牧羊犬' },
+  l:  { range: '颈围 45–60 cm', breeds: '金毛、成年拉布拉多、德牧' },
+  xl: { range: '颈围 55–70 cm', breeds: '罗威纳、杜宾、伯恩山犬' },
 };
 
 // 钛合金底材 — 5 种表面处理（同基材 + PVD / 阳极氧化）
@@ -1280,11 +1421,11 @@ const colorMap = {
 };
 
 const colorNames = {
-  brass: '古铜',
-  silver: '钛合金银',
-  teal: '午夜青',
-  charcoal: '炭黑',
-  copper: '复古铜',
+  brass: '香槟金',
+  silver: '钛本色',
+  teal: '钛蓝',
+  charcoal: '深炭黑',
+  copper: '玫瑰铜',
 };
 
 const shapeNames = {
@@ -1440,7 +1581,7 @@ function renderModalInitialState() {
 }
 
 function onModalMockClick(emailEnc) {
-  window.location.href = 'auth-callback.html?mock=email&email=' + emailEnc;
+  window.location.href = 'auth-callback-zh.html?mock=email&email=' + emailEnc;
 }
 
 function startGeneration() {
@@ -1600,8 +1741,7 @@ function renderPreview() {
   const name = state.petName.toUpperCase().slice(0, 12);
   const phone = state.petPhone.slice(0, 14);
   document.getElementById('preview-tag').innerHTML = shapeRenderers[state.shape](c, name, phone, false);
-  document.getElementById('finish-name').textContent = colorNames[state.color];
-  document.getElementById('product-name').textContent = shapeNames[state.shape];
+  // 注：stage-2 详细汇总（product/finish/total）已移到 stage-3，避免与最终确认页重复
   updateTotal();
 }
 
@@ -1612,6 +1752,7 @@ function renderFinalPreview() {
   document.getElementById('preview-tag-final').innerHTML = shapeRenderers[state.shape](c, name, phone, true);
   document.getElementById('finish-name-final').textContent = colorNames[state.color];
   document.getElementById('product-name-final').textContent = shapeNames[state.shape];
+  updateTotal();
 }
 
 function setShape(el, shape) {
@@ -1636,8 +1777,100 @@ function updatePreview() {
 }
 
 function updateTotal() {
-  const base = 79;
-  document.getElementById('total-price').textContent = base;
+  const base = 109;
+  const collarFee = state.collar.optedIn ? 49 : 0;
+  const total = base + collarFee;
+
+  // Stage-3 final-view 合计
+  const totalFinal = document.getElementById('total-final');
+  if (totalFinal) totalFinal.textContent = total;
+
+  // Stage-3 final-view 项圈行
+  const line = document.getElementById('collar-summary-line');
+  if (line) {
+    if (state.collar.optedIn) {
+      line.style.display = '';
+      const label = document.getElementById('collar-summary-label');
+      if (label) label.textContent =
+        '皮革项圈 · ' + COLLAR_COLOR_NAMES[state.collar.color] + ' · 尺寸 ' + state.collar.size.toUpperCase();
+    } else {
+      line.style.display = 'none';
+    }
+  }
+
+  // BNPL 分 4 期金额
+  const bnpl = document.getElementById('bnpl-installment');
+  if (bnpl) bnpl.textContent = '$' + (total / 4).toFixed(2);
+}
+
+// ============================================
+// 项圈 add-on 切换
+// ============================================
+function toggleCollarOpt(on) {
+  state.collar.optedIn = !!on;
+  const opts = document.getElementById('collar-opts');
+  if (opts) opts.classList.toggle('active', state.collar.optedIn);
+  updateTotal();
+}
+
+function setCollarColor(color) {
+  state.collar.color = color;
+  document.querySelectorAll('.cs-swatch').forEach(s =>
+    s.classList.toggle('selected', s.dataset.color === color)
+  );
+  ensureCollarOptedIn();
+  updateTotal();
+}
+
+function setCollarSize(size) {
+  state.collar.size = size;
+  document.querySelectorAll('.cs-size').forEach(s =>
+    s.classList.toggle('selected', s.dataset.size === size)
+  );
+  updateCollarMeta();
+  ensureCollarOptedIn();
+  updateTotal();
+}
+
+function ensureCollarOptedIn() {
+  if (!state.collar.optedIn) {
+    const box = document.getElementById('collar-opt-in');
+    if (box) box.checked = true;
+    toggleCollarOpt(true);
+  }
+}
+
+function updateCollarMeta() {
+  const meta = document.getElementById('collar-opt-meta');
+  if (!meta) return;
+  const info = COLLAR_SIZE_INFO[state.collar.size];
+  meta.innerHTML = state.collar.size.toUpperCase() + ' · ' + info.range +
+    ' · ' + info.breeds + ' · <a href="collars-zh.html" target="_blank">完整尺寸表</a>';
+}
+
+// 项圈 SVG（与 collars-zh.html 一致）
+function renderCollarSvg(color) {
+  const c = COLLAR_PALETTES[color];
+  return '<svg viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">' +
+    '<defs><linearGradient id="cgrad-' + color + '" x1="0" y1="0" x2="0" y2="1">' +
+    '<stop offset="0%" stop-color="' + c.strap + '"/><stop offset="100%" stop-color="' + c.shadow + '"/>' +
+    '</linearGradient></defs>' +
+    '<path d="M30,180 Q200,140 370,180 L370,220 Q200,260 30,220 Z" fill="url(#cgrad-' + color + ')" stroke="' + c.edge + '" stroke-width="1.5"/>' +
+    '<path d="M40,195 Q200,160 360,195" fill="none" stroke="' + c.thread + '" stroke-width="0.8" stroke-dasharray="3 3" opacity="0.7"/>' +
+    '<path d="M40,205 Q200,240 360,205" fill="none" stroke="' + c.thread + '" stroke-width="0.8" stroke-dasharray="3 3" opacity="0.7"/>' +
+    [80,100,120,140,160,180,200].map(x =>
+      '<circle cx="' + x + '" cy="200" r="3.5" fill="#0A0A0A"/>' +
+      '<circle cx="' + x + '" cy="200" r="3.5" fill="none" stroke="' + c.edge + '" stroke-width="0.5"/>'
+    ).join('') +
+    '<g transform="translate(280, 200)">' +
+    '<rect x="-30" y="-35" width="60" height="70" rx="3" fill="none" stroke="#9CA3AF" stroke-width="4"/>' +
+    '<rect x="-30" y="-35" width="60" height="70" rx="3" fill="none" stroke="#E5E7EB" stroke-width="1.5"/>' +
+    '<line x1="0" y1="-30" x2="0" y2="30" stroke="#9CA3AF" stroke-width="3" stroke-linecap="round"/>' +
+    '<circle cx="0" cy="0" r="4" fill="#9CA3AF"/></g>' +
+    '<g transform="translate(50, 200)">' +
+    '<ellipse cx="0" cy="0" rx="22" ry="14" fill="none" stroke="#9CA3AF" stroke-width="4"/>' +
+    '<ellipse cx="0" cy="0" rx="22" ry="14" fill="none" stroke="#E5E7EB" stroke-width="1.2"/></g>' +
+    '</svg>';
 }
 
 function regenerate() {
@@ -1660,6 +1893,7 @@ function addToCart() {
 
   const item = {
     id: Date.now().toString(36) + Math.random().toString(36).slice(2, 6),
+    productType: 'tag',
     tagId: tagIdEl ? tagIdEl.textContent : '',
     shape: state.shape,
     color: state.color,
@@ -1668,17 +1902,86 @@ function addToCart() {
     petName: state.petName,
     petPhone: state.petPhone,
     svg: shapeRenderers[state.shape](c, name, phone, true),
-    unitPrice: 79,
+    unitPrice: 109,
     quantity: 1,
     addedAt: new Date().toISOString(),
   };
 
   const cart = JSON.parse(localStorage.getItem('marlowe_cart') || '[]');
   cart.push(item);
-  localStorage.setItem('marlowe_cart', JSON.stringify(cart));
 
-  window.location.href = 'cart.html';
+  // 若勾选项圈，一并加入购物车
+  if (state.collar.optedIn) {
+    const sizeUp = state.collar.size.toUpperCase();
+    const info = COLLAR_SIZE_INFO[state.collar.size];
+    cart.push({
+      id: Date.now().toString(36) + Math.random().toString(36).slice(2, 6),
+      productType: 'collar',
+      color: state.collar.color,
+      colorName: COLLAR_COLOR_NAMES[state.collar.color],
+      size: sizeUp,
+      sizeRange: sizeUp + ' · ' + info.range,
+      svg: renderCollarSvg(state.collar.color),
+      unitPrice: 49,
+      quantity: 1,
+      addedAt: new Date().toISOString(),
+    });
+  }
+
+  localStorage.setItem('marlowe_cart', JSON.stringify(cart));
+  window.location.href = 'cart-zh.html';
 }
+
+// ============================================
+// 从 URL 参数 ?design=<id> 初始化
+// 账户页点击「再次定制」会跳到这里，读出原 design 数据预填
+// TODO BACKEND: 用 GET /api/me/designs/:id 替换 marlowe_last_order
+// ============================================
+(function initFromSavedDesign() {
+  const params = new URLSearchParams(window.location.search);
+  const designId = params.get('design');
+  if (!designId) return;
+
+  let savedDesign = null;
+  try {
+    const last = JSON.parse(localStorage.getItem('marlowe_last_order') || 'null');
+    if (last && last.payload && last.payload.items) {
+      // designId 形如 "design-<orderId>-<index>"，末位即数组下标
+      const idx = parseInt(designId.split('-').pop(), 10);
+      const item = last.payload.items[idx];
+      if (item && (item.productType || 'tag') === 'tag') savedDesign = item;
+    }
+  } catch (e) {}
+  if (!savedDesign) return;
+
+  // 恢复牌的状态
+  if (savedDesign.shape)    state.shape = savedDesign.shape;
+  if (savedDesign.color)    state.color = savedDesign.color;
+  if (savedDesign.petName)  state.petName = savedDesign.petName;
+  if (savedDesign.petPhone) state.petPhone = savedDesign.petPhone;
+
+  // 预填刻字输入框
+  const nameInput = document.getElementById('pet-name');
+  if (nameInput) nameInput.value = state.petName;
+  const phoneInput = document.getElementById('pet-phone');
+  if (phoneInput) phoneInput.value = state.petPhone;
+  const nameCount = document.getElementById('name-count');
+  if (nameCount) nameCount.textContent = state.petName.length;
+
+  // 选中对应的金属底色 swatch
+  const finishTarget = "setColor(this, '" + state.color + "')";
+  document.querySelectorAll('.swatch').forEach(s => {
+    if (s.getAttribute('onclick') === finishTarget) {
+      s.parentElement.querySelectorAll('.swatch').forEach(sib => sib.classList.remove('selected'));
+      s.classList.add('selected');
+    }
+  });
+
+  // 跳过 stage-1 上传（视为复用旧照片），直接进定制阶段
+  state.uploadedFile = { name: savedDesign.petName + '.jpg', fromHistory: true };
+  goToStage(2);
+  renderPreview();
+})();
 </script>
 
 <script src="auth-state.js"></script>

@@ -1,13 +1,13 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Your Cart — MARLOWE</title>
-<meta name="description" content="Review your custom titanium tags before checkout.">
+<title>购物车 — MARLOWE</title>
+<meta name="description" content="查看你的钛合金狗牌定制订单，结账前检查一遍。">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400..700;1,9..144,400..500&family=Manrope:wght@300..700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400..700;1,9..144,400..500&family=Manrope:wght@300..700&family=JetBrains+Mono:wght@400;500&family=Noto+Serif+SC:wght@400..600&family=Noto+Sans+SC:wght@400..600&display=swap" rel="stylesheet">
 
 <style>
 :root {
@@ -27,11 +27,11 @@
 * { margin: 0; padding: 0; box-sizing: border-box; }
 html { scroll-behavior: smooth; }
 body {
-  font-family: 'Manrope', system-ui, sans-serif;
+  font-family: 'Manrope', 'Noto Sans SC', system-ui, sans-serif;
   background: var(--cream);
   color: var(--charcoal);
   font-size: 16px;
-  line-height: 1.6;
+  line-height: 1.75;
   -webkit-font-smoothing: antialiased;
   background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
 }
@@ -40,14 +40,12 @@ body {
 @media (max-width: 768px) { .container { padding: 0 20px; } }
 
 .eyebrow {
-  font-family: 'JetBrains Mono', monospace;
+  font-family: 'JetBrains Mono', 'Noto Sans SC', monospace;
   font-size: 11px;
-  letter-spacing: 0.22em;
-  text-transform: uppercase;
+  letter-spacing: 0.18em;
   color: var(--brass-deep);
 }
 
-/* Nav ============================================================== */
 nav.main-nav {
   background: rgba(245, 241, 232, 0.95);
   border-bottom: 1px solid var(--line-soft);
@@ -83,27 +81,17 @@ nav.main-nav {
   transition: color 200ms;
 }
 .back-link:hover { color: var(--charcoal); }
-.nav-cta {
-  display: flex;
-  justify-content: flex-end;
-  align-items: center;
-  gap: 24px;
-}
-.nav-cta a {
-  font-size: 13px;
-  color: var(--charcoal-soft);
-  text-decoration: none;
-}
+.nav-cta { display: flex; justify-content: flex-end; align-items: center; gap: 24px; }
+.nav-cta a { font-size: 13px; color: var(--charcoal-soft); text-decoration: none; }
 .nav-cta a:hover { color: var(--brass-deep); }
 
 .auth-pill {
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  font-family: 'JetBrains Mono', monospace;
+  font-family: 'JetBrains Mono', 'Noto Sans SC', monospace;
   font-size: 11px;
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
+  letter-spacing: 0.14em;
   color: var(--charcoal-soft);
   text-decoration: none;
   padding: 6px 12px;
@@ -122,46 +110,32 @@ nav.main-nav {
   display: flex; align-items: center; justify-content: center;
   text-transform: uppercase;
 }
-@media (max-width: 768px) {
-  .nav-grid { grid-template-columns: auto 1fr auto; gap: 16px; }
-}
+@media (max-width: 768px) { .nav-grid { grid-template-columns: auto 1fr auto; gap: 16px; } }
 
-/* Buttons ========================================================== */
 .btn {
   display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: 10px;
   padding: 18px 36px;
-  font-family: 'Manrope', sans-serif;
+  font-family: 'Manrope', 'Noto Sans SC', sans-serif;
   font-weight: 500;
   font-size: 14px;
   letter-spacing: 0.04em;
-  text-transform: uppercase;
   text-decoration: none;
   border: 1.5px solid transparent;
   cursor: pointer;
   transition: all 250ms cubic-bezier(0.4, 0, 0.2, 1);
 }
-.btn-primary {
-  background: var(--charcoal);
-  color: var(--cream);
-  border-color: var(--charcoal);
-}
+.btn-primary { background: var(--charcoal); color: var(--cream); border-color: var(--charcoal); }
 .btn-primary:hover { background: var(--cream); color: var(--charcoal); }
-.btn-outline {
-  background: transparent;
-  color: var(--charcoal);
-  border-color: var(--charcoal);
-}
+.btn-outline { background: transparent; color: var(--charcoal); border-color: var(--charcoal); }
 .btn-outline:hover { background: var(--charcoal); color: var(--cream); }
 .btn-block { width: 100%; padding: 22px 32px; font-size: 15px; }
 .btn-arrow { transition: transform 250ms; }
 .btn:hover .btn-arrow { transform: translateX(4px); }
 
-/* Cart page ======================================================= */
 .cart-page { padding: 60px 0 120px; }
-
 .cart-header {
   margin-bottom: 56px;
   display: flex;
@@ -171,19 +145,18 @@ nav.main-nav {
   gap: 16px;
 }
 .cart-header h1 {
-  font-family: 'Fraunces', serif;
+  font-family: 'Fraunces', 'Noto Serif SC', serif;
   font-variation-settings: 'opsz' 144;
   font-size: clamp(40px, 5vw, 56px);
-  line-height: 1.05;
-  letter-spacing: -0.02em;
+  line-height: 1.1;
+  letter-spacing: -0.01em;
   font-weight: 400;
   color: var(--ink);
 }
 .cart-count {
-  font-family: 'JetBrains Mono', monospace;
+  font-family: 'JetBrains Mono', 'Noto Sans SC', monospace;
   font-size: 12px;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
+  letter-spacing: 0.14em;
   color: var(--charcoal-soft);
 }
 
@@ -193,16 +166,9 @@ nav.main-nav {
   gap: 80px;
   align-items: start;
 }
-@media (max-width: 900px) {
-  .cart-grid { grid-template-columns: 1fr; gap: 56px; }
-}
+@media (max-width: 900px) { .cart-grid { grid-template-columns: 1fr; gap: 56px; } }
 
-/* Cart items list ================================================= */
-.cart-items {
-  display: flex;
-  flex-direction: column;
-  border-top: 1px solid var(--line);
-}
+.cart-items { display: flex; flex-direction: column; border-top: 1px solid var(--line); }
 .cart-item {
   display: grid;
   grid-template-columns: 130px 1fr auto;
@@ -227,68 +193,43 @@ nav.main-nav {
   padding: 12px;
 }
 .cart-item-thumb svg { width: 100%; height: 100%; display: block; }
-@media (max-width: 600px) {
-  .cart-item-thumb { width: 90px; height: 108px; padding: 8px; }
-}
+@media (max-width: 600px) { .cart-item-thumb { width: 90px; height: 108px; padding: 8px; } }
 
 .cart-item-meta { display: flex; flex-direction: column; gap: 6px; }
 .cart-item-title {
-  font-family: 'Fraunces', serif;
+  font-family: 'Fraunces', 'Noto Serif SC', serif;
   font-size: 22px;
   font-weight: 500;
   color: var(--ink);
   margin-bottom: 4px;
 }
-.cart-item-attr {
-  font-size: 13px;
-  color: var(--charcoal-soft);
-  display: flex;
-  gap: 8px;
-  align-items: baseline;
-}
+.cart-item-attr { font-size: 13px; color: var(--charcoal-soft); display: flex; gap: 8px; align-items: baseline; }
 .cart-item-attr-label {
-  font-family: 'JetBrains Mono', monospace;
+  font-family: 'JetBrains Mono', 'Noto Sans SC', monospace;
   font-size: 10px;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
+  letter-spacing: 0.14em;
   color: var(--brass-deep);
   width: 90px;
   flex-shrink: 0;
 }
 .cart-item-tagid {
   margin-top: 8px;
-  font-family: 'JetBrains Mono', monospace;
+  font-family: 'JetBrains Mono', 'Noto Sans SC', monospace;
   font-size: 11px;
-  letter-spacing: 0.16em;
+  letter-spacing: 0.12em;
   color: var(--charcoal-soft);
   opacity: 0.75;
 }
 
-.cart-item-actions {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-  gap: 16px;
-  min-width: 120px;
-}
-.cart-item-price {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 18px;
-  color: var(--ink);
-  font-weight: 500;
-}
-.qty-control {
-  display: inline-flex;
-  align-items: center;
-  border: 1px solid var(--line);
-  background: var(--cream-light);
-}
+.cart-item-actions { display: flex; flex-direction: column; align-items: flex-end; gap: 16px; min-width: 120px; }
+.cart-item-price { font-family: 'JetBrains Mono', 'Noto Sans SC', monospace; font-size: 18px; color: var(--ink); font-weight: 500; }
+.qty-control { display: inline-flex; align-items: center; border: 1px solid var(--line); background: var(--cream-light); }
 .qty-btn {
   background: none;
   border: none;
   width: 32px;
   height: 32px;
-  font-family: 'JetBrains Mono', monospace;
+  font-family: 'JetBrains Mono', 'Noto Sans SC', monospace;
   font-size: 16px;
   color: var(--charcoal);
   cursor: pointer;
@@ -299,7 +240,7 @@ nav.main-nav {
 .qty-value {
   width: 36px;
   text-align: center;
-  font-family: 'JetBrains Mono', monospace;
+  font-family: 'JetBrains Mono', 'Noto Sans SC', monospace;
   font-size: 14px;
   border-left: 1px solid var(--line);
   border-right: 1px solid var(--line);
@@ -309,10 +250,9 @@ nav.main-nav {
   background: none;
   border: none;
   color: var(--charcoal-soft);
-  font-family: 'JetBrains Mono', monospace;
+  font-family: 'JetBrains Mono', 'Noto Sans SC', monospace;
   font-size: 11px;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
+  letter-spacing: 0.14em;
   text-decoration: underline;
   text-underline-offset: 3px;
   cursor: pointer;
@@ -320,55 +260,28 @@ nav.main-nav {
 }
 .remove-link:hover { color: var(--charcoal); }
 
-/* Pair upsell ===================================================== */
-.pair-upsell {
-  margin-top: 40px;
-  padding: 32px 32px;
-  background: var(--cream-light);
-  border: 1px solid var(--line);
-}
-.pair-upsell-inner {
-  display: grid;
-  grid-template-columns: 1fr auto;
-  gap: 32px;
-  align-items: center;
-}
+.pair-upsell { margin-top: 40px; padding: 32px 32px; background: var(--cream-light); border: 1px solid var(--line); }
+.pair-upsell-inner { display: grid; grid-template-columns: 1fr auto; gap: 32px; align-items: center; }
 .pair-upsell-eyebrow {
-  font-family: 'JetBrains Mono', monospace;
+  font-family: 'JetBrains Mono', 'Noto Sans SC', monospace;
   font-size: 11px;
-  letter-spacing: 0.22em;
-  text-transform: uppercase;
+  letter-spacing: 0.18em;
   color: var(--brass-deep);
   margin-bottom: 10px;
 }
 .pair-upsell-title {
-  font-family: 'Fraunces', serif;
+  font-family: 'Fraunces', 'Noto Serif SC', serif;
   font-size: clamp(20px, 2.5vw, 26px);
   font-weight: 500;
   color: var(--ink);
   margin-bottom: 8px;
-  line-height: 1.25;
+  line-height: 1.4;
 }
 .pair-upsell-title em { font-style: italic; color: var(--brass-deep); }
-.pair-upsell-body {
-  font-size: 14px;
-  color: var(--charcoal-soft);
-  line-height: 1.55;
-  max-width: 480px;
-  margin: 0;
-}
-@media (max-width: 700px) {
-  .pair-upsell-inner { grid-template-columns: 1fr; gap: 20px; }
-}
+.pair-upsell-body { font-size: 14px; color: var(--charcoal-soft); line-height: 1.75; max-width: 480px; margin: 0; }
+@media (max-width: 700px) { .pair-upsell-inner { grid-template-columns: 1fr; gap: 20px; } }
 
-/* Empty cart ====================================================== */
-.cart-empty {
-  text-align: center;
-  padding: 80px 24px;
-  border-top: 1px solid var(--line);
-  border-bottom: 1px solid var(--line);
-  margin-bottom: 40px;
-}
+.cart-empty { text-align: center; padding: 80px 24px; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); margin-bottom: 40px; }
 .cart-empty-mark {
   width: 80px;
   height: 80px;
@@ -381,74 +294,49 @@ nav.main-nav {
   color: var(--brass-deep);
 }
 .cart-empty h2 {
-  font-family: 'Fraunces', serif;
+  font-family: 'Fraunces', 'Noto Serif SC', serif;
   font-size: 28px;
   font-weight: 500;
   margin-bottom: 12px;
   color: var(--ink);
   font-style: italic;
 }
-.cart-empty p {
-  color: var(--charcoal-soft);
-  margin-bottom: 32px;
-  max-width: 420px;
-  margin-left: auto;
-  margin-right: auto;
-}
+.cart-empty p { color: var(--charcoal-soft); margin-bottom: 32px; max-width: 420px; margin-left: auto; margin-right: auto; }
 
-/* Order summary =================================================== */
-.summary {
-  background: var(--ink);
-  color: var(--cream);
-  padding: 36px 32px;
-  position: sticky;
-  top: 100px;
-}
+.summary { background: var(--ink); color: var(--cream); padding: 36px 32px; position: sticky; top: 100px; }
 .summary h3 {
-  font-family: 'JetBrains Mono', monospace;
+  font-family: 'JetBrains Mono', 'Noto Sans SC', monospace;
   font-size: 11px;
-  letter-spacing: 0.22em;
-  text-transform: uppercase;
+  letter-spacing: 0.18em;
   color: var(--brass-light);
   margin-bottom: 24px;
 }
-.summary-line {
-  display: flex;
-  justify-content: space-between;
-  padding: 14px 0;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-  font-size: 14px;
-}
+.summary-line { display: flex; justify-content: space-between; padding: 14px 0; border-bottom: 1px solid rgba(255, 255, 255, 0.1); font-size: 14px; }
 .summary-line:last-of-type { border-bottom: none; }
 .summary-line.total {
   padding-top: 20px;
   margin-top: 8px;
   border-top: 1px solid rgba(255, 255, 255, 0.2);
-  font-family: 'Fraunces', serif;
+  font-family: 'Fraunces', 'Noto Serif SC', serif;
   font-size: 22px;
   font-weight: 500;
 }
-.summary-line.total span:last-child {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 20px;
-}
+.summary-line.total span:last-child { font-family: 'JetBrains Mono', 'Noto Sans SC', monospace; font-size: 20px; }
 .summary-line .muted { opacity: 0.55; font-size: 12px; }
 .summary-meta {
-  font-family: 'JetBrains Mono', monospace;
+  font-family: 'JetBrains Mono', 'Noto Sans SC', monospace;
   font-size: 10px;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
+  letter-spacing: 0.14em;
   color: rgba(245, 241, 232, 0.55);
   margin-top: 20px;
-  line-height: 1.7;
+  line-height: 1.85;
 }
 
-/* Stripe BNPL messaging (mock) ==================================== */
 .bnpl-messaging {
   margin-top: 20px;
   padding: 12px 14px;
   border: 1px solid rgba(245, 241, 232, 0.18);
-  font-family: 'Manrope', sans-serif;
+  font-family: 'Manrope', 'Noto Sans SC', sans-serif;
   font-size: 12px;
   text-align: center;
   color: rgba(245, 241, 232, 0.85);
@@ -457,70 +345,34 @@ nav.main-nav {
 .bnpl-messaging strong { font-weight: 500; color: var(--cream); }
 .bnpl-brands {
   margin-top: 6px;
-  font-family: 'JetBrains Mono', monospace;
+  font-family: 'JetBrains Mono', 'Noto Sans SC', monospace;
   font-size: 10px;
-  letter-spacing: 0.2em;
+  letter-spacing: 0.18em;
   color: var(--brass-light);
-  text-transform: uppercase;
 }
 .summary .btn { width: 100%; margin-top: 28px; padding: 22px 32px; font-size: 15px; }
-.summary .btn-primary {
-  background: var(--cream);
-  color: var(--ink);
-  border-color: var(--cream);
-}
+.summary .btn-primary { background: var(--cream); color: var(--ink); border-color: var(--cream); }
 .summary .btn-primary:hover { background: var(--brass); border-color: var(--brass); color: var(--ink); }
 
-/* Footer ========================================================= */
-footer {
-  background: var(--ink);
-  color: var(--cream);
-  padding: 80px 0 40px;
-}
-.footer-grid {
-  display: grid;
-  grid-template-columns: 2fr 1fr 1fr 1fr 1fr;
-  gap: 60px;
-  margin-bottom: 60px;
-}
-.footer-brand p {
-  font-size: 14px;
-  color: rgba(245, 241, 232, 0.6);
-  max-width: 280px;
-  margin-top: 16px;
-}
+footer { background: var(--ink); color: var(--cream); padding: 80px 0 40px; }
+.footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr 1fr; gap: 60px; margin-bottom: 60px; }
+.footer-brand p { font-size: 14px; color: rgba(245, 241, 232, 0.6); max-width: 280px; margin-top: 16px; }
 .footer-brand .logo { color: var(--cream); }
 .footer-col h4 {
-  font-family: 'JetBrains Mono', monospace;
+  font-family: 'JetBrains Mono', 'Noto Sans SC', monospace;
   font-size: 11px;
-  letter-spacing: 0.22em;
-  text-transform: uppercase;
+  letter-spacing: 0.18em;
   color: var(--brass-light);
   margin-bottom: 20px;
 }
 .footer-col ul { list-style: none; }
 .footer-col ul li { margin-bottom: 10px; }
-.footer-col ul a {
-  color: rgba(245, 241, 232, 0.7);
-  text-decoration: none;
-  font-size: 14px;
-  transition: color 200ms;
-}
+.footer-col ul a { color: rgba(245, 241, 232, 0.7); text-decoration: none; font-size: 14px; transition: color 200ms; }
 .footer-col ul a:hover { color: var(--cream); }
-.footer-bottom {
-  padding-top: 32px;
-  border-top: 1px solid rgba(255, 255, 255, 0.1);
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  font-size: 12px;
-  color: rgba(245, 241, 232, 0.5);
-}
+.footer-col .lang-note { color: rgba(245, 241, 232, 0.4); font-size: 11px; font-style: italic; margin-top: 4px; display: block; }
+.footer-bottom { padding-top: 32px; border-top: 1px solid rgba(255, 255, 255, 0.1); display: flex; justify-content: space-between; align-items: center; font-size: 12px; color: rgba(245, 241, 232, 0.5); }
 .footer-trust { display: flex; gap: 24px; }
-@media (max-width: 1024px) {
-  .footer-grid { grid-template-columns: 1fr 1fr; gap: 40px; }
-  .footer-brand { grid-column: span 2; }
-}
+@media (max-width: 1024px) { .footer-grid { grid-template-columns: 1fr 1fr; gap: 40px; } .footer-brand { grid-column: span 2; } }
 @media (max-width: 600px) {
   .footer-grid { grid-template-columns: 1fr; }
   .footer-brand { grid-column: span 1; }
@@ -533,14 +385,14 @@ footer {
 
 <nav class="main-nav">
   <div class="container nav-grid">
-    <a href="designer.html" class="back-link">
+    <a href="designer-zh.html" class="back-link">
       <span style="font-family: monospace;">←</span>
-      Continue customizing
+      继续定制
     </a>
-    <a href="index.html" class="logo">MARLOWE</a>
+    <a href="index-zh.html" class="logo">MARLOWE</a>
     <div class="nav-cta">
-      <a href="designer.html">Open The Designer</a>
-      <a href="login.html" class="auth-pill" id="nav-auth-pill">Sign in</a>
+      <a href="designer-zh.html">打开设计器</a>
+      <a href="login-zh.html" class="auth-pill" id="nav-auth-pill">登录</a>
     </div>
   </div>
 </nav>
@@ -550,54 +402,51 @@ footer {
 
     <header class="cart-header">
       <div>
-        <div class="eyebrow" style="margin-bottom: 14px;">§ Cart</div>
-        <h1>Your cart</h1>
+        <div class="eyebrow" style="margin-bottom: 14px;">§ 购物车</div>
+        <h1>你的购物车</h1>
       </div>
-      <div class="cart-count" id="cart-count">— items</div>
+      <div class="cart-count" id="cart-count">— 件</div>
     </header>
 
     <div class="cart-grid">
 
-      <!-- Items list -->
       <section>
         <div id="items-container">
-          <!-- Populated by JS -->
+          <!-- 由 JS 填充 -->
         </div>
       </section>
 
-      <!-- Order summary -->
       <aside id="summary-aside">
         <div class="summary">
-          <h3>§ Order summary</h3>
+          <h3>§ 订单摘要</h3>
           <div class="summary-line">
-            <span>Subtotal</span>
+            <span>小计</span>
             <span id="sum-subtotal">$0.00</span>
           </div>
           <div class="summary-line">
-            <span>Shipping <span class="muted">U.S. standard</span></span>
-            <span>Free</span>
+            <span>运费 <span class="muted">美区标准</span></span>
+            <span>免费</span>
           </div>
           <div class="summary-line">
-            <span>Sales tax <span class="muted">calculated at checkout</span></span>
+            <span>销售税 <span class="muted">结账时计算</span></span>
             <span>—</span>
           </div>
           <div class="summary-line total">
-            <span>Total</span>
+            <span>合计</span>
             <span id="sum-total">$0.00</span>
           </div>
           <button class="btn btn-primary btn-block" onclick="proceedToCheckout()" id="checkout-btn">
-            Proceed to Checkout
+            前往结账
             <span class="btn-arrow">→</span>
           </button>
-          <!-- TODO BACKEND: replace with Stripe Payment Method Messaging Element.
-               Amount = subtotal in cents. Updates as cart contents change. -->
+          <!-- TODO BACKEND: 替换为 Stripe Payment Method Messaging Element -->
           <div class="bnpl-messaging" id="bnpl-mount-cart" style="display: none;">
-            Or <strong>4 interest-free payments of <span id="bnpl-installment">$0.00</span></strong>
+            也可分 4 期，每期 <strong><span id="bnpl-installment">$0.00</span></strong> 免息
             <div class="bnpl-brands">Klarna · Afterpay · Affirm</div>
           </div>
           <div class="summary-meta">
-            Each tag is engraved to order in California.<br>
-            7–10 business days production · Free U.S. shipping · 24-hour cancellation window.
+            每枚牌都在加州按单雕刻。<br>
+            7–10 个工作日生产 · 美区免运费 · 24 小时取消窗口。
           </div>
         </div>
       </aside>
@@ -610,48 +459,50 @@ footer {
   <div class="container">
     <div class="footer-grid">
       <div class="footer-brand">
-        <a href="index.html" class="logo">MARLOWE</a>
-        <p>Titanium portrait tags, engraved one at a time in California.</p>
+        <a href="index-zh.html" class="logo">MARLOWE</a>
+        <p>钛合金肖像铭牌。在加州，一次手工雕刻一枚。</p>
       </div>
       <div class="footer-col">
-        <h4>Shop</h4>
+        <h4>购物</h4>
         <ul>
-          <li><a href="designer.html">The Designer</a></li>
-          <li><a href="collars.html">Collars</a></li>
-          <li><a href="#">Gift Cards</a></li>
-          <li><a href="#">Care &amp; Repair</a></li>
+          <li><a href="designer-zh.html">设计器</a></li>
+          <li><a href="collars-zh.html">皮革项圈</a></li>
+          <li><a href="#">礼品卡</a></li>
+          <li><a href="#">保养与修复</a></li>
         </ul>
       </div>
       <div class="footer-col">
-        <h4>About</h4>
+        <h4>关于</h4>
         <ul>
-          <li><a href="index.html#story">Our Story</a></li>
-          <li><a href="index.html#how">How It Works</a></li>
-          <li><a href="#">Press</a></li>
+          <li><a href="index-zh.html#story">品牌故事</a></li>
+          <li><a href="index-zh.html#how">工艺流程</a></li>
+          <li><a href="#">媒体报道</a></li>
         </ul>
       </div>
       <div class="footer-col">
-        <h4>Help</h4>
+        <h4>帮助</h4>
         <ul>
-          <li><a href="shipping.html">Shipping</a></li>
-          <li><a href="returns.html">Returns</a></li>
-          <li><a href="contact.html">Contact</a></li>
+          <li><a href="shipping.html">物流</a></li>
+          <li><a href="returns.html">退换货</a></li>
+          <li><a href="contact.html">联系我们</a></li>
         </ul>
+        <span class="lang-note">以上为英文页面</span>
       </div>
       <div class="footer-col">
-        <h4>Legal</h4>
+        <h4>条款</h4>
         <ul>
-          <li><a href="privacy.html">Privacy</a></li>
-          <li><a href="terms.html">Terms</a></li>
+          <li><a href="privacy.html">隐私政策</a></li>
+          <li><a href="terms.html">服务条款</a></li>
         </ul>
+        <span class="lang-note">以上为英文页面</span>
       </div>
     </div>
     <div class="footer-bottom">
-      <span>© 2026 Marlowe &amp; Co. Made with care · California, USA.</span>
+      <span>© 2026 Marlowe &amp; Co. 用心制造 · 加州，美国</span>
       <div class="footer-trust">
-        <span>Stripe Secured</span>
-        <span>SSL Protected</span>
-        <span>30-Day Quality Guarantee</span>
+        <span>Stripe 加密支付</span>
+        <span>SSL 加密</span>
+        <span>30 天质量保证</span>
       </div>
     </div>
   </div>
@@ -664,10 +515,7 @@ function readCart() {
   try { return JSON.parse(localStorage.getItem(CART_KEY) || '[]'); }
   catch (e) { return []; }
 }
-function writeCart(cart) {
-  localStorage.setItem(CART_KEY, JSON.stringify(cart));
-}
-
+function writeCart(cart) { localStorage.setItem(CART_KEY, JSON.stringify(cart)); }
 function fmt(n) { return '$' + n.toFixed(2); }
 
 function render() {
@@ -684,15 +532,15 @@ function render() {
             <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4zM3 6h18"/>
           </svg>
         </div>
-        <h2>Your cart is empty.</h2>
-        <p>Each tag is one-of-one. Start by uploading a photo of your dog.</p>
-        <a href="designer.html" class="btn btn-primary">
-          Open The Designer
+        <h2>购物车是空的。</h2>
+        <p>每一枚牌都是独一无二的。先上传一张你家狗狗的照片。</p>
+        <a href="designer-zh.html" class="btn btn-primary">
+          打开设计器
           <span class="btn-arrow">→</span>
         </a>
       </div>
     `;
-    countEl.textContent = '0 items';
+    countEl.textContent = '0 件';
     checkoutBtn.disabled = true;
     checkoutBtn.style.opacity = 0.4;
     checkoutBtn.style.cursor = 'not-allowed';
@@ -703,7 +551,7 @@ function render() {
   }
 
   const totalItems = cart.reduce((n, it) => n + it.quantity, 0);
-  countEl.textContent = totalItems + (totalItems === 1 ? ' item' : ' items');
+  countEl.textContent = totalItems + ' 件';
   checkoutBtn.disabled = false;
   checkoutBtn.style.opacity = 1;
   checkoutBtn.style.cursor = 'pointer';
@@ -714,7 +562,7 @@ function render() {
   const subtotal = cart.reduce((sum, it) => sum + (it.unitPrice * it.quantity), 0);
   document.getElementById('sum-subtotal').textContent = fmt(subtotal);
   document.getElementById('sum-total').textContent = fmt(subtotal);
-  // BNPL only shows when subtotal ≥ $35 (Klarna / Afterpay minimum)
+
   const bnpl = document.getElementById('bnpl-mount-cart');
   if (subtotal >= 35) {
     bnpl.style.display = 'block';
@@ -725,7 +573,6 @@ function render() {
 }
 
 function renderItem(it, idx) {
-  // Legacy items without productType default to 'tag' for backward compatibility
   const type = it.productType || 'tag';
   return `
     <article class="cart-item">
@@ -740,7 +587,7 @@ function renderItem(it, idx) {
           <div class="qty-value">${it.quantity}</div>
           <button class="qty-btn" onclick="changeQty(${idx}, 1)">+</button>
         </div>
-        <button class="remove-link" onclick="removeItem(${idx})">Remove</button>
+        <button class="remove-link" onclick="removeItem(${idx})">移除</button>
       </div>
     </article>
   `;
@@ -750,51 +597,51 @@ function renderTagMeta(it) {
   return `
     <h2 class="cart-item-title">${escapeHTML(it.shapeName)}</h2>
     <div class="cart-item-attr">
-      <span class="cart-item-attr-label">Finish</span>
+      <span class="cart-item-attr-label">底色</span>
       <span>${escapeHTML(it.colorName)}</span>
     </div>
     <div class="cart-item-attr">
-      <span class="cart-item-attr-label">Engraved name</span>
+      <span class="cart-item-attr-label">刻字 · 名字</span>
       <span>${escapeHTML(it.petName)}</span>
     </div>
     <div class="cart-item-attr">
-      <span class="cart-item-attr-label">Engraved phone</span>
+      <span class="cart-item-attr-label">刻字 · 电话</span>
       <span>${escapeHTML(it.petPhone)}</span>
     </div>
-    ${it.tagId ? `<div class="cart-item-tagid">One-of-one · #${escapeHTML(it.tagId)}</div>` : ''}
+    ${it.tagId ? `<div class="cart-item-tagid">独一无二 · #${escapeHTML(it.tagId)}</div>` : ''}
   `;
 }
 
 function renderCollarMeta(it) {
   return `
-    <h2 class="cart-item-title">Leather Collar</h2>
+    <h2 class="cart-item-title">皮革项圈</h2>
     <div class="cart-item-attr">
-      <span class="cart-item-attr-label">Color</span>
+      <span class="cart-item-attr-label">颜色</span>
       <span>${escapeHTML(it.colorName)}</span>
     </div>
     <div class="cart-item-attr">
-      <span class="cart-item-attr-label">Size</span>
+      <span class="cart-item-attr-label">尺寸</span>
       <span>${escapeHTML(it.size)}${it.sizeRange ? ' · ' + escapeHTML(it.sizeRange) : ''}</span>
     </div>
-    <div class="cart-item-tagid">Veg-tan leather · titanium hardware</div>
+    <div class="cart-item-tagid">植鞣牛皮 · 钛合金扣件</div>
   `;
 }
 
 function renderPairUpsell(cart) {
   const hasTag = cart.some(it => (it.productType || 'tag') === 'tag');
   const hasCollar = cart.some(it => it.productType === 'collar');
-  if (!hasTag || hasCollar) return '';  // only show when tag present + no collar yet
+  if (!hasTag || hasCollar) return '';
 
   return `
     <div class="pair-upsell">
       <div class="pair-upsell-inner">
         <div>
-          <div class="pair-upsell-eyebrow">§ Pair with a collar</div>
-          <h3 class="pair-upsell-title">The tag is the portrait. <em>The collar is the frame.</em></h3>
-          <p class="pair-upsell-body">Veg-tan leather, titanium hardware. Three colors, five sizes. Made to order alongside your tag — shipped together. $49.</p>
+          <div class="pair-upsell-eyebrow">§ 配一条项圈</div>
+          <h3 class="pair-upsell-title">牌是肖像。<em>项圈是它的框。</em></h3>
+          <p class="pair-upsell-body">植鞣牛皮 + 钛合金扣件。3 种颜色，5 个尺寸。跟牌一起按单制造、一起发货。$49。</p>
         </div>
-        <a href="collars.html" class="btn btn-outline">
-          Shop collars
+        <a href="collars-zh.html" class="btn btn-outline">
+          看皮革项圈
           <span class="btn-arrow">→</span>
         </a>
       </div>
@@ -826,7 +673,7 @@ function removeItem(idx) {
 function proceedToCheckout() {
   const cart = readCart();
   if (cart.length === 0) return;
-  window.location.href = 'checkout.html';
+  window.location.href = 'checkout-zh.html';
 }
 
 render();
@@ -841,11 +688,11 @@ render();
     if (user) {
       const initial = (user.email || '?').charAt(0).toUpperCase();
       const handle = (user.email || '').split('@')[0];
-      pill.href = 'account.html';
+      pill.href = 'account-zh.html';
       pill.innerHTML = `<span class="auth-pill-avatar">${initial}</span><span>${handle}</span>`;
     } else {
-      pill.href = 'login.html';
-      pill.innerHTML = 'Sign in';
+      pill.href = 'login-zh.html';
+      pill.innerHTML = '登录';
     }
   }
   paint(MarloweAuth.getUser());

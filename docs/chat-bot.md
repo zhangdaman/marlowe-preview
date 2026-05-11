@@ -92,6 +92,9 @@ Every leaf answer ends with two persistent options: **Ask another question** (re
 **Will I get a refund or a remake?**
 > Our default is to remake the tag at no cost to you. If a remake isn't possible — same defect twice, or you no longer want the tag — we issue a full refund through Stripe.
 
+**What about damage years later?**
+> Titanium itself rarely fails — it outlasts plated steel, doesn't tarnish, doesn't rust. Normal wear over years is expected and within the design intent. For manufacturing defects or engraving errors, contact us within 14 days of delivery (see Returns policy).
+
 ### Topic 4 — The Designer & AI
 
 **How does the AI portrait work?**
@@ -109,7 +112,22 @@ Every leaf answer ends with two persistent options: **Ask another question** (re
 ### Topic 5 — Materials & care
 
 **What's the tag made of?**
-> Aerospace-grade titanium. Lighter than steel, hypoallergenic, and will not rust. We use precision low-relief engraving for the outline and halftone engraving for photo-level detail.
+> Aerospace-grade titanium — the same alloy used in the Apollo lunar module hull, surgical implants, and high-end watch cases. We engrave it with low-relief for the outline and halftone for photo-level detail.
+
+**Why titanium instead of steel or brass?**
+> Three reasons: it's 60% lighter than aluminum and twice as hard as steel (so it doesn't dent), it never rusts (unlike steel and unlike brass which oxidizes green), and it's hypoallergenic (same reason it's used for body implants). Brass tags eventually turn green; aluminum tags bend and the print rubs off. Titanium does neither.
+
+**Is it heavy on my dog's neck?**
+> No. Titanium is dramatically lighter than it looks — about 60% the weight of aluminum at the same volume, and about half the weight of stainless steel. Most owners say their dog doesn't notice it's there.
+
+**Will it set off airport security?**
+> No. Titanium is non-magnetic and doesn't trigger standard metal detectors the way steel does. Same reason titanium-frame eyeglasses don't.
+
+**What if my dog chews it?**
+> Titanium is harder than dog enamel. Aggressive chewers can put cosmetic scratches on the polished surface, but the tag won't bend, crack, or break — and the engraving is cut into the metal, not painted on, so it stays readable.
+
+**Will it irritate sensitive skin?**
+> No. We use the same medical-grade titanium used for surgical implants. It's specifically chosen because it doesn't cause skin reactions, even in dogs with nickel sensitivity or allergic dermatitis.
 
 **Will it rust or fade?**
 > No. Titanium does not rust. The engraving is cut into the metal — not printed — so it won't wear off with daily use.
@@ -152,7 +170,7 @@ Every leaf answer ends with two persistent options: **Ask another question** (re
 ### Topic 8 — Pricing & payment
 
 **How much does a tag cost?**
-> $79 for any combination of shape (Shield, Octagon, Disc) and finish (5 options). Free engraving included. Free U.S. standard shipping included.
+> $109 for the Shield tag in any of 5 titanium finishes. Free engraving included. Free U.S. standard shipping included.
 
 **What payment methods do you accept?**
 > Credit and debit cards, Apple Pay, and Google Pay — processed securely by Stripe. We never see or store your card number.
@@ -163,7 +181,37 @@ Every leaf answer ends with two persistent options: **Ask another question** (re
 **Is there sales tax?**
 > Sales tax is calculated at checkout based on your shipping address, per U.S. state requirements.
 
-### Topic 9 — Talk to a person
+**How much does a collar cost?**
+> $49 for any color (Tan, Saddle, Black) and any size (XS–XL). Free U.S. shipping. If you add it to a tag order, both ship together.
+
+**Can I pay in installments?**
+> Yes — at checkout you can pay in 4 interest-free installments via Klarna, Afterpay, or Affirm. For a $109 tag that's $27.25 every 2 weeks. No application, no credit-check impact for the Pay-in-4 option. All processed securely through Stripe.
+
+### Topic 9 — Collars
+
+**What's the collar made of?**
+> Full-grain vegetable-tanned cowhide, 3–4 mm thick, with brushed titanium buckle and D-ring. Hand saddle-stitched, edges burnished and beeswax-sealed.
+> Read full spec: [Collars](collars.html)
+
+**What sizes do you offer?**
+> Five sizes — XS (25–33 cm), S (30–40 cm), M (35–50 cm), L (45–60 cm), XL (55–70 cm). Width is 25 mm (1") across all sizes.
+
+**How do I measure my dog?**
+> Wrap a soft tape around the base of the dog's neck where the collar will sit, then add about 2 cm (0.75") for comfort. If your dog is between sizes, size up — leather softens with wear and our buckle has 7 adjustment holes.
+
+**Can I exchange if the size is wrong?**
+> Yes — free size or color exchanges within 30 days of delivery, as long as the collar is unworn or only lightly tried on. This is more lenient than our tag policy because collars are not personalized.
+
+**Do I have to buy a collar with my tag?**
+> No. The collar is an optional companion. You can buy a tag alone, a collar alone, or both together. If both are in the order, they ship together.
+
+**Will the leather match my titanium tag?**
+> The collar hardware (buckle, D-ring) is the same titanium grade as the tag. Titanium Silver pairs most cleanly; the other finishes (Champagne Gold / Sky Blue / Storm Black / Rose Copper) work with all three leather colors.
+
+**How do I care for the leather?**
+> Wipe with a damp cloth and dry naturally. Treat with a small amount of unscented leather conditioner every 3–6 months. Avoid prolonged soaking. Tan leather will darken with use — this is expected patina, not damage.
+
+### Topic 10 — Talk to a person
 
 > We respond within 1 business day, often sooner.
 >
@@ -212,6 +260,9 @@ Every leaf answer ends with two persistent options: **Ask another question** (re
 **退款还是重做？**
 > 我们的默认方案是免费重做。如果无法重做（同样问题反复出现、或你不再想要），我们通过 Stripe 全额退款。
 
+**几年后坏了怎么办？**
+> 钛合金牌本身极少出问题——它比镀铬不锈钢更耐用，不掉色不生锈。日常使用磨损在我们的预期之内。如果是制造缺陷或刻字错误，14 天内联系我们处理（详见退换政策）。
+
 ### 主题 4 — 设计器与 AI
 
 **AI 肖像怎么生成？**
@@ -229,7 +280,22 @@ Every leaf answer ends with two persistent options: **Ask another question** (re
 ### 主题 5 — 材质与保养
 
 **牌是什么材质？**
-> 航天级钛合金。比钢更轻、低致敏、永不生锈。浅浮雕勾轮廓，影雕呈现照片级细节。
+> 航天级钛合金——阿波罗登月舱外壳、外科植入物、高端手表表壳的同款金属。浅浮雕勾轮廓，影雕呈现照片级细节。
+
+**为什么用钛合金而不是钢或铜？**
+> 三个原因：比铝轻 60%、比钢硬一倍（不会凹陷）；永不生锈（钢会锈，铜会氧化变绿）；低致敏（医用植入物同款）。铜牌时间久了会绿，铝牌会弯曲、印刷会磨掉。钛合金这些都不会。
+
+**戴在狗脖子上会重吗？**
+> 不重。钛合金比看起来轻得多——同体积比铝轻 60%、比不锈钢轻一半。多数主人说狗根本感觉不到。
+
+**过机场安检会响吗？**
+> 不会。钛合金是非磁性金属，不会像钢制品那样触发标准金属探测器。钛框眼镜也是同理。
+
+**狗狗咬怎么办？**
+> 钛合金比犬齿硬。咬合凶猛的狗可能在镜面留下表面划痕，但牌不会弯、不会裂、不会断——刻字是切刻进金属里的，不是印刷的，照样清晰可读。
+
+**会刺激敏感皮肤吗？**
+> 不会。我们用的是外科植入物级钛合金。即使对镍过敏或有过敏性皮炎的狗也适用——这正是它被选为植入物材质的原因。
 
 **会生锈或褪色吗？**
 > 不会。钛合金不锈，刻字是切刻而非印刷，日常使用不会磨平。
@@ -272,7 +338,7 @@ Every leaf answer ends with two persistent options: **Ask another question** (re
 ### 主题 8 — 价格与支付
 
 **一枚多少钱？**
-> $79，任意形状（盾形 / 八角 / 圆形）+ 任意表面（5 种）的组合都是统一价。免费刻字。美区免标准运费。
+> $109，盾形钛合金牌，5 种表面处理可选，免费刻字，美区免标准运费。
 
 **支持哪些支付方式？**
 > 信用卡、借记卡、Apple Pay、Google Pay——由 Stripe 安全处理。我们不接触也不存储你的卡号。
@@ -283,7 +349,37 @@ Every leaf answer ends with two persistent options: **Ask another question** (re
 **要交销售税吗？**
 > 销售税在结账时根据你的收货地址自动计算，符合美国各州规定。
 
-### 主题 9 — 联系真人
+**项圈多少钱？**
+> $49，任意颜色（Tan / Saddle / Black）和尺寸（XS–XL）。美区免运费。跟牌一起下单的话两件一起发货。
+
+**可以分期吗？**
+> 可以——结账时可选 Klarna、Afterpay 或 Affirm 分 4 期免息。$109 的牌就是每 2 周 $27.25。Pay-in-4 不查信用、不影响信用记录。全部由 Stripe 安全处理。
+
+### 主题 9 — 皮革项圈
+
+**项圈用什么材质？**
+> 全粒面植鞣牛皮，3–4 mm 厚，配钛合金 brushed 扣件和 D 环。手工马鞍缝法，边缘打磨 + 蜂蜡封边。
+> 详见 [项圈页面](collars.html)
+
+**有几个尺寸？**
+> 五个尺码——XS（25–33 cm）、S（30–40 cm）、M（35–50 cm）、L（45–60 cm）、XL（55–70 cm）。宽度统一 25 mm（1 英寸）。
+
+**怎么给狗量颈围？**
+> 用软尺绕狗脖子项圈位置一圈，加大约 2 cm（0.75 英寸）作为舒适余量。介于两档之间时——选大的。皮革会软化，扣环上有 7 个调节孔。
+
+**尺寸不合可以换吗？**
+> 可以——收货 30 天内免费换码或换色，只要未佩戴或仅试戴。这比牌的政策宽松，因为项圈没有个性化定制。
+
+**必须跟牌一起买吗？**
+> 不必。项圈是可选配件——可以只买牌、只买项圈、或两个一起。两个一起的话一并发货。
+
+**皮革会跟钛合金牌配吗？**
+> 项圈的扣件（buckle、D 环）跟牌是同款钛合金等级。钛本色最干净——其他底色（香槟金 / 钛蓝 / 深炭黑 / 玫瑰铜）跟三种皮色都搭。
+
+**皮革怎么保养？**
+> 湿布擦拭，自然风干。每 3–6 个月涂一点无香皮革保养油。避免长时间泡水。Tan 色会随使用变深——这是包浆，不是损坏。
+
+### 主题 10 — 联系真人
 
 > 我们 1 个工作日内回复，通常更快。
 >
@@ -330,7 +426,7 @@ Estimated v1.5 cost: ~$0.005/message LLM cost. 1000 chats/month ≈ $5/month —
 
 When any of the following changes, **update this file first** (single source of truth), then `chat-widget.js` re-pulls its data from here:
 
-- Pricing ($79 anywhere → search and replace)
+- Pricing ($109 anywhere → search and replace)
 - Cancellation window (24h)
 - Shipping range (US-only currently)
 - Photo retention (1 year)

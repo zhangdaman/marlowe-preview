@@ -16,6 +16,17 @@
   const REDIRECT_KEY = 'marlowe_auth_redirect_to';
   const subscribers = [];
 
+  // Language-aware page routing. Pages set <html lang="zh"> for Chinese,
+  // otherwise default to English. Used so auth redirects stay in-language.
+  function isZh() {
+    try { return (document.documentElement.lang || '').toLowerCase().startsWith('zh'); }
+    catch (e) { return false; }
+  }
+  function pageFor(base) {
+    // base e.g. "login.html" → "login-zh.html" when on a zh page
+    return isZh() ? base.replace(/\.html$/, '-zh.html') : base;
+  }
+
   function readUser() {
     try { return JSON.parse(localStorage.getItem(STORAGE_KEY) || 'null'); }
     catch (e) { return null; }
@@ -73,7 +84,7 @@
      */
     signInWithProvider(provider) {
       if (!['apple', 'google'].includes(provider)) return;
-      window.location.href = 'auth-callback.html?mock=' + encodeURIComponent(provider);
+      window.location.href = pageFor('auth-callback.html') + '?mock=' + encodeURIComponent(provider);
     },
 
     /**
@@ -138,7 +149,7 @@
       if (user) return user;
       const after = redirectTo || (window.location.pathname + window.location.search);
       sessionStorage.setItem(REDIRECT_KEY, after);
-      window.location.href = 'login.html';
+      window.location.href = pageFor('login.html');
       throw new Error('not_authenticated');
     },
 
@@ -156,7 +167,7 @@
     consumeRedirectTarget(fallback) {
       const target = sessionStorage.getItem(REDIRECT_KEY);
       sessionStorage.removeItem(REDIRECT_KEY);
-      return target || fallback || 'index.html';
+      return target || fallback || pageFor('index.html');
     },
   };
 
@@ -166,4 +177,9 @@
   window.addEventListener('storage', (e) => {
     if (e.key === STORAGE_KEY) notify(readUser());
   });
+
+  // NOTE: nav auth-pill rendering is handled per-page (inline IIFE after
+  // <script src="auth-state.js">) so pages keep full control over the
+  // pill's markup, CSS, and i18n. See cart.html / index.html footer for
+  // the standard pattern.
 })();

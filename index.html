@@ -538,15 +538,31 @@ nav.main-nav {
 
 .example-photo, .example-tag {
   aspect-ratio: 1;
-  border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
   background: var(--paper);
+  overflow: hidden;
+  position: relative;
+}
+.example-photo {
+  border-radius: 50%;
+}
+.example-photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
 }
 .example-tag {
-  background: linear-gradient(135deg, #C9B58E, #8E6F47);
-  border-radius: 8px;
+  background: transparent;
+  border-radius: 0;
+}
+.example-tag img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
 }
 
 .example-arrow {
@@ -664,36 +680,6 @@ nav.main-nav {
 .why-card:last-child { border-right: none; padding-right: 0; }
 .why-card:not(:first-child) { padding-left: 32px; }
 
-.why-callout {
-  margin-top: 64px;
-  padding: 36px 24px 8px;
-  border-top: 1px solid rgba(212, 184, 150, 0.18);
-  text-align: center;
-}
-.why-callout-eyebrow {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 11px;
-  letter-spacing: 0.22em;
-  color: var(--brass-light);
-  margin-bottom: 16px;
-  display: block;
-}
-.why-callout p {
-  font-size: 15px;
-  max-width: 560px;
-  margin: 0 auto 14px;
-  line-height: 1.65;
-  color: rgba(245, 241, 232, 0.72);
-}
-.why-callout .soon {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 11px;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-  color: var(--brass);
-  opacity: 0.75;
-}
-
 .why-num {
   font-family: 'JetBrains Mono', monospace;
   font-size: 11px;
@@ -726,6 +712,69 @@ nav.main-nav {
 }
 
 /* Story snippet =================================================== */
+/* Compare section ($109 value evidence) ============================ */
+.compare-section { background: var(--cream); }
+.compare-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: var(--cream-light);
+  border: 1px solid var(--line);
+  font-size: 14px;
+  margin-top: 32px;
+}
+.compare-table th, .compare-table td {
+  padding: 14px 18px;
+  text-align: left;
+  border-bottom: 1px solid var(--line);
+}
+.compare-table thead th {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--brass-deep);
+  font-weight: 500;
+  background: var(--paper);
+}
+.compare-table thead th.marlowe-col {
+  color: var(--ink);
+  background: var(--brass-light);
+  border-bottom: 2px solid var(--brass-deep);
+}
+.compare-table tbody th {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--charcoal-soft);
+  font-weight: 500;
+  width: 160px;
+}
+.compare-table tbody td { color: var(--charcoal-soft); }
+.compare-table tbody td.marlowe-col {
+  background: rgba(212, 184, 150, 0.16);
+  color: var(--ink);
+  font-weight: 500;
+  border-right: 1px solid var(--brass);
+  border-left: 1px solid var(--brass);
+}
+.compare-table tbody tr:last-child td { border-bottom: none; }
+.compare-table tbody tr:last-child td.marlowe-col { border-bottom: 1px solid var(--brass); }
+.compare-footer {
+  max-width: 720px;
+  margin: 32px auto 0;
+  font-size: 15px;
+  line-height: 1.7;
+  color: var(--charcoal-soft);
+  text-align: center;
+}
+@media (max-width: 700px) {
+  .compare-table { font-size: 12px; }
+  .compare-table th, .compare-table td { padding: 10px 12px; }
+  .compare-table tbody th { width: 100px; }
+}
+
+
 .story {
   background: var(--cream);
 }
@@ -806,6 +855,73 @@ nav.main-nav {
   .story-grid { grid-template-columns: 1fr; gap: 48px; }
 }
 
+/* Collar tease ==================================================== */
+.collar-tease { background: var(--paper); border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+.collar-tease-grid {
+  display: grid;
+  grid-template-columns: 6fr 5fr;
+  gap: 96px;
+  align-items: center;
+}
+.collar-tease-visual {
+  background: var(--cream-light);
+  border: 1px solid var(--line);
+  padding: 64px 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  aspect-ratio: 5/4;
+  position: relative;
+}
+.collar-tease-visual svg { width: 100%; height: 100%; display: block; }
+.collar-tease-content { max-width: 460px; }
+.collar-tease-content .eyebrow { display: inline-block; margin-bottom: 18px; }
+.collar-tease-content h2 {
+  font-family: 'Fraunces', serif;
+  font-size: clamp(36px, 4.4vw, 52px);
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+  font-weight: 400;
+  color: var(--ink);
+  margin-bottom: 24px;
+}
+.collar-tease-content h2 em { font-style: italic; color: var(--brass-deep); }
+.collar-tease-content p {
+  font-size: 17px;
+  line-height: 1.7;
+  color: var(--charcoal-soft);
+  margin-bottom: 28px;
+}
+.collar-tease-meta {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  margin-bottom: 32px;
+  flex-wrap: wrap;
+}
+.collar-tease-meta .swatch-row { display: flex; gap: 10px; }
+.collar-tease-meta .swatch {
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  border: 1px solid rgba(0,0,0,0.18);
+}
+.collar-tease-meta .swatch.tan    { background: linear-gradient(135deg, #D4A574 0%, #A07845 100%); }
+.collar-tease-meta .swatch.saddle { background: linear-gradient(135deg, #7A4A28 0%, #4A2D15 100%); }
+.collar-tease-meta .swatch.black  { background: linear-gradient(135deg, #2A2A2A 0%, #0D0D0D 100%); }
+.collar-tease-meta .meta-text {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--charcoal-soft);
+}
+.collar-tease-meta .meta-text strong { color: var(--charcoal); font-weight: 500; }
+@media (max-width: 900px) {
+  .collar-tease-grid { grid-template-columns: 1fr; gap: 48px; }
+  .collar-tease-visual { aspect-ratio: 4/3; padding: 40px 24px; }
+}
+
 /* UGC pack ======================================================== */
 .pack {
   background: var(--paper);
@@ -847,6 +963,21 @@ nav.main-nav {
   transition: opacity 250ms;
 }
 .pack-photo:hover::after { opacity: 1; }
+.pack-photo:not([data-name])::after { display: none; }
+
+.pack-lede {
+  max-width: 600px;
+  margin: 0 0 40px;
+  font-size: 17px;
+  line-height: 1.65;
+  color: var(--charcoal-soft);
+}
+.pack-lede a {
+  color: var(--brass-deep);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.pack-lede a:hover { color: var(--charcoal); }
 
 .pack-photo:nth-child(1) { background: var(--rose); grid-row: span 2; }
 .pack-photo:nth-child(2) { background: var(--brass-light); }
@@ -987,6 +1118,7 @@ footer {
   <div class="container nav-grid">
     <ul class="nav-links">
       <li><a href="designer.html">The Designer</a></li>
+      <li><a href="collars.html">Collars</a></li>
       <li><a href="#how">How It Works</a></li>
       <li><a href="#story">Story</a></li>
     </ul>
@@ -1025,7 +1157,7 @@ footer {
         <a href="#how" class="btn btn-outline">See how it works</a>
       </div>
       <div class="hero-meta">
-        <span>From $79</span>
+        <span>From $109</span>
         <span>Free engraving</span>
         <span>Lifetime warranty</span>
       </div>
@@ -1078,71 +1210,47 @@ footer {
       <div class="example-card">
         <div class="example-pair">
           <div class="example-photo">
-            <svg viewBox="0 0 100 100" width="60%" height="60%" xmlns="http://www.w3.org/2000/svg">
-              <g stroke="#1F2937" fill="none" stroke-width="1.5">
-                <path d="M30,45 Q30,28 48,26 Q70,24 79,36 Q85,45 83,58 Q80,70 73,74 L70,82 L65,78 L60,86 L55,80 L50,84 L44,78 Q35,74 31,64 Q28,54 30,45 Z"/>
-                <circle cx="59" cy="45" r="1.5" fill="#1F2937"/>
-                <ellipse cx="79" cy="46" rx="3" ry="2.5" fill="#1F2937"/>
-              </g>
-            </svg>
+            <img src="page/Buddy.png" alt="Buddy">
           </div>
           <div class="example-arrow">→</div>
           <div class="example-tag">
-            <div style="color: rgba(245,241,232,0.9); font-family: 'Fraunces', serif; font-size: 14px; letter-spacing: 1px;">SADIE</div>
+            <img src="page/Buddy-1.png" alt="Buddy's titanium tag">
           </div>
         </div>
         <div class="example-meta">
-          <span class="example-name">Sadie</span>
-          <span class="example-loc">Lab · Brooklyn</span>
+          <span class="example-name">Buddy</span>
+          <span class="example-loc">Corgi · Brooklyn</span>
         </div>
       </div>
 
       <div class="example-card">
         <div class="example-pair">
-          <div class="example-photo" style="background: var(--rose);">
-            <svg viewBox="0 0 100 100" width="60%" height="60%" xmlns="http://www.w3.org/2000/svg">
-              <g stroke="#1F2937" fill="none" stroke-width="1.5">
-                <path d="M28,40 Q28,22 50,20 Q72,18 80,30 Q85,38 84,52 Q82,68 76,74 L72,82 L66,78 L60,84 L54,80 L48,84 L42,80 Q32,76 28,62 Q26,50 28,40 Z"/>
-                <path d="M30,28 Q24,18 30,12 Q42,15 40,30 Z" fill="#1F2937" opacity="0.85"/>
-                <path d="M75,28 Q82,18 78,10 Q66,12 70,28 Z" fill="#1F2937" opacity="0.85"/>
-                <circle cx="42" cy="42" r="1.5" fill="#1F2937"/>
-                <circle cx="65" cy="42" r="1.5" fill="#1F2937"/>
-                <ellipse cx="54" cy="55" rx="3" ry="2" fill="#1F2937"/>
-              </g>
-            </svg>
+          <div class="example-photo">
+            <img src="page/Hunter.png" alt="Hunter">
           </div>
           <div class="example-arrow">→</div>
-          <div class="example-tag" style="background: linear-gradient(135deg, #4A5568, #2D3748);">
-            <div style="color: rgba(245,241,232,0.9); font-family: 'Fraunces', serif; font-size: 14px; letter-spacing: 1px;">MAX</div>
+          <div class="example-tag">
+            <img src="page/hunter-1.png" alt="Hunter's titanium tag">
           </div>
         </div>
         <div class="example-meta">
-          <span class="example-name">Max</span>
-          <span class="example-loc">Cocker · Austin</span>
+          <span class="example-name">Hunter</span>
+          <span class="example-loc">Beagle · Austin</span>
         </div>
       </div>
 
       <div class="example-card">
         <div class="example-pair">
-          <div class="example-photo" style="background: var(--brass-light);">
-            <svg viewBox="0 0 100 100" width="60%" height="60%" xmlns="http://www.w3.org/2000/svg">
-              <g stroke="#1F2937" fill="none" stroke-width="1.5">
-                <path d="M32,42 Q30,25 50,22 Q72,20 80,32 Q86,42 83,56 Q80,70 73,76 L68,84 L62,80 L56,86 L50,82 L44,80 Q34,76 30,64 Q28,52 32,42 Z"/>
-                <path d="M30,30 Q22,22 26,12 Q40,15 38,30 Z" fill="#1F2937" opacity="0.7"/>
-                <circle cx="46" cy="44" r="1.5" fill="#1F2937"/>
-                <circle cx="65" cy="44" r="1.5" fill="#1F2937"/>
-                <ellipse cx="56" cy="58" rx="3" ry="2" fill="#1F2937"/>
-                <path d="M50,68 Q56,72 62,68" stroke-width="1"/>
-              </g>
-            </svg>
+          <div class="example-photo">
+            <img src="page/Sunny.png" alt="Sunny">
           </div>
           <div class="example-arrow">→</div>
-          <div class="example-tag" style="background: linear-gradient(135deg, #C7C0B5, #8C8478);">
-            <div style="color: rgba(245,241,232,0.9); font-family: 'Fraunces', serif; font-size: 14px; letter-spacing: 1px;">RILEY</div>
+          <div class="example-tag">
+            <img src="page/Sunny-1.png" alt="Sunny's titanium tag">
           </div>
         </div>
         <div class="example-meta">
-          <span class="example-name">Riley</span>
+          <span class="example-name">Sunny</span>
           <span class="example-loc">Golden · Portland</span>
         </div>
       </div>
@@ -1217,8 +1325,8 @@ footer {
       </div>
       <div class="why-card">
         <span class="why-num">B</span>
-        <h3 class="why-title">Better materials. Less waste.</h3>
-        <p class="why-desc">Made-to-order means we don't carry inventory we'll never sell. We engrave on aerospace-grade titanium—lighter than steel, hypoallergenic, will not rust. Each piece is cut from raw stock when you order it, made specifically for this design and no other.</p>
+        <h3 class="why-title">Built from the same alloy as Apollo.</h3>
+        <p class="why-desc">Aerospace-grade titanium—the metal used in the Apollo lunar module hull, surgical implants, and high-end watch cases. 60% lighter than aluminum, twice as hard as steel, hypoallergenic, and it will never rust. Your dog can swim it, dig with it, chew its own collar—the tag won't notice. Each piece is cut from raw stock when you order it, never carried as inventory.</p>
       </div>
       <div class="why-card">
         <span class="why-num">C</span>
@@ -1227,10 +1335,161 @@ footer {
       </div>
     </div>
 
-    <div class="why-callout">
-      <span class="why-callout-eyebrow">§ Reorder · Yearly portraits · Backups</span>
-      <p>We archive your design with the order — come back to reorder without uploading again.</p>
-      <span class="soon">Account &amp; reorder · Coming soon</span>
+  </div>
+</section>
+
+<!-- Why $109? Comparison + Lifetime workshop ========================== -->
+<section class="section compare-section">
+  <div class="container">
+    <div class="section-header">
+      <div>
+        <div class="eyebrow" style="margin-bottom: 16px;">§ The math of $109</div>
+        <h2 class="section-title">Why <em style="font-style: italic; color: var(--brass-deep);">this one</em> costs more.</h2>
+      </div>
+      <div class="section-meta">
+        <span class="section-num">§ 04 / Honest comparisons</span>
+      </div>
+    </div>
+
+    <table class="compare-table">
+      <thead>
+        <tr>
+          <th></th>
+          <th>Walmart aluminum</th>
+          <th>Etsy brass</th>
+          <th>Laser stainless</th>
+          <th class="marlowe-col">Marlowe titanium</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <th scope="row">Typical price</th>
+          <td>$15–25</td>
+          <td>$30–45</td>
+          <td>$40–60</td>
+          <td class="marlowe-col">$109</td>
+        </tr>
+        <tr>
+          <th scope="row">Lifespan</th>
+          <td>2–3 years (bends, rusts)</td>
+          <td>5 years (oxidizes green)</td>
+          <td>10 years (finish fades)</td>
+          <td class="marlowe-col">Lifetime — will not rust</td>
+        </tr>
+        <tr>
+          <th scope="row">Personalization</th>
+          <td>Printed name &amp; number</td>
+          <td>Etched name &amp; number</td>
+          <td>Laser-engraved text</td>
+          <td class="marlowe-col">AI portrait + engraved text</td>
+        </tr>
+        <tr>
+          <th scope="row">Engraving</th>
+          <td>Surface print (rubs off)</td>
+          <td>Acid etch (shallow)</td>
+          <td>Laser surface mark</td>
+          <td class="marlowe-col">Low-relief + halftone (cut into metal)</td>
+        </tr>
+        <tr>
+          <th scope="row">Weight</th>
+          <td>~18 g</td>
+          <td>~22 g</td>
+          <td>~28 g</td>
+          <td class="marlowe-col">~9 g — 60% lighter than aluminum</td>
+        </tr>
+        <tr>
+          <th scope="row">Hypoallergenic</th>
+          <td>Often contains nickel</td>
+          <td>No (copper alloy)</td>
+          <td>Depends on steel grade</td>
+          <td class="marlowe-col">Yes — medical-grade titanium</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <p class="compare-footer">
+      $109 is the price of an AI-generated halftone portrait, engraved in aerospace-grade titanium, made to order in California, on a tag your dog can wear for the rest of its life. It costs more because it lasts longer, weighs less, and looks like nothing else on a collar.
+    </p>
+  </div>
+</section>
+
+<!-- Collar tease ======================================================= -->
+<section class="section collar-tease">
+  <div class="container collar-tease-grid">
+    <div class="collar-tease-visual">
+      <svg viewBox="0 0 500 380" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <linearGradient id="strapTan" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#C29562"/><stop offset="100%" stop-color="#8A5E2F"/>
+          </linearGradient>
+          <linearGradient id="strapSaddle" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#5C3819"/><stop offset="100%" stop-color="#3A220E"/>
+          </linearGradient>
+          <linearGradient id="strapBlack" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#1F1F1F"/><stop offset="100%" stop-color="#0A0A0A"/>
+          </linearGradient>
+        </defs>
+
+        <!-- Three collars stacked, slight stagger -->
+        <!-- Tan -->
+        <g transform="translate(0, 60)">
+          <path d="M40,40 Q250,10 460,40 L460,76 Q250,106 40,76 Z" fill="url(#strapTan)" stroke="#6B4520" stroke-width="1"/>
+          <path d="M50,52 Q250,28 450,52" fill="none" stroke="#E8D4B0" stroke-width="0.7" stroke-dasharray="3 3" opacity="0.6"/>
+          <path d="M50,64 Q250,88 450,64" fill="none" stroke="#E8D4B0" stroke-width="0.7" stroke-dasharray="3 3" opacity="0.6"/>
+          <g transform="translate(60, 58)">
+            <ellipse cx="0" cy="0" rx="16" ry="10" fill="none" stroke="#9CA3AF" stroke-width="3"/>
+          </g>
+          <g transform="translate(370, 58)">
+            <rect x="-22" y="-22" width="44" height="44" rx="2" fill="none" stroke="#9CA3AF" stroke-width="3"/>
+            <line x1="0" y1="-18" x2="0" y2="18" stroke="#9CA3AF" stroke-width="2.5" stroke-linecap="round"/>
+          </g>
+        </g>
+
+        <!-- Saddle -->
+        <g transform="translate(0, 160)">
+          <path d="M40,40 Q250,10 460,40 L460,76 Q250,106 40,76 Z" fill="url(#strapSaddle)" stroke="#241407" stroke-width="1"/>
+          <path d="M50,52 Q250,28 450,52" fill="none" stroke="#D6B584" stroke-width="0.7" stroke-dasharray="3 3" opacity="0.6"/>
+          <path d="M50,64 Q250,88 450,64" fill="none" stroke="#D6B584" stroke-width="0.7" stroke-dasharray="3 3" opacity="0.6"/>
+          <g transform="translate(60, 58)">
+            <ellipse cx="0" cy="0" rx="16" ry="10" fill="none" stroke="#9CA3AF" stroke-width="3"/>
+          </g>
+          <g transform="translate(370, 58)">
+            <rect x="-22" y="-22" width="44" height="44" rx="2" fill="none" stroke="#9CA3AF" stroke-width="3"/>
+            <line x1="0" y1="-18" x2="0" y2="18" stroke="#9CA3AF" stroke-width="2.5" stroke-linecap="round"/>
+          </g>
+        </g>
+
+        <!-- Black -->
+        <g transform="translate(0, 260)">
+          <path d="M40,40 Q250,10 460,40 L460,76 Q250,106 40,76 Z" fill="url(#strapBlack)" stroke="#050505" stroke-width="1"/>
+          <path d="M50,52 Q250,28 450,52" fill="none" stroke="#5C5043" stroke-width="0.7" stroke-dasharray="3 3" opacity="0.7"/>
+          <path d="M50,64 Q250,88 450,64" fill="none" stroke="#5C5043" stroke-width="0.7" stroke-dasharray="3 3" opacity="0.7"/>
+          <g transform="translate(60, 58)">
+            <ellipse cx="0" cy="0" rx="16" ry="10" fill="none" stroke="#9CA3AF" stroke-width="3"/>
+          </g>
+          <g transform="translate(370, 58)">
+            <rect x="-22" y="-22" width="44" height="44" rx="2" fill="none" stroke="#9CA3AF" stroke-width="3"/>
+            <line x1="0" y1="-18" x2="0" y2="18" stroke="#9CA3AF" stroke-width="2.5" stroke-linecap="round"/>
+          </g>
+        </g>
+      </svg>
+    </div>
+    <div class="collar-tease-content">
+      <div class="eyebrow">§ Companion accessory</div>
+      <h2>And the <em>collar</em> that carries it.</h2>
+      <p>Full-grain vegetable-tanned leather, hand-stitched, with titanium hardware that won't rust. The tag is the portrait; the collar is its frame. Made to soften and patina year after year — built to outlast it.</p>
+      <div class="collar-tease-meta">
+        <div class="swatch-row">
+          <span class="swatch tan" title="Tan"></span>
+          <span class="swatch saddle" title="Saddle"></span>
+          <span class="swatch black" title="Black"></span>
+        </div>
+        <div class="meta-text"><strong>3 colors · 5 sizes · $49</strong></div>
+      </div>
+      <a href="collars.html" class="btn btn-outline btn-large">
+        See the collar
+        <span class="btn-arrow">→</span>
+      </a>
     </div>
   </div>
 </section>
@@ -1292,22 +1551,25 @@ footer {
   <div class="container">
     <div class="section-header">
       <div>
-        <div class="eyebrow" style="margin-bottom: 16px;">Our pack</div>
-        <h2 class="section-title">Worn by 2,400+ dogs <em style="font-style: italic; color: var(--brass-deep);">across America.</em></h2>
+        <div class="eyebrow" style="margin-bottom: 16px;">§ Early customers · Coming soon</div>
+        <h2 class="section-title">Our first <em style="font-style: italic; color: var(--brass-deep);">dogs.</em></h2>
       </div>
       <div class="section-meta">
-        <span class="section-num">§ 04 / The pack</span>
+        <span class="section-num">§ 05 / The pack</span>
       </div>
     </div>
+    <p class="pack-lede">
+      We shipped our first Marlowe tag this season. As real customers' dogs receive theirs, their photos and names will go here — with the owner's permission. <a href="designer.html">Want to be one of the first?</a>
+    </p>
     <div class="pack-grid">
-      <div class="pack-photo" data-name="Cooper" data-loc="Boston"></div>
-      <div class="pack-photo" data-name="Luna" data-loc="Denver"></div>
-      <div class="pack-photo" data-name="Bear" data-loc="Seattle"></div>
-      <div class="pack-photo" data-name="Daisy" data-loc="Austin"></div>
-      <div class="pack-photo" data-name="Murphy" data-loc="Portland"></div>
-      <div class="pack-photo" data-name="Pepper" data-loc="Brooklyn"></div>
-      <div class="pack-photo" data-name="Bandit" data-loc="Asheville"></div>
-      <div class="pack-photo" data-name="Olive" data-loc="Madison"></div>
+      <div class="pack-photo"></div>
+      <div class="pack-photo"></div>
+      <div class="pack-photo"></div>
+      <div class="pack-photo"></div>
+      <div class="pack-photo"></div>
+      <div class="pack-photo"></div>
+      <div class="pack-photo"></div>
+      <div class="pack-photo"></div>
     </div>
   </div>
 </section>
@@ -1336,6 +1598,7 @@ footer {
         <h4>Shop</h4>
         <ul>
           <li><a href="designer.html">The Designer</a></li>
+          <li><a href="collars.html">Collars</a></li>
           <li><a href="#">Gift Cards</a></li>
           <li><a href="#">Care &amp; Repair</a></li>
         </ul>

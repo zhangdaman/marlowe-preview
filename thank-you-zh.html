@@ -1,13 +1,13 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Order received — MARLOWE</title>
-<meta name="description" content="Your Marlowe order has been received. Here's what happens next.">
+<title>订单已收到 — MARLOWE</title>
+<meta name="description" content="你的 Marlowe 订单已收到。接下来是这样的流程。">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400..700;1,9..144,400..500&family=Manrope:wght@300..700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400..700;1,9..144,400..500&family=Manrope:wght@300..700&family=JetBrains+Mono:wght@400;500&family=Noto+Serif+SC:wght@400..600&family=Noto+Sans+SC:wght@400..600&display=swap" rel="stylesheet">
 
 <style>
 :root {
@@ -26,7 +26,7 @@
 
 * { margin: 0; padding: 0; box-sizing: border-box; }
 body {
-  font-family: 'Manrope', system-ui, sans-serif;
+  font-family: 'Manrope', 'Noto Sans SC', system-ui, sans-serif;
   background: var(--cream);
   color: var(--charcoal);
   font-size: 16px;
@@ -39,7 +39,7 @@ body {
 @media (max-width: 768px) { .container { padding: 0 20px; } }
 
 .eyebrow {
-  font-family: 'JetBrains Mono', monospace;
+  font-family: 'JetBrains Mono', 'Noto Sans SC', monospace;
   font-size: 11px;
   letter-spacing: 0.22em;
   text-transform: uppercase;
@@ -74,7 +74,7 @@ nav.main-nav {
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  font-family: 'JetBrains Mono', monospace;
+  font-family: 'JetBrains Mono', 'Noto Sans SC', monospace;
   font-size: 11px;
   letter-spacing: 0.16em;
   text-transform: uppercase;
@@ -128,19 +128,19 @@ nav.main-nav {
 
 .confirmation .eyebrow { display: inline-block; margin-bottom: 16px; }
 .confirmation h1 {
-  font-family: 'Fraunces', serif;
+  font-family: 'Fraunces', 'Noto Serif SC', serif;
   font-variation-settings: 'opsz' 144;
-  font-size: clamp(48px, 6vw, 72px);
-  line-height: 1.05;
-  letter-spacing: -0.02em;
+  font-size: clamp(40px, 5vw, 60px);
+  line-height: 1.2;
+  letter-spacing: -0.01em;
   font-weight: 400;
   color: var(--ink);
   margin-bottom: 24px;
 }
 .confirmation h1 em { font-style: italic; color: var(--brass-deep); }
 .confirmation .lede {
-  font-size: 18px;
-  line-height: 1.6;
+  font-size: 17px;
+  line-height: 1.7;
   color: var(--charcoal-soft);
   max-width: 540px;
   margin: 0 auto 40px;
@@ -153,10 +153,9 @@ nav.main-nav {
   border: 1px solid var(--line);
   background: var(--cream-light);
   padding: 20px 32px;
-  font-family: 'JetBrains Mono', monospace;
+  font-family: 'JetBrains Mono', 'Noto Sans SC', monospace;
   font-size: 13px;
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
+  letter-spacing: 0.1em;
   color: var(--charcoal);
   flex-wrap: wrap;
   justify-content: center;
@@ -165,6 +164,7 @@ nav.main-nav {
   font-size: 10px;
   color: var(--brass-deep);
   letter-spacing: 0.22em;
+  text-transform: uppercase;
   display: block;
   margin-bottom: 4px;
 }
@@ -180,7 +180,7 @@ nav.main-nav {
   margin: 0 auto;
 }
 .timeline-section h2 {
-  font-family: 'Fraunces', serif;
+  font-family: 'Fraunces', 'Noto Serif SC', serif;
   font-size: clamp(28px, 3vw, 36px);
   font-weight: 500;
   color: var(--ink);
@@ -222,7 +222,7 @@ nav.main-nav {
   margin-bottom: 10px;
 }
 .timeline-step .step-title {
-  font-family: 'Fraunces', serif;
+  font-family: 'Fraunces', 'Noto Serif SC', serif;
   font-size: 18px;
   margin-bottom: 6px;
   color: var(--ink);
@@ -232,13 +232,13 @@ nav.main-nav {
   font-size: 12px;
   color: var(--charcoal-soft);
   margin-bottom: 12px;
-  font-family: 'JetBrains Mono', monospace;
-  letter-spacing: 0.1em;
+  font-family: 'JetBrains Mono', 'Noto Sans SC', monospace;
+  letter-spacing: 0.06em;
 }
 .timeline-step .step-desc {
   font-size: 13px;
   color: var(--charcoal-soft);
-  line-height: 1.5;
+  line-height: 1.6;
 }
 @media (max-width: 800px) {
   .timeline { grid-template-columns: repeat(2, 1fr); }
@@ -260,10 +260,11 @@ nav.main-nav {
   padding: 24px 28px;
   font-size: 14px;
   color: var(--charcoal-soft);
+  line-height: 1.7;
 }
 .cancel-note strong {
   color: var(--ink);
-  font-family: 'JetBrains Mono', monospace;
+  font-family: 'JetBrains Mono', 'Noto Sans SC', monospace;
   font-size: 11px;
   letter-spacing: 0.2em;
   text-transform: uppercase;
@@ -291,11 +292,10 @@ nav.main-nav {
   justify-content: center;
   gap: 10px;
   padding: 18px 36px;
-  font-family: 'Manrope', sans-serif;
+  font-family: 'Manrope', 'Noto Sans SC', sans-serif;
   font-weight: 500;
   font-size: 14px;
   letter-spacing: 0.04em;
-  text-transform: uppercase;
   text-decoration: none;
   border: 1.5px solid transparent;
   cursor: pointer;
@@ -337,7 +337,7 @@ footer {
 }
 .footer-brand .logo { color: var(--cream); }
 .footer-col h4 {
-  font-family: 'JetBrains Mono', monospace;
+  font-family: 'JetBrains Mono', 'Noto Sans SC', monospace;
   font-size: 11px;
   letter-spacing: 0.22em;
   text-transform: uppercase;
@@ -352,6 +352,14 @@ footer {
   font-size: 14px;
 }
 .footer-col ul a:hover { color: var(--cream); }
+.footer-col .lang-note {
+  display: block;
+  margin-top: 6px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  color: rgba(245, 241, 232, 0.4);
+}
 .footer-bottom {
   padding-top: 32px;
   border-top: 1px solid rgba(255, 255, 255, 0.1);
@@ -378,9 +386,9 @@ footer {
 <nav class="main-nav">
   <div class="container nav-grid">
     <span></span>
-    <a href="index.html" class="logo">MARLOWE</a>
+    <a href="index-zh.html" class="logo">MARLOWE</a>
     <div class="nav-right">
-      <a href="login.html" class="auth-pill" id="nav-auth-pill" data-i18n-signin="Sign in">Sign in</a>
+      <a href="login-zh.html" class="auth-pill" id="nav-auth-pill" data-i18n-signin="登录">登录</a>
     </div>
   </div>
 </nav>
@@ -394,71 +402,71 @@ footer {
           <path d="M14 24l7 7 14-14"/>
         </svg>
       </div>
-      <div class="eyebrow">§ Order received</div>
-      <h1>Your tag is on its <em>bench.</em></h1>
+      <div class="eyebrow">§ 订单已收到</div>
+      <h1>它的牌已经上<em>工作台。</em></h1>
       <p class="lede">
-        Thank you. We've got your order and a confirmation email is on its way to <span id="confirmation-email">your inbox</span>. Below is what happens next.
+        谢谢。我们已收到订单，确认邮件已发往 <span id="confirmation-email">你的邮箱</span>。下面是接下来的流程。
       </p>
       <div class="order-meta">
         <div>
-          <span class="order-meta-label">Order</span>
+          <span class="order-meta-label">订单号</span>
           <span id="order-number">—</span>
         </div>
         <span class="order-meta-divider">·</span>
         <div>
-          <span class="order-meta-label">Placed</span>
+          <span class="order-meta-label">下单时间</span>
           <span id="order-placed">—</span>
         </div>
         <span class="order-meta-divider">·</span>
         <div>
-          <span class="order-meta-label">Items</span>
+          <span class="order-meta-label">商品数</span>
           <span id="order-count">—</span>
         </div>
       </div>
     </section>
 
     <section class="timeline-section">
-      <h2>What happens <em>next.</em></h2>
+      <h2>接下来会发生<em>什么。</em></h2>
       <div class="timeline">
         <div class="timeline-step current">
           <span class="step-num">01</span>
-          <div class="step-title">Order received</div>
-          <div class="step-time">Today</div>
-          <div class="step-desc">Confirmation email sent. Your design is queued.</div>
+          <div class="step-title">订单已收到</div>
+          <div class="step-time">今天</div>
+          <div class="step-desc">确认邮件已发出，你的设计稿已排进生产队列。</div>
         </div>
         <div class="timeline-step">
           <span class="step-num">02</span>
-          <div class="step-title">Engraving begins</div>
-          <div class="step-time">Within 24 hrs</div>
-          <div class="step-desc">Once the cancellation window closes, your tag enters production.</div>
+          <div class="step-title">开始雕刻</div>
+          <div class="step-time">24 小时内</div>
+          <div class="step-desc">过了取消窗口期之后，这枚牌就进入生产环节。</div>
         </div>
         <div class="timeline-step">
           <span class="step-num">03</span>
-          <div class="step-title">Hand-finished &amp; shipped</div>
-          <div class="step-time">7–10 business days</div>
-          <div class="step-desc">Polished, packaged in linen, tracking number sent to your email.</div>
+          <div class="step-title">手工抛光 &amp; 发货</div>
+          <div class="step-time">7–10 个工作日</div>
+          <div class="step-desc">抛光、亚麻布包装，物流单号通过邮件发送给你。</div>
         </div>
         <div class="timeline-step">
           <span class="step-num">04</span>
-          <div class="step-title">Delivered</div>
-          <div class="step-time">+ 3–5 days</div>
-          <div class="step-desc">Free U.S. shipping. Total time to your door: 11–16 business days.</div>
+          <div class="step-title">送达</div>
+          <div class="step-time">+ 3–5 天</div>
+          <div class="step-desc">美国境内免邮。从下单到送达：约 11–16 个工作日。</div>
         </div>
       </div>
 
       <div class="cancel-note">
-        <strong>§ Need to change something?</strong>
-        You can cancel this order for any reason within 24 hours of placing it — just reply to your confirmation email or write <a href="mailto:support@marlowe.example">support@marlowe.example</a> with your order number. After 24 hours, your tag enters production and can no longer be modified. See <a href="returns.html">Returns Policy</a>.
+        <strong>§ 需要修改？</strong>
+        下单后 24 小时内可以任何理由取消订单——直接回复确认邮件，或写信到 <a href="mailto:support@marlowe.example">support@marlowe.example</a> 并附上订单号即可。24 小时后这枚牌进入生产环节，不再可改。详见 <a href="returns.html">退换政策（英文）</a>。
       </div>
     </section>
 
     <div class="actions">
-      <a href="designer.html" class="btn btn-outline">
-        Design another
+      <a href="designer-zh.html" class="btn btn-outline">
+        再设计一枚
         <span class="btn-arrow">→</span>
       </a>
-      <a href="index.html" class="btn btn-primary">
-        Back to home
+      <a href="index-zh.html" class="btn btn-primary">
+        返回首页
         <span class="btn-arrow">→</span>
       </a>
     </div>
@@ -470,48 +478,50 @@ footer {
   <div class="container">
     <div class="footer-grid">
       <div class="footer-brand">
-        <a href="index.html" class="logo">MARLOWE</a>
-        <p>Titanium portrait tags, engraved one at a time in California.</p>
+        <a href="index-zh.html" class="logo">MARLOWE</a>
+        <p>钛合金肖像狗牌，加州按单手工雕刻。</p>
       </div>
       <div class="footer-col">
-        <h4>Shop</h4>
+        <h4>购物</h4>
         <ul>
-          <li><a href="designer.html">The Designer</a></li>
-          <li><a href="collars.html">Collars</a></li>
-          <li><a href="#">Gift Cards</a></li>
-          <li><a href="#">Care &amp; Repair</a></li>
+          <li><a href="designer-zh.html">设计你的牌</a></li>
+          <li><a href="collars-zh.html">皮革项圈</a></li>
+          <li><a href="#">礼品卡</a></li>
+          <li><a href="#">保养 &amp; 维修</a></li>
         </ul>
       </div>
       <div class="footer-col">
-        <h4>About</h4>
+        <h4>关于</h4>
         <ul>
-          <li><a href="index.html#story">Our Story</a></li>
-          <li><a href="index.html#how">How It Works</a></li>
-          <li><a href="#">Press</a></li>
+          <li><a href="index-zh.html#story">品牌故事</a></li>
+          <li><a href="index-zh.html#how">工艺流程</a></li>
+          <li><a href="#">媒体报道</a></li>
         </ul>
       </div>
       <div class="footer-col">
-        <h4>Help</h4>
+        <h4>帮助</h4>
         <ul>
-          <li><a href="shipping.html">Shipping</a></li>
-          <li><a href="returns.html">Returns</a></li>
-          <li><a href="contact.html">Contact</a></li>
+          <li><a href="shipping.html">配送说明</a></li>
+          <li><a href="returns.html">退换政策</a></li>
+          <li><a href="contact.html">联系我们</a></li>
         </ul>
+        <span class="lang-note">以上为英文页面</span>
       </div>
       <div class="footer-col">
-        <h4>Legal</h4>
+        <h4>条款</h4>
         <ul>
-          <li><a href="privacy.html">Privacy</a></li>
-          <li><a href="terms.html">Terms</a></li>
+          <li><a href="privacy.html">隐私政策</a></li>
+          <li><a href="terms.html">服务条款</a></li>
         </ul>
+        <span class="lang-note">以上为英文页面</span>
       </div>
     </div>
     <div class="footer-bottom">
-      <span>© 2026 Marlowe &amp; Co. Made with care · California, USA.</span>
+      <span>© 2026 Marlowe &amp; Co. 用心制作 · 美国加州。</span>
       <div class="footer-trust">
-        <span>Stripe Secured</span>
-        <span>SSL Protected</span>
-        <span>30-Day Quality Guarantee</span>
+        <span>Stripe 加密支付</span>
+        <span>SSL 加密</span>
+        <span>30 天质量保证</span>
       </div>
     </div>
   </div>
@@ -527,22 +537,22 @@ function getQuery(name) {
   const orderId = getQuery('order') || '—';
   document.getElementById('order-number').textContent = orderId;
 
-  // Try to read mock order saved by checkout.html
+  // 读取 checkout-zh.html 保存的 mock 订单
   let savedOrder = null;
   try { savedOrder = JSON.parse(localStorage.getItem('marlowe_last_order') || 'null'); }
   catch (e) { savedOrder = null; }
 
   if (savedOrder && savedOrder.orderId === orderId) {
     const placed = new Date(savedOrder.placedAt);
-    document.getElementById('order-placed').textContent = placed.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+    document.getElementById('order-placed').textContent = placed.toLocaleDateString('zh-CN', { month: 'long', day: 'numeric', year: 'numeric' });
     const items = savedOrder.payload && savedOrder.payload.items || [];
     const totalQty = items.reduce((n, it) => n + (it.quantity || 1), 0);
-    document.getElementById('order-count').textContent = totalQty + (totalQty === 1 ? ' item' : ' items');
+    document.getElementById('order-count').textContent = totalQty + ' 件';
     if (savedOrder.payload && savedOrder.payload.contact && savedOrder.payload.contact.email) {
       document.getElementById('confirmation-email').textContent = savedOrder.payload.contact.email;
     }
   } else {
-    document.getElementById('order-placed').textContent = new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+    document.getElementById('order-placed').textContent = new Date().toLocaleDateString('zh-CN', { month: 'long', day: 'numeric', year: 'numeric' });
     document.getElementById('order-count').textContent = '—';
   }
 })();
@@ -550,7 +560,7 @@ function getQuery(name) {
 
 <script src="auth-state.js"></script>
 <script>
-// Auth pill — reflects sign-in state
+// Auth pill — 同步登录状态
 (function updateAuthPill() {
   const pill = document.getElementById('nav-auth-pill');
   if (!pill || !window.MarloweAuth) return;
@@ -558,18 +568,18 @@ function getQuery(name) {
     if (user) {
       const initial = (user.email || '?').charAt(0).toUpperCase();
       const handle = (user.email || '').split('@')[0];
-      pill.href = 'account.html';
+      pill.href = 'account-zh.html';
       pill.innerHTML = `<span class="auth-pill-avatar">${initial}</span><span>${handle}</span>`;
     } else {
-      pill.href = 'login.html';
-      pill.innerHTML = pill.dataset.i18nSignin || 'Sign in';
+      pill.href = 'login-zh.html';
+      pill.innerHTML = pill.dataset.i18nSignin || '登录';
     }
   }
   paint(MarloweAuth.getUser());
   MarloweAuth.onAuthChange(paint);
 })();
 
-// "View in Account" link on thank-you if signed in
+// 登录后增加「在账户中查看」按钮
 (function viewInAccountLink() {
   if (!window.MarloweAuth) return;
   const user = MarloweAuth.getUser();
@@ -577,9 +587,9 @@ function getQuery(name) {
   const actions = document.querySelector('.actions');
   if (!actions) return;
   const link = document.createElement('a');
-  link.href = 'account.html';
+  link.href = 'account-zh.html';
   link.className = 'btn btn-outline';
-  link.innerHTML = 'View in Account <span class="btn-arrow">→</span>';
+  link.innerHTML = '在账户中查看 <span class="btn-arrow">→</span>';
   actions.insertBefore(link, actions.firstChild);
 })();
 </script>

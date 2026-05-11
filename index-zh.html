@@ -520,15 +520,31 @@ nav.main-nav {
 
 .example-photo, .example-tag {
   aspect-ratio: 1;
-  border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
   background: var(--paper);
+  overflow: hidden;
+  position: relative;
+}
+.example-photo {
+  border-radius: 50%;
+}
+.example-photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
 }
 .example-tag {
-  background: linear-gradient(135deg, #C9B58E, #8E6F47);
-  border-radius: 8px;
+  background: transparent;
+  border-radius: 0;
+}
+.example-tag img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
 }
 
 .example-arrow {
@@ -642,35 +658,6 @@ nav.main-nav {
 .why-card:last-child { border-right: none; padding-right: 0; }
 .why-card:not(:first-child) { padding-left: 32px; }
 
-.why-callout {
-  margin-top: 64px;
-  padding: 36px 24px 8px;
-  border-top: 1px solid rgba(212, 184, 150, 0.18);
-  text-align: center;
-}
-.why-callout-eyebrow {
-  font-family: 'JetBrains Mono', 'Noto Sans SC', monospace;
-  font-size: 11px;
-  letter-spacing: 0.18em;
-  color: var(--brass-light);
-  margin-bottom: 16px;
-  display: block;
-}
-.why-callout p {
-  font-size: 15px;
-  max-width: 580px;
-  margin: 0 auto 14px;
-  line-height: 1.75;
-  color: rgba(245, 241, 232, 0.72);
-}
-.why-callout .soon {
-  font-family: 'JetBrains Mono', 'Noto Sans SC', monospace;
-  font-size: 11px;
-  letter-spacing: 0.16em;
-  color: var(--brass);
-  opacity: 0.75;
-}
-
 .why-num {
   font-family: 'JetBrains Mono', monospace;
   font-size: 11px;
@@ -702,6 +689,66 @@ nav.main-nav {
 }
 
 /* Story */
+/* Compare section ($109 value evidence) */
+.compare-section { background: var(--cream); }
+.compare-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: var(--cream-light);
+  border: 1px solid var(--line);
+  font-size: 14px;
+  margin-top: 32px;
+}
+.compare-table th, .compare-table td {
+  padding: 14px 18px;
+  text-align: left;
+  border-bottom: 1px solid var(--line);
+}
+.compare-table thead th {
+  font-family: 'JetBrains Mono', 'Noto Sans SC', monospace;
+  font-size: 10px;
+  letter-spacing: 0.16em;
+  color: var(--brass-deep);
+  font-weight: 500;
+  background: var(--paper);
+}
+.compare-table thead th.marlowe-col {
+  color: var(--ink);
+  background: var(--brass-light);
+  border-bottom: 2px solid var(--brass-deep);
+}
+.compare-table tbody th {
+  font-family: 'JetBrains Mono', 'Noto Sans SC', monospace;
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  color: var(--charcoal-soft);
+  font-weight: 500;
+  width: 160px;
+}
+.compare-table tbody td { color: var(--charcoal-soft); }
+.compare-table tbody td.marlowe-col {
+  background: rgba(212, 184, 150, 0.16);
+  color: var(--ink);
+  font-weight: 500;
+  border-right: 1px solid var(--brass);
+  border-left: 1px solid var(--brass);
+}
+.compare-table tbody tr:last-child td { border-bottom: none; }
+.compare-table tbody tr:last-child td.marlowe-col { border-bottom: 1px solid var(--brass); }
+.compare-footer {
+  max-width: 720px;
+  margin: 32px auto 0;
+  font-size: 15px;
+  line-height: 1.85;
+  color: var(--charcoal-soft);
+  text-align: center;
+}
+@media (max-width: 700px) {
+  .compare-table { font-size: 12px; }
+  .compare-table th, .compare-table td { padding: 10px 12px; }
+  .compare-table tbody th { width: 100px; }
+}
+
 .story { background: var(--cream); }
 
 .story-grid {
@@ -778,6 +825,72 @@ nav.main-nav {
   .story-grid { grid-template-columns: 1fr; gap: 48px; }
 }
 
+/* Collar tease */
+.collar-tease { background: var(--paper); border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+.collar-tease-grid {
+  display: grid;
+  grid-template-columns: 6fr 5fr;
+  gap: 96px;
+  align-items: center;
+}
+.collar-tease-visual {
+  background: var(--cream-light);
+  border: 1px solid var(--line);
+  padding: 64px 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  aspect-ratio: 5/4;
+  position: relative;
+}
+.collar-tease-visual svg { width: 100%; height: 100%; display: block; }
+.collar-tease-content { max-width: 460px; }
+.collar-tease-content .eyebrow { display: inline-block; margin-bottom: 18px; }
+.collar-tease-content h2 {
+  font-family: 'Fraunces', 'Noto Serif SC', serif;
+  font-size: clamp(34px, 4.2vw, 48px);
+  line-height: 1.2;
+  letter-spacing: -0.01em;
+  font-weight: 400;
+  color: var(--ink);
+  margin-bottom: 24px;
+}
+.collar-tease-content h2 em { font-style: italic; color: var(--brass-deep); }
+.collar-tease-content p {
+  font-size: 17px;
+  line-height: 1.85;
+  color: var(--charcoal-soft);
+  margin-bottom: 28px;
+}
+.collar-tease-meta {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  margin-bottom: 32px;
+  flex-wrap: wrap;
+}
+.collar-tease-meta .swatch-row { display: flex; gap: 10px; }
+.collar-tease-meta .swatch {
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  border: 1px solid rgba(0,0,0,0.18);
+}
+.collar-tease-meta .swatch.tan    { background: linear-gradient(135deg, #D4A574 0%, #A07845 100%); }
+.collar-tease-meta .swatch.saddle { background: linear-gradient(135deg, #7A4A28 0%, #4A2D15 100%); }
+.collar-tease-meta .swatch.black  { background: linear-gradient(135deg, #2A2A2A 0%, #0D0D0D 100%); }
+.collar-tease-meta .meta-text {
+  font-family: 'JetBrains Mono', 'Noto Sans SC', monospace;
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  color: var(--charcoal-soft);
+}
+.collar-tease-meta .meta-text strong { color: var(--charcoal); font-weight: 500; }
+@media (max-width: 900px) {
+  .collar-tease-grid { grid-template-columns: 1fr; gap: 48px; }
+  .collar-tease-visual { aspect-ratio: 4/3; padding: 40px 24px; }
+}
+
 /* UGC */
 .pack {
   background: var(--paper);
@@ -818,6 +931,21 @@ nav.main-nav {
   transition: opacity 250ms;
 }
 .pack-photo:hover::after { opacity: 1; }
+.pack-photo:not([data-name])::after { display: none; }
+
+.pack-lede {
+  max-width: 600px;
+  margin: 0 0 40px;
+  font-size: 16px;
+  line-height: 1.85;
+  color: var(--charcoal-soft);
+}
+.pack-lede a {
+  color: var(--brass-deep);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.pack-lede a:hover { color: var(--charcoal); }
 
 .pack-photo:nth-child(1) { background: var(--rose); grid-row: span 2; }
 .pack-photo:nth-child(2) { background: var(--brass-light); }
@@ -958,16 +1086,17 @@ footer {
   <div class="container nav-grid">
     <ul class="nav-links">
       <li><a href="designer-zh.html">设计你的牌</a></li>
+      <li><a href="collars-zh.html">皮革项圈</a></li>
       <li><a href="#how">工艺流程</a></li>
       <li><a href="#story">品牌故事</a></li>
     </ul>
     <a href="#" class="logo">MARLOWE</a>
     <div class="nav-right">
-      <a href="cart.html" class="cart-link">
+      <a href="cart-zh.html" class="cart-link">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4zM3 6h18M16 10a4 4 0 0 1-8 0"/></svg>
         购物车 (<span class="cart-count">0</span>)
       </a>
-      <a href="login.html" class="auth-pill" id="nav-auth-pill" data-i18n-signin="登录">登录</a>
+      <a href="login-zh.html" class="auth-pill" id="nav-auth-pill" data-i18n-signin="登录">登录</a>
       <div class="lang-switch" aria-label="Language">
         <a href="index.html">EN</a>
         <span class="lang-sep" aria-hidden="true">/</span>
@@ -995,7 +1124,7 @@ footer {
         <a href="#how" class="btn btn-outline">了解工艺流程</a>
       </div>
       <div class="hero-meta">
-        <span>$79 起</span>
+        <span>$109 起</span>
         <span>免费刻字</span>
         <span>终身质保</span>
       </div>
@@ -1048,71 +1177,47 @@ footer {
       <div class="example-card">
         <div class="example-pair">
           <div class="example-photo">
-            <svg viewBox="0 0 100 100" width="60%" height="60%" xmlns="http://www.w3.org/2000/svg">
-              <g stroke="#1F2937" fill="none" stroke-width="1.5">
-                <path d="M30,45 Q30,28 48,26 Q70,24 79,36 Q85,45 83,58 Q80,70 73,74 L70,82 L65,78 L60,86 L55,80 L50,84 L44,78 Q35,74 31,64 Q28,54 30,45 Z"/>
-                <circle cx="59" cy="45" r="1.5" fill="#1F2937"/>
-                <ellipse cx="79" cy="46" rx="3" ry="2.5" fill="#1F2937"/>
-              </g>
-            </svg>
+            <img src="page/Buddy.png" alt="Buddy">
           </div>
           <div class="example-arrow">→</div>
           <div class="example-tag">
-            <div style="color: rgba(245,241,232,0.9); font-family: 'Fraunces', serif; font-size: 14px; letter-spacing: 1px;">SADIE</div>
+            <img src="page/Buddy-1.png" alt="Buddy 的钛合金牌">
           </div>
         </div>
         <div class="example-meta">
-          <span class="example-name">Sadie</span>
-          <span class="example-loc">拉布拉多 · 布鲁克林</span>
+          <span class="example-name">Buddy</span>
+          <span class="example-loc">柯基 · 布鲁克林</span>
         </div>
       </div>
 
       <div class="example-card">
         <div class="example-pair">
-          <div class="example-photo" style="background: var(--rose);">
-            <svg viewBox="0 0 100 100" width="60%" height="60%" xmlns="http://www.w3.org/2000/svg">
-              <g stroke="#1F2937" fill="none" stroke-width="1.5">
-                <path d="M28,40 Q28,22 50,20 Q72,18 80,30 Q85,38 84,52 Q82,68 76,74 L72,82 L66,78 L60,84 L54,80 L48,84 L42,80 Q32,76 28,62 Q26,50 28,40 Z"/>
-                <path d="M30,28 Q24,18 30,12 Q42,15 40,30 Z" fill="#1F2937" opacity="0.85"/>
-                <path d="M75,28 Q82,18 78,10 Q66,12 70,28 Z" fill="#1F2937" opacity="0.85"/>
-                <circle cx="42" cy="42" r="1.5" fill="#1F2937"/>
-                <circle cx="65" cy="42" r="1.5" fill="#1F2937"/>
-                <ellipse cx="54" cy="55" rx="3" ry="2" fill="#1F2937"/>
-              </g>
-            </svg>
+          <div class="example-photo">
+            <img src="page/Hunter.png" alt="Hunter">
           </div>
           <div class="example-arrow">→</div>
-          <div class="example-tag" style="background: linear-gradient(135deg, #4A5568, #2D3748);">
-            <div style="color: rgba(245,241,232,0.9); font-family: 'Fraunces', serif; font-size: 14px; letter-spacing: 1px;">MAX</div>
+          <div class="example-tag">
+            <img src="page/hunter-1.png" alt="Hunter 的钛合金牌">
           </div>
         </div>
         <div class="example-meta">
-          <span class="example-name">Max</span>
-          <span class="example-loc">可卡 · 奥斯汀</span>
+          <span class="example-name">Hunter</span>
+          <span class="example-loc">比格 · 奥斯汀</span>
         </div>
       </div>
 
       <div class="example-card">
         <div class="example-pair">
-          <div class="example-photo" style="background: var(--brass-light);">
-            <svg viewBox="0 0 100 100" width="60%" height="60%" xmlns="http://www.w3.org/2000/svg">
-              <g stroke="#1F2937" fill="none" stroke-width="1.5">
-                <path d="M32,42 Q30,25 50,22 Q72,20 80,32 Q86,42 83,56 Q80,70 73,76 L68,84 L62,80 L56,86 L50,82 L44,80 Q34,76 30,64 Q28,52 32,42 Z"/>
-                <path d="M30,30 Q22,22 26,12 Q40,15 38,30 Z" fill="#1F2937" opacity="0.7"/>
-                <circle cx="46" cy="44" r="1.5" fill="#1F2937"/>
-                <circle cx="65" cy="44" r="1.5" fill="#1F2937"/>
-                <ellipse cx="56" cy="58" rx="3" ry="2" fill="#1F2937"/>
-                <path d="M50,68 Q56,72 62,68" stroke-width="1"/>
-              </g>
-            </svg>
+          <div class="example-photo">
+            <img src="page/Sunny.png" alt="Sunny">
           </div>
           <div class="example-arrow">→</div>
-          <div class="example-tag" style="background: linear-gradient(135deg, #C7C0B5, #8C8478);">
-            <div style="color: rgba(245,241,232,0.9); font-family: 'Fraunces', serif; font-size: 14px; letter-spacing: 1px;">RILEY</div>
+          <div class="example-tag">
+            <img src="page/Sunny-1.png" alt="Sunny 的钛合金牌">
           </div>
         </div>
         <div class="example-meta">
-          <span class="example-name">Riley</span>
+          <span class="example-name">Sunny</span>
           <span class="example-loc">金毛 · 波特兰</span>
         </div>
       </div>
@@ -1187,8 +1292,8 @@ footer {
       </div>
       <div class="why-card">
         <span class="why-num">B</span>
-        <h3 class="why-title">更好的材料<br>更少的浪费</h3>
-        <p class="why-desc">按需雕刻意味着我们不囤货。我们用航天级钛合金——比钢更轻、低致敏、永不生锈。每一枚都从原料开始切割、为这次定制专属铸造。</p>
+        <h3 class="why-title">同款金属<br>登月舱外壳</h3>
+        <p class="why-desc">航天级钛合金——阿波罗登月舱外壳、外科植入物、高端手表表壳的同款金属。比铝轻 60%，比钢硬一倍，低致敏，永不生锈。它跑、它跳、它泡水、它咬项圈——这枚牌都不掉色不变形。每一枚都从原料开始切割，不囤货，为这次定制专属铸造。</p>
       </div>
       <div class="why-card">
         <span class="why-num">C</span>
@@ -1197,10 +1302,161 @@ footer {
       </div>
     </div>
 
-    <div class="why-callout">
-      <span class="why-callout-eyebrow">§ 同款再订 · 成长纪念 · 备用件</span>
-      <p>我们随订单存档你的设计——回头直接 reorder，不必重新上传照片。</p>
-      <span class="soon">客户账户与回购 · 即将上线</span>
+  </div>
+</section>
+
+<!-- 为什么 $109 ============================================================ -->
+<section class="section compare-section">
+  <div class="container">
+    <div class="section-header">
+      <div>
+        <div class="eyebrow" style="margin-bottom: 16px;">§ $109 的拆解</div>
+        <h2 class="section-title">为什么<em style="font-style: italic; color: var(--brass-deep);">这枚</em>更贵。</h2>
+      </div>
+      <div class="section-meta">
+        <span class="section-num">§ 04 / 诚实对比</span>
+      </div>
+    </div>
+
+    <table class="compare-table">
+      <thead>
+        <tr>
+          <th></th>
+          <th>沃尔玛铝牌</th>
+          <th>Etsy 黄铜</th>
+          <th>激光不锈钢</th>
+          <th class="marlowe-col">Marlowe 钛合金</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <th scope="row">典型价格</th>
+          <td>$15–25</td>
+          <td>$30–45</td>
+          <td>$40–60</td>
+          <td class="marlowe-col">$109</td>
+        </tr>
+        <tr>
+          <th scope="row">寿命</th>
+          <td>2–3 年（变形、生锈）</td>
+          <td>5 年（氧化变绿）</td>
+          <td>10 年（涂层褪色）</td>
+          <td class="marlowe-col">终身——永不生锈</td>
+        </tr>
+        <tr>
+          <th scope="row">个性化</th>
+          <td>名字 + 电话印刷</td>
+          <td>名字 + 电话蚀刻</td>
+          <td>激光刻字</td>
+          <td class="marlowe-col">AI 肖像 + 切刻文字</td>
+        </tr>
+        <tr>
+          <th scope="row">雕刻工艺</th>
+          <td>表面印刷（会磨掉）</td>
+          <td>酸蚀（浅层）</td>
+          <td>激光表面打标</td>
+          <td class="marlowe-col">浅浮雕 + 影雕（切入金属）</td>
+        </tr>
+        <tr>
+          <th scope="row">重量</th>
+          <td>~18 g</td>
+          <td>~22 g</td>
+          <td>~28 g</td>
+          <td class="marlowe-col">~9 g——比铝轻 60%</td>
+        </tr>
+        <tr>
+          <th scope="row">低致敏</th>
+          <td>常含镍</td>
+          <td>否（铜合金）</td>
+          <td>取决于钢的等级</td>
+          <td class="marlowe-col">是——医用级钛合金</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <p class="compare-footer">
+      $109 买的是：一张 AI 生成的影雕肖像，刻在航天级钛合金上，加州按单制造，让你的狗能戴一辈子。它贵，是因为它更耐用、更轻、跟项圈上其他任何牌都不一样。
+    </p>
+  </div>
+</section>
+
+<!-- 项圈预告 ============================================================== -->
+<section class="section collar-tease">
+  <div class="container collar-tease-grid">
+    <div class="collar-tease-visual">
+      <svg viewBox="0 0 500 380" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <linearGradient id="strapTanZh" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#C29562"/><stop offset="100%" stop-color="#8A5E2F"/>
+          </linearGradient>
+          <linearGradient id="strapSaddleZh" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#5C3819"/><stop offset="100%" stop-color="#3A220E"/>
+          </linearGradient>
+          <linearGradient id="strapBlackZh" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#1F1F1F"/><stop offset="100%" stop-color="#0A0A0A"/>
+          </linearGradient>
+        </defs>
+
+        <!-- 三条项圈纵向堆叠 -->
+        <!-- 原棕 -->
+        <g transform="translate(0, 60)">
+          <path d="M40,40 Q250,10 460,40 L460,76 Q250,106 40,76 Z" fill="url(#strapTanZh)" stroke="#6B4520" stroke-width="1"/>
+          <path d="M50,52 Q250,28 450,52" fill="none" stroke="#E8D4B0" stroke-width="0.7" stroke-dasharray="3 3" opacity="0.6"/>
+          <path d="M50,64 Q250,88 450,64" fill="none" stroke="#E8D4B0" stroke-width="0.7" stroke-dasharray="3 3" opacity="0.6"/>
+          <g transform="translate(60, 58)">
+            <ellipse cx="0" cy="0" rx="16" ry="10" fill="none" stroke="#9CA3AF" stroke-width="3"/>
+          </g>
+          <g transform="translate(370, 58)">
+            <rect x="-22" y="-22" width="44" height="44" rx="2" fill="none" stroke="#9CA3AF" stroke-width="3"/>
+            <line x1="0" y1="-18" x2="0" y2="18" stroke="#9CA3AF" stroke-width="2.5" stroke-linecap="round"/>
+          </g>
+        </g>
+
+        <!-- 马鞍棕 -->
+        <g transform="translate(0, 160)">
+          <path d="M40,40 Q250,10 460,40 L460,76 Q250,106 40,76 Z" fill="url(#strapSaddleZh)" stroke="#241407" stroke-width="1"/>
+          <path d="M50,52 Q250,28 450,52" fill="none" stroke="#D6B584" stroke-width="0.7" stroke-dasharray="3 3" opacity="0.6"/>
+          <path d="M50,64 Q250,88 450,64" fill="none" stroke="#D6B584" stroke-width="0.7" stroke-dasharray="3 3" opacity="0.6"/>
+          <g transform="translate(60, 58)">
+            <ellipse cx="0" cy="0" rx="16" ry="10" fill="none" stroke="#9CA3AF" stroke-width="3"/>
+          </g>
+          <g transform="translate(370, 58)">
+            <rect x="-22" y="-22" width="44" height="44" rx="2" fill="none" stroke="#9CA3AF" stroke-width="3"/>
+            <line x1="0" y1="-18" x2="0" y2="18" stroke="#9CA3AF" stroke-width="2.5" stroke-linecap="round"/>
+          </g>
+        </g>
+
+        <!-- 墨黑 -->
+        <g transform="translate(0, 260)">
+          <path d="M40,40 Q250,10 460,40 L460,76 Q250,106 40,76 Z" fill="url(#strapBlackZh)" stroke="#050505" stroke-width="1"/>
+          <path d="M50,52 Q250,28 450,52" fill="none" stroke="#5C5043" stroke-width="0.7" stroke-dasharray="3 3" opacity="0.7"/>
+          <path d="M50,64 Q250,88 450,64" fill="none" stroke="#5C5043" stroke-width="0.7" stroke-dasharray="3 3" opacity="0.7"/>
+          <g transform="translate(60, 58)">
+            <ellipse cx="0" cy="0" rx="16" ry="10" fill="none" stroke="#9CA3AF" stroke-width="3"/>
+          </g>
+          <g transform="translate(370, 58)">
+            <rect x="-22" y="-22" width="44" height="44" rx="2" fill="none" stroke="#9CA3AF" stroke-width="3"/>
+            <line x1="0" y1="-18" x2="0" y2="18" stroke="#9CA3AF" stroke-width="2.5" stroke-linecap="round"/>
+          </g>
+        </g>
+      </svg>
+    </div>
+    <div class="collar-tease-content">
+      <div class="eyebrow">§ 配套配件</div>
+      <h2>还有承载这枚牌的<em>项圈。</em></h2>
+      <p>全粒面植鞣牛皮，手工缝制，配钛合金五金——绝不生锈。牌是肖像，项圈是它的框。每一次散步都让皮革更柔软、更深一分，比皮革本身用得更久。</p>
+      <div class="collar-tease-meta">
+        <div class="swatch-row">
+          <span class="swatch tan" title="原棕"></span>
+          <span class="swatch saddle" title="马鞍棕"></span>
+          <span class="swatch black" title="墨黑"></span>
+        </div>
+        <div class="meta-text"><strong>3 色 · 5 尺寸 · $49</strong></div>
+      </div>
+      <a href="collars-zh.html" class="btn btn-outline btn-large">
+        看皮革项圈
+        <span class="btn-arrow">→</span>
+      </a>
     </div>
   </div>
 </section>
@@ -1257,22 +1513,25 @@ footer {
   <div class="container">
     <div class="section-header">
       <div>
-        <div class="eyebrow" style="margin-bottom: 16px;">我们的狗群</div>
-        <h2 class="section-title">已被全美 2,400+ 只狗<br><em>佩戴回家。</em></h2>
+        <div class="eyebrow" style="margin-bottom: 16px;">§ 早期客户 · 即将上线</div>
+        <h2 class="section-title">第一批<em>狗狗。</em></h2>
       </div>
       <div class="section-meta">
-        <span class="section-num">§ 04 / 狗群</span>
+        <span class="section-num">§ 05 / 狗群</span>
       </div>
     </div>
+    <p class="pack-lede">
+      Marlowe 这季刚发出第一枚牌。等真正的客户陆续收到后，他们的狗狗照片和名字会出现在这里——经主人同意。<a href="designer-zh.html">想成为最早一批之一吗？</a>
+    </p>
     <div class="pack-grid">
-      <div class="pack-photo" data-name="Cooper" data-loc="波士顿"></div>
-      <div class="pack-photo" data-name="Luna" data-loc="丹佛"></div>
-      <div class="pack-photo" data-name="Bear" data-loc="西雅图"></div>
-      <div class="pack-photo" data-name="Daisy" data-loc="奥斯汀"></div>
-      <div class="pack-photo" data-name="Murphy" data-loc="波特兰"></div>
-      <div class="pack-photo" data-name="Pepper" data-loc="布鲁克林"></div>
-      <div class="pack-photo" data-name="Bandit" data-loc="艾士维尔"></div>
-      <div class="pack-photo" data-name="Olive" data-loc="麦迪逊"></div>
+      <div class="pack-photo"></div>
+      <div class="pack-photo"></div>
+      <div class="pack-photo"></div>
+      <div class="pack-photo"></div>
+      <div class="pack-photo"></div>
+      <div class="pack-photo"></div>
+      <div class="pack-photo"></div>
+      <div class="pack-photo"></div>
     </div>
   </div>
 </section>
@@ -1301,6 +1560,7 @@ footer {
         <h4>购物</h4>
         <ul>
           <li><a href="designer-zh.html">设计器</a></li>
+          <li><a href="collars-zh.html">皮革项圈</a></li>
           <li><a href="#">礼品卡</a></li>
           <li><a href="#">保养与修复</a></li>
         </ul>
@@ -1375,10 +1635,10 @@ document.querySelectorAll('.reveal, .section-header, .step, .why-card, .example-
     if (user) {
       const initial = (user.email || '?').charAt(0).toUpperCase();
       const handle = (user.email || '').split('@')[0];
-      pill.href = 'account.html';
+      pill.href = 'account-zh.html';
       pill.innerHTML = `<span class="auth-pill-avatar">${initial}</span><span>${handle}</span>`;
     } else {
-      pill.href = 'login.html';
+      pill.href = 'login-zh.html';
       pill.innerHTML = pill.dataset.i18nSignin || '登录';
     }
   }
