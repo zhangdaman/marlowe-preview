@@ -67,7 +67,7 @@ created_at    timestamptz DEFAULT now()
 id            uuid PRIMARY KEY
 user_id       uuid REFERENCES profiles(id)
 shape         text DEFAULT 'shield'   -- v1 只有 shield，留位置给 octagon/disc
-color         text                    -- silver | brass | teal | charcoal | copper
+color         text                    -- silver | charcoal (v1 上线) | brass | teal | copper (v1.5)
 pet_name      varchar(12)
 pet_phone     varchar(20)
 photo_url     text                    -- 用户上传原照（S3）
@@ -96,7 +96,12 @@ shipping_country         text DEFAULT 'US'
 subtotal_cents           int
 tax_cents                int
 total_cents              int
-status                   text                  -- received | in_production | shipped | delivered | cancelled
+status                   text                  -- received | awaiting_window | in_production | shipped | delivered | cancelled
+                                                  -- received: 刚创建，等付款
+                                                  -- awaiting_window: 付款成功，进入 24h 安全窗（客户可重做/取消）
+                                                  -- in_production: 24h 窗口结束 / 客户提前 confirm，进入工厂
+                                                  -- shipped / delivered / cancelled: 同字面
+window_expires_at        timestamptz           -- 24h 安全窗到期时间（status='awaiting_window' 时使用）
 stripe_payment_intent_id text
 
 -- 物流字段（status=shipped 后填）
@@ -170,7 +175,7 @@ Content-Type: multipart/form-data
 Authorization: Bearer <supabase_jwt>
 
 photo: <File>           # 用户上传，<=10MB，jpg/png/webp
-finish: string          # silver | brass | teal | charcoal | copper
+finish: string          # silver | charcoal (v1) — brass/teal/copper deferred
 pet_name: string        # <=12 chars
 pet_phone: string
 turnstile_token: string # Cloudflare 验证 token
@@ -256,7 +261,8 @@ turnstile_token: string # Cloudflare 验证 token
 3. 调 Stripe 建 PaymentIntent（金额 = subtotal + tax）
 4. 返回 `{ orderId, clientSecret }` 给前端
 5. 前端用 `stripe.confirmPayment({ clientSecret, return_url: '...thank-you.html?order=' + orderId })`
-6. 支付成功 → Stripe webhook → 后端把 status 改为 `received`，立即排入生产队列（无取消窗口；当天进入 `in_production`）
+6. 支付成功 → Stripe webhook → 后端把 status 改为 `awaiting_window`，设置 `window_expires_at = now() + 24h`，发送确认邮件（含 Request Redo 按钮）
+7. 24h Cron 任务（或 `window_expires_at` 触发）→ 把 status 改为 `in_production`，发送「进入生产」邮件，工厂队列接单。**前提**：客户没有在窗口内点 Request Redo 或回复邮件
 
 #### `GET /api/orders/:displayId` — Thank-you 页 + Account 页查详情
 
@@ -288,9 +294,31 @@ turnstile_token: string # Cloudflare 验证 token
 
 > **前端目前显示什么**：account 页 / 订单卡上，当 `shipping != null` 时展示 carrier + ETA 区间 + tracking 单号（点击跳承运商页面）。`status='in_production'` 时显示「物流单号会在发货后出现在这里」占位。后续可在 thank-you 页也加同样一块。
 
-#### `POST /api/admin/orders/:displayId/cancel` — 客服后台取消（仅内部使用）
+#### `POST /api/orders/:displayId/request-redo` — 客户主动触发的 24h 安全窗操作
 
-定制订单对外不开放取消（每枚按单雕刻，下单即进入生产）。但客服后台保留一个内部取消接口，处理「客户刚下单立即邮件求救」的边缘 case——若订单仍在 `received` 且工厂未开雕，可由客服把 status 改为 `cancelled`，调 Stripe 退款，发送邮件。**前端不暴露此功能**。
+确认邮件里 Request Redo 按钮的 endpoint。**仅在 `status='awaiting_window'` 内可调用**，过窗返回 410 Gone。
+
+**Request**：
+```json
+{ "reason": "free text — 客户在邮件链接里附带的备注" }
+```
+
+**服务端逻辑**：
+1. 验证 token（邮件链接里的 signed token，绑定 orderId）
+2. 检查 `now() < window_expires_at`，否则返回 410
+3. 把 status 改为 `redo_requested`（新增的瞬态状态，等客服跟进）
+4. 触发客服内部通知（Slack / 工单系统）
+5. 返回 200 + 一个着陆页 URL：「客服会在 1 个工作日内联系你」
+
+**客服后续操作**（不开放给客户，仅内部）：
+- 沟通后决定 → 重做（重置 `window_expires_at`，回到 `awaiting_window`）OR 全额退款（调 `cancel` 路径）
+
+#### `POST /api/admin/orders/:displayId/cancel` — 客服后台取消
+
+主要用途：客户在 24h 窗口内通过 Request Redo / 邮件回复请求退款，客服处理。
+- 检查 status 必须是 `awaiting_window` 或 `redo_requested`（在 `in_production` 后不允许）
+- 把 status 改为 `cancelled`，调 Stripe 退款，发送邮件。
+- **前端不暴露此功能**——只能客服后台触发。
 
 ---
 
@@ -402,19 +430,42 @@ designer 页用 `?design=<id>` 参数读取，预填 state 回 stage-2 让用户
 
 ### 3.6 物流 / 履约（v1 半人工，v1.5 自动化）
 
-**当前阶段**：工厂打完雕、贴完标签后人工录入 → 后台管理界面（或客服 API）把 tracking_number / carrier / shipped_at 写到 `orders` 表，状态置 `shipped`，触发邮件。
+**重要前提**：实物制造与出库是**跨境直邮**到美国客户。前端文案上抽象为「shipped from our atelier」，不绑定具体地理位置。承运链路是：
+
+```
+工坊（origin） → DHL Express 国际段 → 美国清关（DDP，关税我们出）
+               → USPS / UPS 最后一公里 → 客户门口
+```
+
+**总时效**（已写到 shipping.html）：
+- 生产 7–10 个工作日
+- 国际段 + 最后一公里 5–8 个工作日
+- **总计 13–19 个工作日到货**（原承诺 11–16 已调整）
+
+**关税 / 进口费**：DDP（Delivered Duty Paid）模式——所有关税 / 进口费由我们承担，客户在 checkout 看到什么价就是付什么价。**不能让 DHL 找客户收钱**——后台需要预付清关账户。
+
+**当前阶段**：工坊打完雕、贴完标签后人工录入 → 后台管理界面（或客服 API）把 tracking_number / carrier / shipped_at 写到 `orders` 表，状态置 `shipped`，触发邮件。
 
 **预留对接点**（v1 完成、v1.5 接通）：
 
 | 方向 | 形式 | 用途 |
 |---|---|---|
-| 入站 webhook | `POST /api/webhooks/shipment` | 工厂 / EasyPost / Shippo / ShipStation 在创建运单后回调，自动写入物流字段 |
+| 入站 webhook | `POST /api/webhooks/shipment` | 工坊 / EasyPost / Shippo / ShipStation 在创建运单后回调，自动写入物流字段 |
 | 入站 webhook | `POST /api/webhooks/tracking` | EasyPost / Shippo 把承运商的扫码事件推过来，按 order_id 落 `order_shipping_events` |
 | 手动后台 | `POST /api/admin/orders/:id/ship` | 客服在没有承运商集成时手动录入 tracking 数据 |
 | 出站邮件 | `shipping.shipped` → SendGrid template | 「你的牌发出来了」+ tracking 链接 |
 | 出站邮件 | `shipping.delivered` | 「希望你和狗狗喜欢」（可选）|
 
-**API 服务备选**：EasyPost / Shippo / ShipStation / Stripe Shipping（皆有 carrier-agnostic tracking webhook）。选哪一家由 ops 决定，影响前端的只有 `tracking_url` 域。
+**API 服务备选**（必须支持国际段 + DDP）：
+- **EasyPost** — 支持 DHL Express + DDP，tracking webhook 现成
+- **Shippo** — 类似 EasyPost，对接简单
+- **DHL MyDHLi API** — 直接对接 DHL，价格更可控但要自己处理 tracking 事件
+- **顺丰国际 / SFC** — 价格更低，但对美区 last-mile 体验略弱
+
+**退货 / Returns 物流缺口**：
+- 客户从美国寄回中国成本太高（>$30）+ 时效太长
+- 建议 v1 ops 设个 **美国境内 3PL 接收点**（如 ShipBob / Easyship），客户用预付标签寄到 3PL，3PL 统一打包回工坊
+- 当前法律页 returns.html 已写「退货地址由邮件提供」，不绑死
 
 **前端兜底**：在 `tracking_url` 没有时，render 单号字符串本身（不可点）；UI 已实现。
 
@@ -476,7 +527,7 @@ TAXJAR_API_KEY=               # 可选
 
 1. **定价**：钛合金牌 $109，皮革项圈 $49，统一定价不打折（v1）。BNPL 4 期均分。
 2. **配送**：美国境内免邮。生产 7–10 工作日 + 物流 3–5 天 = **11–16 个工作日到货**。
-3. **订单终局性**：每枚牌按单雕刻，下单后立即进入生产——**对客户不提供取消窗口**，订单不可改不可退（除制造缺陷 / 物流损坏外）。客服后台可以在工厂开雕前手动取消极端 case。
+3. **订单审批流程**：客户在 designer 内完成 4-checkbox approve + 付款。付款后进入 **24 小时安全窗**（订单状态 `awaiting_window`）——这期间客户可点 Request Redo 邮件按钮，客服介入处理免费重做或全额退款。24 小时窗口过后状态自动转为 `in_production`，订单终局，不可改不可退（制造缺陷 / 物流损坏除外）。
 4. **退换政策**：制造缺陷 / 刻字错误 / 发错款 / 物流损坏 → 14 天内重做或退款。详见 `returns.html`。
 5. **Generate 防滥用**：三层（Turnstile + 用户限流 + IP 限流），细节见 `docs/api-generate.md`。
 6. **AI 出图规范**：halftone 灰阶肖像，**同一张图既给客户预览也直接驱动影雕机**——所以输出尺寸 / 灰阶 bit 深度要匹配工厂参数（待工厂确认后写到 CLAUDE.md §7）。
@@ -484,13 +535,15 @@ TAXJAR_API_KEY=               # 可选
 8. **多语言**：前端 `<html lang="zh">` 自检并切到 zh 路由。**所有面向客户的字符串都需要 EN/ZH 两版**——订单确认邮件、SMS、错误信息、Stripe 支付页文案都要双语支持。
 9. **金属表面名称**（前后端必须严格匹配代号）：
 
-   | code | EN | ZH |
-   |---|---|---|
-   | `silver` | Titanium Silver | 钛本色 |
-   | `brass` | Champagne Gold | 香槟金 |
-   | `teal` | Sky Blue | 钛蓝 |
-   | `charcoal` | Storm Black | 深炭黑 |
-   | `copper` | Rose Copper | 玫瑰铜 |
+   | code | EN | ZH | v1 status |
+   |---|---|---|---|
+   | `silver` | Titanium Silver | 钛本色 | ✓ 上线 |
+   | `charcoal` | Gunmetal | 枪黑色 | ✓ 上线 |
+   | `brass` | Champagne Gold | 香槟金 | UI 暂隐藏（v1.5 解锁）|
+   | `teal` | Sky Blue | 钛蓝 | UI 暂隐藏（v1.5 解锁）|
+   | `copper` | Rose Copper | 玫瑰铜 | UI 暂隐藏（v1.5 解锁）|
+
+   v1 只能下到 silver / charcoal 两个 code；其他 3 个仍然在 colorMap / colorNames 字典里以兼容历史订单。后端 enum 也建议同时存 5 个 code 留位。
 
 10. **项圈尺寸**：`xs` (25-33 cm) / `s` (30-40 cm) / `m` (35-50 cm) / `l` (45-60 cm) / `xl` (55-70 cm)，宽度统一 25 mm。
 
@@ -500,8 +553,10 @@ TAXJAR_API_KEY=               # 可选
 
 | 事件 | 收件人 | 内容 |
 |---|---|---|
-| 订单确认 | 客户 | 订单号、items、合计、预计交付时间 |
-| 进入生产 | 客户 | 「你的牌在工作台上了」 |
+| **订单确认 + 24h 安全窗** | 客户 | 订单号、items、合计、预计交付时间、设计稿缩略图、**`Request Redo` 大按钮**（链接到 `/api/orders/:id/request-redo?token=...`）、安全窗剩余时间 |
+| **24h 后进入生产** | 客户 | 「24 小时窗口已关闭，你的牌进入工作台」 |
+| **客户请求 redo** | 客服内部 | Slack / 工单：客户 X 在订单 Y 的安全窗内请求重做，备注：「...」|
+| **客服处理后通知** | 客户 | 重做：「新版终稿准备中，预计 X 小时回复」；退款：「全额退款已发起，3-5 工作日到账」|
 | 发货 | 客户 | 物流单号 + 跟踪链接 |
 | 送达（可选） | 客户 | 「希望你和狗狗喜欢」 |
 | 退换申请 | 客户 + 客服内部 | 收到退换申请 |

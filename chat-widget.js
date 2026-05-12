@@ -33,7 +33,7 @@
           questions: [
             {
               q: 'How long does delivery take?',
-              a: 'Production takes 7–10 business days. Shipping adds 3–5 business days. Most U.S. orders arrive within 11–16 business days from order placement.',
+              a: "After you approve the design at checkout, you have a 24-hour safety window (engraving doesn't start during it). After that, production takes 7–10 business days and shipping adds 5–8. Most U.S. orders arrive within 13–19 business days of placing the order.",
               link: { label: 'Shipping policy', href: 'shipping.html' },
             },
             {
@@ -42,27 +42,31 @@
             },
             {
               q: 'Can I track my order?',
-              a: 'Yes. We email a tracking number the day your tag ships, usually via USPS Priority or UPS Ground.',
+              a: 'Yes. We email a tracking number the day your tag ships. We ship via DHL Express with U.S. final-mile handed off to USPS or UPS depending on your address.',
             },
           ],
         },
         {
           id: 'cancel',
-          label: 'Cancellations & changes',
-          intro: 'Each tag is engraved to order. Orders enter production immediately — they cannot be cancelled or modified after checkout.',
+          label: 'Cancellations & redos',
+          intro: 'You approve every detail before paying. After payment, you have 24 hours to request a redo or a full refund — engraving only starts after that window closes.',
           questions: [
             {
               q: 'How do I cancel?',
-              a: 'Custom orders are final once placed. If you spot a problem immediately after ordering (typo, wrong address, wrong finish), email support@marlowe.example with your order number right away — we will try to catch it before engraving begins, but cannot guarantee it.',
+              a: 'Within 24 hours of payment, click Request Redo in your confirmation email (or just reply to it). A real person reaches out and you choose: free redo, or full refund within 3–5 business days. After 24 hours, engraving has started and the order is final.',
               link: { label: 'Returns policy', href: 'returns.html' },
             },
             {
-              q: 'Can I change my shipping address?',
-              a: 'Email us immediately at support@marlowe.example with your order number and the corrected address. Production begins the same business day, so we can only fix it if your message reaches us before engraving starts.',
+              q: "I don't love the design — can I change it?",
+              a: "Yes. In the Designer you can regenerate as many times as you like before checkout. After payment, you still have 24 hours to click Request Redo in your confirmation email — we'll work with you on a free redo.",
             },
             {
-              q: 'Can I change the design after ordering?',
-              a: "No — the Designer's real-time preview is your final approval. Once you place the order, the design is locked. We can't change spelling, swap shapes, or update the engraving.",
+              q: 'Can I change my shipping address?',
+              a: 'Within the 24-hour safety window after payment, yes — email support@marlowe.example with your order number and the new address. After 24 hours, engraving starts and the shipping label is locked.',
+            },
+            {
+              q: "When does engraving actually start?",
+              a: "Exactly 24 hours after your payment, unless you've clicked Request Redo or replied to the confirmation email in that window. We use that buffer as a safety net — no irreversible work happens in those first 24 hours.",
             },
           ],
         },
@@ -101,7 +105,7 @@
             },
             {
               q: "What if I don't like the AI portrait?",
-              a: "You can regenerate as many times as you like before checkout (within reasonable limits). Once you've placed the order, the design is locked — orders are final because each tag is engraved to order.",
+              a: "Two layers of safety. Before checkout, you can regenerate the portrait up to 3 times for free in the Designer. After checkout, you have 24 hours to click Request Redo in your confirmation email — a real person works with you on a free redo. Engraving only starts after that 24-hour window closes.",
             },
             {
               q: 'Can I regenerate the portrait?',
@@ -211,7 +215,7 @@
           questions: [
             {
               q: 'How much does a tag cost?',
-              a: '$109 for the Shield tag in any of 5 titanium finishes. Free engraving included. Free U.S. standard shipping included.',
+              a: '$109 for the Shield tag in either of 2 titanium finishes (Titanium Silver or Gunmetal). Free engraving included. Free U.S. standard shipping included.',
             },
             {
               q: 'What payment methods do you accept?',
@@ -219,7 +223,7 @@
             },
             {
               q: 'Are there any discounts?',
-              a: "Not currently. We make every tag to order in California — there's no inventory clearance to discount.",
+              a: "Not currently. We make every tag to order — there's no inventory clearance to discount.",
             },
             {
               q: 'Is there sales tax?',
@@ -263,7 +267,7 @@
             },
             {
               q: 'Will the leather match my titanium tag?',
-              a: 'The collar hardware (buckle, D-ring) is the same titanium grade as the tag. Titanium Silver pairs most cleanly; the other finishes (Champagne Gold / Sky Blue / Storm Black / Rose Copper) work with all three leather colors.',
+              a: 'The collar hardware (buckle, D-ring) is the same titanium grade as the tag. Titanium Silver pairs most cleanly with all three leathers; Gunmetal looks especially sharp against Saddle or Black.',
             },
             {
               q: 'How do I care for the leather?',
@@ -317,25 +321,35 @@
           questions: [
             {
               q: '多久能收到？',
-              a: '生产需 7–10 个工作日，物流再加 3–5 个工作日。大多数美区订单从下单到收货约 11–16 个工作日。',
+              a: '你在结账时已确认设计，付款后 24 小时安全窗里不会开雕。窗口过后，生产 7–10 个工作日，物流 5–8 个工作日。大多数美区订单从下单到收货约 13–19 个工作日。',
               link: { label: '物流政策', href: 'shipping.html' },
             },
             { q: '发货范围？', a: '美国 50 州 + DC + 军方地址（APO/FPO/DPO）+ 美属领地。暂不发国际。' },
-            { q: '能追踪订单吗？', a: '可以。发货当天我们会邮件发送 USPS Priority 或 UPS Ground 的追踪号。' },
+            { q: '能追踪订单吗？', a: '可以。发货当天我们会邮件发送 DHL Express 追踪号；最后一公里由 USPS 或 UPS 派送。' },
           ],
         },
         {
           id: 'cancel',
           label: '取消与修改',
-          intro: '每枚牌按单雕刻，下单后立即进入生产——无法取消或修改。',
+          intro: '付款前你已在结账页逐项确认了设计。付款后还有 24 小时安全窗——这期间可重做或全额退款，雕刻只在 24 小时之后才开始。',
           questions: [
             {
               q: '如何取消订单？',
-              a: '定制订单下单后即视为最终，无法取消或退款。如果你刚下单就发现问题（刻字错、地址错、底色错选），请立即邮件 support@marlowe.example 并附订单号——我们会尽力在开雕前拦下，但不保证一定能赶上。',
+              a: '付款后 24 小时内，点击确认邮件里的 Request Redo（或直接回复邮件），客服会跟你对接：免费重做，或 3–5 个工作日内全额退款，看你选。24 小时之后雕刻已开始，订单终局。',
               link: { label: '退换货政策', href: 'returns.html' },
             },
-            { q: '能改收货地址吗？', a: '立即邮件 support@marlowe.example 附订单号和新地址。生产当天就开始，必须在我们开雕前收到你的邮件才能改。' },
-            { q: '下单后能改设计吗？', a: '不能——Designer 实时预览即视为你的最终确认。下单后设计立即锁定，刻字、形状、底色都无法再改。' },
+            {
+              q: '不喜欢设计——能改吗？',
+              a: '可以。Designer 里下单前能无限次重新生成。付款后 24 小时内还能点 Request Redo 让客服帮你免费重做。',
+            },
+            {
+              q: '能改收货地址吗？',
+              a: '在付款后 24 小时安全窗内可以——邮件 support@marlowe.example 附订单号和新地址。24 小时后雕刻已开始、运单锁定。',
+            },
+            {
+              q: '什么时候真正开始雕刻？',
+              a: '付款后 24 小时整。除非你在这 24 小时内点了 Request Redo 或回复了确认邮件——否则一过窗口立即开雕。我们用这个缓冲做安全网，前 24 小时不会有任何不可逆操作。',
+            },
           ],
         },
         {
@@ -359,7 +373,7 @@
           intro: 'AI 影雕肖像如何生成：',
           questions: [
             { q: 'AI 肖像怎么生成？', a: '上传一张清晰的宠物照片，系统转换为适合金属雕刻的灰阶影雕图。Designer 实时预览，所见即所刻。' },
-            { q: '如果不喜欢 AI 肖像怎么办？', a: '下单前可无限次重新生成（合理范围内）。下单后设计立即锁定——定制商品按单雕刻，不可退改。' },
+            { q: '如果不喜欢 AI 肖像怎么办？', a: '两层保险。下单前在 Designer 里可以免费重新生成 3 次。付款后 24 小时内还能点 Request Redo 让客服帮你免费重做。窗口过后才开雕。' },
             { q: '怎么重新生成？', a: '在最终预览页点击"换一张肖像"即可重新跑 AI。形状/底色/刻字保持不变，只换肖像。' },
             { q: '会跟我家狗完全一样吗？', a: '影雕本质是一种"风格化处理"——像照片精度的金属雕刻，不是照片复制。Designer 预览中看到的就是最终雕刻效果。如果不喜欢，不要进入结账。' },
           ],
@@ -415,7 +429,7 @@
           label: '价格与支付',
           intro: '统一定价，安全支付，按单制造无折扣。',
           questions: [
-            { q: '一枚多少钱？', a: '$109，盾形钛合金牌，5 种表面处理可选，免费刻字，美区免标准运费。' },
+            { q: '一枚多少钱？', a: '$109，盾形钛合金牌，2 种表面处理可选（钛本色 / 枪黑色），免费刻字，美区免标准运费。' },
             { q: '支持哪些支付方式？', a: '信用卡、借记卡、Apple Pay、Google Pay——由 Stripe 安全处理。我们不接触也不存储你的卡号。' },
             { q: '有折扣吗？', a: '目前没有。每一枚都是按单制造，没有库存清仓的折扣空间。' },
             { q: '要交销售税吗？', a: '销售税在结账时根据你的收货地址自动计算，符合美国各州规定。' },
@@ -437,7 +451,7 @@
             { q: '怎么给狗量颈围？', a: '用软尺绕狗脖子项圈位置一圈，加大约 2 cm（0.75 英寸）作为舒适余量。介于两档之间时——选大的。皮革会软化，扣环上有 7 个调节孔。' },
             { q: '尺寸不合可以换吗？', a: '可以——收货 30 天内免费换码或换色，只要未佩戴或仅试戴。这比牌的政策宽松，因为项圈没有个性化定制。' },
             { q: '必须跟牌一起买吗？', a: '不必。项圈是可选配件——可以只买牌、只买项圈、或两个一起。两个一起的话一并发货。' },
-            { q: '皮革会跟钛合金牌配吗？', a: '项圈的扣件（buckle、D 环）跟牌是同款钛合金等级。钛本色最干净——其他底色（香槟金 / 钛蓝 / 深炭黑 / 玫瑰铜）跟三种皮色都搭。' },
+            { q: '皮革会跟钛合金牌配吗？', a: '项圈的扣件（buckle、D 环）跟牌是同款钛合金等级。钛本色跟三种皮色都干净好搭；枪黑色配马鞍棕或墨黑特别有质感。' },
             { q: '皮革怎么保养？', a: '湿布擦拭，自然风干。每 3–6 个月涂一点无香皮革保养油（saddle soap、mink oil 或 beeswax balm）。避免长时间泡水。Tan 色会随使用变深——这是包浆，不是损坏。' },
           ],
         },

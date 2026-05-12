@@ -275,6 +275,25 @@ nav.main-nav {
   text-decoration: underline;
   text-underline-offset: 3px;
 }
+.redo-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 16px;
+  padding: 12px 22px;
+  background: var(--ink);
+  color: var(--cream);
+  border: 1.5px solid var(--ink);
+  font-family: 'Manrope', sans-serif;
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 200ms;
+}
+.redo-btn:hover { background: var(--cream); color: var(--ink); }
+.redo-btn svg { color: currentColor; }
 
 /* CTAs =========================================================== */
 .actions {
@@ -422,33 +441,37 @@ footer {
       <div class="timeline">
         <div class="timeline-step current">
           <span class="step-num">01</span>
-          <div class="step-title">Order received</div>
+          <div class="step-title">Order received &amp; approved</div>
           <div class="step-time">Today</div>
-          <div class="step-desc">Confirmation email sent. Your design is queued.</div>
+          <div class="step-desc">You approved the design at checkout. Confirmation email sent with a Request Redo button — just in case.</div>
         </div>
         <div class="timeline-step">
           <span class="step-num">02</span>
-          <div class="step-title">Engraving begins</div>
-          <div class="step-time">Same business day</div>
-          <div class="step-desc">Your design enters production immediately — each tag is engraved fresh, not pulled from inventory.</div>
+          <div class="step-title">24-hour safety window</div>
+          <div class="step-time">Next 24 hours</div>
+          <div class="step-desc">Second thoughts? Click <strong>Request Redo</strong> in your email (or just reply) and we'll redo the design or refund you in full. No questions asked.</div>
         </div>
         <div class="timeline-step">
           <span class="step-num">03</span>
-          <div class="step-title">Hand-finished &amp; shipped</div>
+          <div class="step-title">Hand-engraved &amp; shipped</div>
           <div class="step-time">7–10 business days</div>
-          <div class="step-desc">Polished, packaged in linen, tracking number sent to your email.</div>
+          <div class="step-desc">Engraving begins after the 24-hour window. Polished, packaged in linen, tracking emailed when it ships.</div>
         </div>
         <div class="timeline-step">
           <span class="step-num">04</span>
           <div class="step-title">Delivered</div>
-          <div class="step-time">+ 3–5 days</div>
-          <div class="step-desc">Free U.S. shipping. Total time to your door: 11–16 business days.</div>
+          <div class="step-time">+ 5–8 days</div>
+          <div class="step-desc">Free U.S. delivery via DHL Express. Total: ~13–19 business days from order to door.</div>
         </div>
       </div>
 
       <div class="cancel-note">
-        <strong>§ Spotted an issue?</strong>
-        Because each tag is engraved to order, your design enters production right after checkout — we can't cancel or change it. If you notice a problem (typo, wrong address, wrong finish), email <a href="mailto:support@marlowe.example">support@marlowe.example</a> with your order number <strong>immediately</strong> — we'll try to catch it before engraving starts. For defects or transit damage after delivery, see <a href="returns.html">Returns Policy</a>.
+        <strong>§ Got 24 hours to change your mind</strong>
+        We just emailed your confirmation with a <strong>Request Redo</strong> button. Click it any time in the next 24 hours (or use the button below) and a real person will reach out to redo the design or process a full refund, whichever you prefer. If we don't hear from you in 24 hours, engraving begins and the order is final. See <a href="returns.html">Returns Policy</a> for details.
+        <button class="redo-btn" type="button" onclick="onRequestRedo()">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 4 23 10 17 10"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10"/></svg>
+          Request Redo
+        </button>
       </div>
     </section>
 
@@ -471,7 +494,7 @@ footer {
     <div class="footer-grid">
       <div class="footer-brand">
         <a href="index.html" class="logo">MARLOWE</a>
-        <p>Titanium portrait tags, engraved one at a time in California.</p>
+        <p>Titanium portrait tags, engraved one at a time in our atelier.</p>
       </div>
       <div class="footer-col">
         <h4>Shop</h4>
@@ -507,7 +530,7 @@ footer {
       </div>
     </div>
     <div class="footer-bottom">
-      <span>© 2026 Marlowe &amp; Co. Made with care · California, USA.</span>
+      <span>© 2026 Marlowe &amp; Co. Made with care.</span>
       <div class="footer-trust">
         <span>Stripe Secured</span>
         <span>SSL Protected</span>
@@ -546,6 +569,21 @@ function getQuery(name) {
     document.getElementById('order-count').textContent = '—';
   }
 })();
+
+// Request Redo — mirrors the button in the customer's confirmation email.
+// TODO BACKEND: POST /api/orders/:displayId/request-redo (see backend-handoff §3.2).
+// Real flow opens a small form (free-text reason) → submits to backend → shows
+// confirmation state. Mock here just shows an alert with the order ID.
+function onRequestRedo() {
+  const orderId = (document.getElementById('order-number').textContent || '—').trim();
+  alert(
+    "Request Redo (mock)\n\n" +
+    "Order " + orderId + "\n\n" +
+    "In the real flow this opens a short form asking what you'd like changed, " +
+    "then sends to our team. A real person will email you back within 1 business day " +
+    "to either redo the design or process a full refund — your choice."
+  );
+}
 </script>
 
 <script src="auth-state.js"></script>

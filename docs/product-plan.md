@@ -76,11 +76,11 @@
 
 | 代号 | 名称 | 工艺 | designer 默认 |
 |---|---|---|---|
-| `silver` | Titanium Silver（钛本色） | 钛合金本色抛光（实物基础款） | ✓ |
-| `brass` | Champagne Gold（香槟金） | 浅暖金 PVD 镀膜 | |
-| `teal` | Sky Blue（钛蓝） | 钛合金阳极氧化标志色 | |
-| `charcoal` | Storm Black（深炭黑） | DLC 涂层 | |
-| `copper` | Rose Copper（玫瑰铜） | 玫瑰铜 PVD 镀膜 | |
+| `silver` | Titanium Silver（钛本色） | 钛合金本色抛光（实物基础款，v1 默认） | ✓ |
+| `charcoal` | Gunmetal（枪黑色） | DLC 涂层（v1 第二款） | ✓ |
+| `brass` | Champagne Gold（香槟金） | 浅暖金 PVD 镀膜 — v1.5 解锁 | |
+| `teal` | Sky Blue（钛蓝） | 钛合金阳极氧化标志色 — v1.5 解锁 | |
+| `copper` | Rose Copper（玫瑰铜） | 玫瑰铜 PVD 镀膜 — v1.5 解锁 | |
 
 ### 客户定制项
 
@@ -197,11 +197,13 @@ thank-you.html?order=MX...（订单号 + 物流时间线 + 24h 取消提醒）
 
 | 时间 | 动作 | 触发 |
 |---|---|---|
-| T+0 | 订单确认邮件 + 立即进入生产队列（无取消窗口，每枚按单雕刻） | Stripe webhook → SendGrid template + 工厂队列 |
-| T+0–10 days | 工厂收单、CNC 切割、PVD/阳极氧化、影雕 | 工厂端协作 |
+| T+0 | 客户在 designer 内完成 4-checkbox approve + 付款；订单确认邮件（含 Request Redo 按钮）立即发出 | Stripe webhook → SendGrid template |
+| T+0 → T+24h | **24 小时安全窗**：客户可点 Request Redo → 客服介入处理免费重做 / 全额退款 | 后端订单状态 `awaiting_window` |
+| T+24h | 窗口关闭，订单自动转为 `in_production`，工厂队列接单 | Cron 定时任务 |
+| T+24h–10 days | 工厂收单、CNC 切割、PVD/阳极氧化、影雕 | 工厂端协作 |
 | T+10–11 days | 包装（亚麻布袋 + 钢印盒）+ 物流取件 | 仓储 |
 | T+11 days | 发货 + tracking 邮件 | 物流 webhook |
-| T+14–16 days | 客户收货 | — |
+| T+13–19 days | 客户收货 | — |
 
 ---
 
@@ -407,7 +409,7 @@ AI 成本 ≈ **0.17% 营收**，可忽略。Margin 安全。
 **复购场景**（按预估占比排序）：
 1. **每年一枚**——客户为狗的不同人生阶段订（1岁、3岁、5岁……）。AI 生成基于"当下照片"——每年的它都不同，肖像也不同
 2. **多狗家庭**——一只狗一枚，家里 2-3 只狗就 2-3 枚
-3. **不同 finish 收集**——同一只狗 × 不同 finish（钛本色 + 香槟金 + 钛蓝 + 深炭黑 + 玫瑰铜……）
+3. **不同 finish 收集**——同一只狗 × 不同 finish（钛本色 + 枪黑色；v1.5 解锁香槟金 / 钛蓝 / 玫瑰铜后扩展）
 4. **备用件**——丢了 / 损坏的备份
 5. **送礼**——朋友 / 家人 / 同事的狗
 
@@ -459,7 +461,7 @@ AI 成本 ≈ **0.17% 营收**，可忽略。Margin 安全。
 
 | 风险 | 影响 | 应对 |
 |---|---|---|
-| **AI 出图不像客户的狗** | 退换纠纷 / 差评 | (a) Designer 实时预览 = "what you see is what we engrave" 法律措辞 ([returns.html](../returns.html) §04)；(b) 影雕调性是"工艺草图"不是"摄影翻译"，期望管理；(c) 客户在 designer 内可反复重新生成至满意为止再下单 |
+| **AI 出图不像客户的狗** | 退换纠纷 / 差评 | **三层保险**：(a) Designer 内反复重新生成至满意；(b) 结账前 4-checkbox 逐项确认；(c) 付款后 24 小时安全窗，客户可点 Request Redo 进入客服免费重做流程。期望管理：影雕调性是「工艺草图」不是「摄影翻译」 |
 | **AI 成本失控** | Margin 受损 | 邮箱 + IP 限流 + Turnstile 三层防御（[docs/api-generate.md](api-generate.md)）；100 个机器人攻击成本 < $1 |
 | **工厂产能 / 品控** | 订单延迟 / 退货率高 | 7-10 个工作日提前给客户预期；工厂端 QA 流程；首批小批量验证 |
 | **Stripe 审核驳回**（涉及 AI 用户照片处理） | 不能收单 | 法律页 ([privacy.html](../privacy.html) §03) 已明确 AI 数据流；Stripe 提交时附带 docs |

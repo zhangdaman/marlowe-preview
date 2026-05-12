@@ -615,7 +615,25 @@ nav.main-nav {
   text-transform: uppercase;
   transition: all 200ms;
 }
-.regen-btn:hover { border-color: var(--charcoal); color: var(--charcoal); }
+.regen-btn:hover:not(:disabled) { border-color: var(--charcoal); color: var(--charcoal); }
+.regen-btn:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+.regen-counter {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.16em;
+  color: var(--brass-deep);
+  margin-left: 6px;
+  padding-left: 8px;
+  border-left: 1px solid var(--line);
+}
+.regen-btn.exhausted .regen-counter {
+  color: var(--charcoal-soft);
+  border-left-color: rgba(31, 41, 55, 0.1);
+}
 
 /* Customization options =========================================== */
 .customize-col { padding-bottom: 40px; }
@@ -1038,6 +1056,28 @@ nav.main-nav {
   line-height: 1.6;
 }
 
+/* Approve header (stage-3 final-view) ============================== */
+.approve-eyebrow {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--brass-light);
+  margin-bottom: 10px;
+}
+.approve-lede {
+  font-size: 13px;
+  line-height: 1.55;
+  color: rgba(245, 241, 232, 0.78);
+  margin-bottom: 18px;
+  padding-bottom: 18px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+}
+.approve-lede strong {
+  color: var(--cream);
+  font-weight: 500;
+}
+
 /* Collar add-on (stage-2 inside .summary) =========================== */
 .collar-addon {
   background: rgba(245, 241, 232, 0.06);
@@ -1361,28 +1401,27 @@ nav.main-nav {
         <div class="cust-section">
           <div class="cust-header">
             <span class="cust-label">A — Choose your finish</span>
-            <span class="cust-tag">5 Options</span>
+            <span class="cust-tag">2 Options</span>
           </div>
+          <!--
+            v1 ships Titanium Silver + Gunmetal only.
+            Champagne Gold / Sky Blue / Rose Copper deferred — their code
+            (colorMap + colorNames entries below) remains intact so historical
+            mock orders still render. To re-enable, paste the three swatch
+            divs back into this .swatches grid:
+
+              <div class="swatch" onclick="setColor(this, 'brass')"> Champagne Gold </div>
+              <div class="swatch" onclick="setColor(this, 'teal')">  Sky Blue       </div>
+              <div class="swatch" onclick="setColor(this, 'copper')"> Rose Copper   </div>
+          -->
           <div class="swatches">
-            <div class="swatch" onclick="setColor(this, 'brass')">
-              <div class="swatch-circle" style="background: linear-gradient(135deg, #E8D4AB 0%, #8E6F47 100%);"></div>
-              <div class="swatch-name">Champagne<br>Gold</div>
-            </div>
             <div class="swatch selected" onclick="setColor(this, 'silver')">
               <div class="swatch-circle" style="background: linear-gradient(135deg, #F2F4F6 0%, #3A3F46 100%);"></div>
               <div class="swatch-name">Titanium<br>Silver</div>
             </div>
-            <div class="swatch" onclick="setColor(this, 'teal')">
-              <div class="swatch-circle" style="background: linear-gradient(135deg, #5A8A8C 0%, #1F4346 100%);"></div>
-              <div class="swatch-name">Sky<br>Blue</div>
-            </div>
             <div class="swatch" onclick="setColor(this, 'charcoal')">
               <div class="swatch-circle" style="background: linear-gradient(135deg, #4A5568 0%, #1A202C 100%);"></div>
-              <div class="swatch-name">Storm<br>Black</div>
-            </div>
-            <div class="swatch" onclick="setColor(this, 'copper')">
-              <div class="swatch-circle" style="background: linear-gradient(135deg, #D4763E 0%, #6B3010 100%);"></div>
-              <div class="swatch-name">Rose<br>Copper</div>
+              <div class="swatch-name">Gunmetal</div>
             </div>
           </div>
         </div>
@@ -1520,22 +1559,33 @@ nav.main-nav {
         </div>
         <div class="preview-controls">
           <span class="preview-meta">One-of-one · #<span id="tag-id">A8K2-9X1</span></span>
-          <button class="regen-btn" onclick="regenerate()">
+          <button class="regen-btn" id="regen-btn" onclick="regenerate()">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
-            Try a different portrait
+            <span id="regen-btn-label">Try a different portrait</span>
+            <span id="regen-counter" class="regen-counter">3 free left</span>
           </button>
         </div>
       </div>
 
       <div class="customize-col">
         <div class="summary">
+          <div class="approve-eyebrow">§ Review &amp; approve</div>
+          <p class="approve-lede">Clicking <strong>Approve &amp; Add to Cart</strong> below means this is what we engrave. Take a last look.</p>
           <div class="summary-line">
+            <span>Tag</span>
             <span><span id="product-name-final">The Shield Tag</span></span>
+          </div>
+          <div class="summary-line">
+            <span>Finish</span>
             <span><span id="finish-name-final">Titanium Silver</span></span>
           </div>
           <div class="summary-line">
-            <span>Engraving</span>
-            <span>Included</span>
+            <span>Engraved name</span>
+            <span><span id="approve-pet-name">SADIE</span></span>
+          </div>
+          <div class="summary-line">
+            <span>Engraved phone</span>
+            <span><span id="approve-pet-phone">555·814·2901</span></span>
           </div>
           <div class="summary-line" id="collar-summary-line" style="display: none;">
             <span><span id="collar-summary-label">Leather collar · Tan · M</span></span>
@@ -1546,7 +1596,7 @@ nav.main-nav {
             <span>$<span id="total-final">109</span>.00</span>
           </div>
           <button class="btn btn-primary btn-block" onclick="addToCart()">
-            Add to Cart
+            Approve &amp; Add to Cart
             <span class="btn-arrow">→</span>
           </button>
           <!-- TODO BACKEND: replace with Stripe Payment Method Messaging Element.
@@ -1559,10 +1609,10 @@ nav.main-nav {
             Or <strong>4 interest-free payments of <span id="bnpl-installment">$27.25</span></strong>
             <div class="bnpl-brands">Klarna · Afterpay · Affirm</div>
           </div>
-          <button onclick="goToStage(2)" style="background: none; border: none; color: var(--charcoal-soft); font-family: inherit; font-size: 13px; cursor: pointer; text-decoration: underline; text-underline-offset: 4px; padding: 16px 0 0; display: block; margin: 0 auto;">← Edit details</button>
+          <button onclick="goToStage(2)" style="background: none; border: none; color: var(--charcoal-soft); font-family: inherit; font-size: 13px; cursor: pointer; text-decoration: underline; text-underline-offset: 4px; padding: 16px 0 0; display: block; margin: 0 auto;">← Change something</button>
           <div class="summary-meta" style="margin-top: 16px;">
-            Crafted in 7–10 business days · Free U.S. shipping<br>
-            We email a final proof before crafting
+            24-hour safety window after payment · Free U.S. delivery<br>
+            Engraving only starts after the window closes
           </div>
         </div>
       </div>
@@ -1583,7 +1633,7 @@ nav.main-nav {
 <div class="footer-mini">
   <span>© Marlowe &amp; Co.</span>
   <span>·</span>
-  <span>Made with care · California, USA</span>
+  <span>Made with care</span>
   <span>·</span>
   <span>30-day quality guarantee</span>
 </div>
@@ -1626,10 +1676,12 @@ const colorMap = {
 };
 
 const colorNames = {
-  brass: 'Champagne Gold',
+  // v1 active: silver + charcoal. Other entries kept so historical
+  // mock orders still render their finish name correctly.
   silver: 'Titanium Silver',
+  charcoal: 'Gunmetal',
+  brass: 'Champagne Gold',
   teal: 'Sky Blue',
-  charcoal: 'Storm Black',
   copper: 'Rose Copper',
 };
 
@@ -2201,6 +2253,11 @@ function renderFinalPreview() {
   document.getElementById('preview-tag-final').innerHTML = shapeRenderers[state.shape](c, name, phone, true);
   document.getElementById('finish-name-final').textContent = colorNames[state.color];
   document.getElementById('product-name-final').textContent = shapeNames[state.shape];
+  // Approve panel — surface the engraved name + phone so customer reviews exactly what we'll engrave
+  const approveName  = document.getElementById('approve-pet-name');
+  const approvePhone = document.getElementById('approve-pet-phone');
+  if (approveName)  approveName.textContent  = name || '—';
+  if (approvePhone) approvePhone.textContent = phone || '—';
   updateTotal();
 }
 
@@ -2322,13 +2379,50 @@ function renderCollarSvg(color) {
     '</svg>';
 }
 
+// Regenerate budget — 3 free regens per session before checkout.
+// Tied to the cost of each AI inference call. Customer can always still
+// approve the current portrait or click Request Redo after payment.
+const REGEN_FREE_LIMIT = 3;
+let regenUsed = 0;
+
 function regenerate() {
+  if (regenUsed >= REGEN_FREE_LIMIT) {
+    alert(
+      "You've used all " + REGEN_FREE_LIMIT + " free regenerations for this design.\n\n" +
+      "Approve this portrait to add it to your cart — or after payment you can click " +
+      "Request Redo in your confirmation email and a real person will work with you " +
+      "on a free redo."
+    );
+    return;
+  }
+  regenUsed++;
   // Fresh one-of-one ID
   const code = Math.random().toString(36).slice(2, 6).toUpperCase() + '-' +
                Math.random().toString(36).slice(2, 5).toUpperCase();
   document.getElementById('tag-id').textContent = code;
   // Re-run AI — same shape/finish/engraving, fresh halftone
   startGeneration();
+  // Update budget counter after generation kicks off
+  updateRegenBudget();
+}
+
+function updateRegenBudget() {
+  const btn = document.getElementById('regen-btn');
+  const counter = document.getElementById('regen-counter');
+  const label = document.getElementById('regen-btn-label');
+  if (!btn || !counter) return;
+  const remaining = Math.max(0, REGEN_FREE_LIMIT - regenUsed);
+  if (remaining > 0) {
+    counter.textContent = remaining + ' free left';
+    btn.classList.remove('exhausted');
+    btn.disabled = false;
+    if (label) label.textContent = 'Try a different portrait';
+  } else {
+    counter.textContent = 'Limit reached';
+    btn.classList.add('exhausted');
+    btn.disabled = true;
+    if (label) label.textContent = 'Redo via email after payment';
+  }
 }
 
 // ============================================

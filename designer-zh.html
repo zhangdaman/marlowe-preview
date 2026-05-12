@@ -509,7 +509,25 @@ nav.main-nav {
   letter-spacing: 0.04em;
   transition: all 200ms;
 }
-.regen-btn:hover { border-color: var(--charcoal); color: var(--charcoal); }
+.regen-btn:hover:not(:disabled) { border-color: var(--charcoal); color: var(--charcoal); }
+.regen-btn:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+.regen-counter {
+  font-family: 'JetBrains Mono', 'Noto Sans SC', monospace;
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  color: var(--brass-deep);
+  margin-left: 6px;
+  padding-left: 8px;
+  border-left: 1px solid var(--line);
+}
+.regen-btn.exhausted .regen-counter {
+  color: var(--charcoal-soft);
+  border-left-color: rgba(31, 41, 55, 0.1);
+}
 
 /* Customization */
 .customize-col { padding-bottom: 40px; }
@@ -914,6 +932,27 @@ nav.main-nav {
   line-height: 1.7;
 }
 
+/* Approve header (stage-3 final-view) ============================== */
+.approve-eyebrow {
+  font-family: 'JetBrains Mono', 'Noto Sans SC', monospace;
+  font-size: 11px;
+  letter-spacing: 0.22em;
+  color: var(--brass-light);
+  margin-bottom: 10px;
+}
+.approve-lede {
+  font-size: 13px;
+  line-height: 1.7;
+  color: rgba(245, 241, 232, 0.78);
+  margin-bottom: 18px;
+  padding-bottom: 18px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+}
+.approve-lede strong {
+  color: var(--cream);
+  font-weight: 500;
+}
+
 /* Collar add-on (stage-2 inside .summary) =========================== */
 .collar-addon {
   background: rgba(245, 241, 232, 0.06);
@@ -1227,28 +1266,25 @@ nav.main-nav {
         <div class="cust-section">
           <div class="cust-header">
             <span class="cust-label">A — 选择金属底色</span>
-            <span class="cust-tag">5 种可选</span>
+            <span class="cust-tag">2 种可选</span>
           </div>
+          <!--
+            v1 仅上钛本色 + 枪黑色。香槟金 / 钛蓝 / 玫瑰铜 推迟，
+            JS 字典里仍保留 brass / teal / copper 条目，方便历史订单显示。
+            v1.5 解锁只需把以下 3 个 swatch 重新放回 .swatches 内：
+
+              <div class="swatch" onclick="setColor(this, 'brass')"> 香槟金 </div>
+              <div class="swatch" onclick="setColor(this, 'teal')">  钛蓝   </div>
+              <div class="swatch" onclick="setColor(this, 'copper')">玫瑰铜 </div>
+          -->
           <div class="swatches">
-            <div class="swatch" onclick="setColor(this, 'brass')">
-              <div class="swatch-circle" style="background: linear-gradient(135deg, #E8D4AB 0%, #8E6F47 100%);"></div>
-              <div class="swatch-name">香槟金</div>
-            </div>
             <div class="swatch selected" onclick="setColor(this, 'silver')">
               <div class="swatch-circle" style="background: linear-gradient(135deg, #F2F4F6 0%, #3A3F46 100%);"></div>
               <div class="swatch-name">钛本色</div>
             </div>
-            <div class="swatch" onclick="setColor(this, 'teal')">
-              <div class="swatch-circle" style="background: linear-gradient(135deg, #5A8A8C 0%, #1F4346 100%);"></div>
-              <div class="swatch-name">钛蓝</div>
-            </div>
             <div class="swatch" onclick="setColor(this, 'charcoal')">
               <div class="swatch-circle" style="background: linear-gradient(135deg, #4A5568 0%, #1A202C 100%);"></div>
-              <div class="swatch-name">深炭黑</div>
-            </div>
-            <div class="swatch" onclick="setColor(this, 'copper')">
-              <div class="swatch-circle" style="background: linear-gradient(135deg, #D4763E 0%, #6B3010 100%);"></div>
-              <div class="swatch-name">玫瑰铜</div>
+              <div class="swatch-name">枪黑色</div>
             </div>
           </div>
         </div>
@@ -1365,22 +1401,33 @@ nav.main-nav {
         </div>
         <div class="preview-controls">
           <span class="preview-meta">独一无二编号 · #<span id="tag-id">A8K2-9X1</span></span>
-          <button class="regen-btn" onclick="regenerate()">
+          <button class="regen-btn" id="regen-btn" onclick="regenerate()">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
-            换一张肖像
+            <span id="regen-btn-label">换一张肖像</span>
+            <span id="regen-counter" class="regen-counter">还剩 3 次</span>
           </button>
         </div>
       </div>
 
       <div class="customize-col">
         <div class="summary">
+          <div class="approve-eyebrow">§ 确认细节</div>
+          <p class="approve-lede">点击下方 <strong>确认并加入购物车</strong> 即视为你确认下面这些是要雕在金属上的。再看一眼。</p>
           <div class="summary-line">
+            <span>样式</span>
             <span><span id="product-name-final">盾形铭牌</span></span>
+          </div>
+          <div class="summary-line">
+            <span>底色</span>
             <span><span id="finish-name-final">钛本色</span></span>
           </div>
           <div class="summary-line">
-            <span>刻字</span>
-            <span>已包含</span>
+            <span>刻字 · 名字</span>
+            <span><span id="approve-pet-name">SADIE</span></span>
+          </div>
+          <div class="summary-line">
+            <span>刻字 · 电话</span>
+            <span><span id="approve-pet-phone">555·814·2901</span></span>
           </div>
           <div class="summary-line" id="collar-summary-line" style="display: none;">
             <span><span id="collar-summary-label">皮革项圈 · 原棕 · M</span></span>
@@ -1391,7 +1438,7 @@ nav.main-nav {
             <span>$<span id="total-final">109</span>.00</span>
           </div>
           <button class="btn btn-primary btn-block" onclick="addToCart()">
-            加入购物车
+            确认并加入购物车
             <span class="btn-arrow">→</span>
           </button>
           <!-- TODO BACKEND: 替换为 Stripe Payment Method Messaging Element -->
@@ -1399,10 +1446,10 @@ nav.main-nav {
             也可分 4 期，每期 <strong id="bnpl-installment">$27.25</strong> 免息
             <div class="bnpl-brands">Klarna · Afterpay · Affirm</div>
           </div>
-          <button onclick="goToStage(2)" style="background: none; border: none; color: var(--charcoal-soft); font-family: inherit; font-size: 13px; cursor: pointer; text-decoration: underline; text-underline-offset: 4px; padding: 16px 0 0; display: block; margin: 0 auto;">← 返回修改</button>
+          <button onclick="goToStage(2)" style="background: none; border: none; color: var(--charcoal-soft); font-family: inherit; font-size: 13px; cursor: pointer; text-decoration: underline; text-underline-offset: 4px; padding: 16px 0 0; display: block; margin: 0 auto;">← 改一下</button>
           <div class="summary-meta" style="margin-top: 16px;">
-            7–10 个工作日交付 · 美区免运费<br>
-            铸造前会发送设计终稿给你确认
+            付款后 24 小时安全窗 · 美区免邮<br>
+            窗口结束后才开始雕刻
           </div>
         </div>
       </div>
@@ -1423,7 +1470,7 @@ nav.main-nav {
 <div class="footer-mini">
   <span>© Marlowe &amp; Co.</span>
   <span>·</span>
-  <span>用心制造 · 加州</span>
+  <span>用心制作</span>
   <span>·</span>
   <span>30 天质量保证</span>
 </div>
@@ -1463,10 +1510,11 @@ const colorMap = {
 };
 
 const colorNames = {
-  brass: '香槟金',
+  // v1 启用：silver + charcoal。其他保留字典条目以便历史订单仍能正确显示 finish 名。
   silver: '钛本色',
+  charcoal: '枪黑色',
+  brass: '香槟金',
   teal: '钛蓝',
-  charcoal: '深炭黑',
   copper: '玫瑰铜',
 };
 
@@ -1884,6 +1932,11 @@ function renderFinalPreview() {
   document.getElementById('preview-tag-final').innerHTML = shapeRenderers[state.shape](c, name, phone, true);
   document.getElementById('finish-name-final').textContent = colorNames[state.color];
   document.getElementById('product-name-final').textContent = shapeNames[state.shape];
+  // 确认面板里也要把名字和电话同步出来，给客户「我要看清楚」的关口
+  const approveName  = document.getElementById('approve-pet-name');
+  const approvePhone = document.getElementById('approve-pet-phone');
+  if (approveName)  approveName.textContent  = name || '—';
+  if (approvePhone) approvePhone.textContent = phone || '—';
   updateTotal();
 }
 
@@ -2005,13 +2058,48 @@ function renderCollarSvg(color) {
     '</svg>';
 }
 
+// 重新生成预算 — 下单前 3 次免费。
+// 跟 AI 调用成本挂钩。用完后客户可以直接 approve 当前肖像，或者
+// 付款后 24h 内用 Request Redo 让客服免费帮你重做。
+const REGEN_FREE_LIMIT = 3;
+let regenUsed = 0;
+
 function regenerate() {
+  if (regenUsed >= REGEN_FREE_LIMIT) {
+    alert(
+      "本次设计的 " + REGEN_FREE_LIMIT + " 次免费重新生成已用完。\n\n" +
+      "可以直接 approve 当前肖像加入购物车——或者付款后 24 小时内点击" +
+      "确认邮件里的 Request Redo，真人客服会跟你免费重做。"
+    );
+    return;
+  }
+  regenUsed++;
   // 新的独一无二编号
   const code = Math.random().toString(36).slice(2, 6).toUpperCase() + '-' +
                Math.random().toString(36).slice(2, 5).toUpperCase();
   document.getElementById('tag-id').textContent = code;
   // 重新生成 — 形状/底色/刻字保持不变，重出一张影雕
   startGeneration();
+  updateRegenBudget();
+}
+
+function updateRegenBudget() {
+  const btn = document.getElementById('regen-btn');
+  const counter = document.getElementById('regen-counter');
+  const label = document.getElementById('regen-btn-label');
+  if (!btn || !counter) return;
+  const remaining = Math.max(0, REGEN_FREE_LIMIT - regenUsed);
+  if (remaining > 0) {
+    counter.textContent = '还剩 ' + remaining + ' 次';
+    btn.classList.remove('exhausted');
+    btn.disabled = false;
+    if (label) label.textContent = '换一张肖像';
+  } else {
+    counter.textContent = '已达上限';
+    btn.classList.add('exhausted');
+    btn.disabled = true;
+    if (label) label.textContent = '付款后邮件重做';
+  }
 }
 
 // ============================================

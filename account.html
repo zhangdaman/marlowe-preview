@@ -506,9 +506,9 @@ function readMockData(user) {
         const etaStart  = new Date(new Date(last.placedAt).getTime() + 13 * 24 * 60 * 60 * 1000).toISOString();
         const etaEnd    = new Date(new Date(last.placedAt).getTime() + 16 * 24 * 60 * 60 * 1000).toISOString();
         shipping = {
-          carrier: 'USPS Priority',
+          carrier: 'DHL Express',
           tracking_number: '9400 1118 9956 ' + last.orderId.replace(/[^A-Z0-9]/g, '').slice(0, 10),
-          tracking_url: 'https://tools.usps.com/go/TrackConfirmAction',
+          tracking_url: 'https://www.dhl.com/global-en/home/tracking.html',
           shipped_at: shippedAt,
           eta_date_start: etaStart,
           eta_date_end: etaEnd,
@@ -590,7 +590,7 @@ function renderOrders(orders) {
 // Shipping sub-block — appears once the order has shipping info on it.
 // TODO BACKEND: order.shipping comes from /api/me/orders payload. Schema:
 //   shipping: {
-//     carrier: 'USPS Priority' | 'UPS Ground' | ...,
+//     carrier: 'DHL Express' | 'FedEx International' | ...,
 //     tracking_number: string,
 //     tracking_url: string,             // deep link to carrier site
 //     shipped_at: ISO timestamp,
@@ -639,8 +639,8 @@ function formatStatus(status) {
 
 const SHAPE_NAMES = { shield: 'The Shield Tag', octagon: 'The Octagon Tag', disc: 'The Disc Tag' };
 const COLOR_NAMES = {
-  silver: 'Titanium Silver', brass: 'Champagne Gold', teal: 'Sky Blue',
-  charcoal: 'Storm Black', copper: 'Rose Copper',
+  silver: 'Titanium Silver', charcoal: 'Gunmetal',
+  brass: 'Champagne Gold', teal: 'Sky Blue', copper: 'Rose Copper',
 };
 
 function renderDesigns(designs) {

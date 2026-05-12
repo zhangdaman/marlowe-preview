@@ -59,26 +59,29 @@ Every leaf answer ends with two persistent options: **Ask another question** (re
 ### Topic 1 — Shipping & delivery
 
 **How long does delivery take?**
-> Production takes 7–10 business days. Shipping adds 3–5 business days. Most U.S. orders arrive within 11–16 business days from order placement.
+> After you approve the design at checkout, you have a 24-hour safety window (engraving doesn't start during it). After that, production takes 7–10 business days and shipping adds 5–8. Most U.S. orders arrive within 13–19 business days of placing the order.
 > Read full policy: [Shipping](shipping.html)
 
 **Where do you ship?**
 > All 50 U.S. states + D.C., U.S. military addresses (APO/FPO/DPO), and U.S. territories. We don't ship internationally yet.
 
 **Can I track my order?**
-> Yes. We email a tracking number the day your tag ships, usually via USPS Priority or UPS Ground.
+> Yes. We email a tracking number the day your tag ships. We ship via DHL Express with U.S. final-mile handed off to USPS or UPS depending on your address.
 
-### Topic 2 — Cancellations & changes
+### Topic 2 — Cancellations & redos
 
 **How do I cancel?**
-> Custom orders are final once placed. Each tag is engraved to order and enters production right after checkout, so we can't cancel, modify, or refund. If you spot a problem (typo, wrong finish, wrong address) immediately after ordering, email support@marlowe.example with your order number right away — we'll try to catch it before engraving begins, but can't guarantee it.
+> Within 24 hours of payment, click Request Redo in your confirmation email (or just reply to it). A real person reaches out and you choose: free redo, or full refund within 3–5 business days. After 24 hours, engraving has started and the order is final.
 > Read full policy: [Returns](returns.html)
 
 **Can I change my shipping address?**
-> Email us immediately with your order number and the corrected address. Production begins the same business day, so we can only fix it if your message reaches us before engraving starts.
+> Within the 24-hour safety window after payment, yes — email support@marlowe.example with your order number and the new address. After 24 hours, engraving starts and the shipping label is locked.
 
-**Can I change the design after ordering?**
-> No — the Designer's real-time preview is your final approval. Once you place the order, the design is locked. We can't change spelling, swap shapes, or update the engraving.
+**Can I change the design after payment?**
+> Yes, within the 24-hour safety window. Click Request Redo in your confirmation email — we'll work with you on a free redo. After 24 hours the design is locked.
+
+**When does engraving actually start?**
+> Exactly 24 hours after your payment, unless you've clicked Request Redo or replied to the confirmation email in that window. We use that buffer as a safety net — no irreversible work happens in those first 24 hours.
 
 ### Topic 3 — Returns & exchanges
 
@@ -101,7 +104,7 @@ Every leaf answer ends with two persistent options: **Ask another question** (re
 > Upload a clear photo of your dog. Our system converts it into a halftone (point-pattern) grayscale portrait suitable for engraving on metal. The Designer shows you a real-time preview; what you see is what we engrave.
 
 **What if I don't like the AI portrait?**
-> You can regenerate as many times as you like before checkout (within reasonable limits). Once you've placed the order, the design is locked — orders are final because each tag is engraved to order.
+> Two layers of safety. Before checkout, you can regenerate the portrait up to 3 times for free in the Designer. After checkout, you have 24 hours to click Request Redo in your confirmation email — a real person works with you on a free redo. Engraving only starts after that 24-hour window closes.
 
 **Can I regenerate the portrait?**
 > Yes — in the final preview screen, click "Try a different portrait" to run the AI again. Same shape, finish, and engraving; fresh portrait.
@@ -170,13 +173,13 @@ Every leaf answer ends with two persistent options: **Ask another question** (re
 ### Topic 8 — Pricing & payment
 
 **How much does a tag cost?**
-> $109 for the Shield tag in any of 5 titanium finishes. Free engraving included. Free U.S. standard shipping included.
+> $109 for the Shield tag in either of 2 titanium finishes (Titanium Silver or Gunmetal). Free engraving included. Free U.S. standard shipping included.
 
 **What payment methods do you accept?**
 > Credit and debit cards, Apple Pay, and Google Pay — processed securely by Stripe. We never see or store your card number.
 
 **Are there any discounts?**
-> Not currently. We make every tag to order in California — there's no inventory clearance to discount.
+> Not currently. We make every tag to order — there's no inventory clearance to discount.
 
 **Is there sales tax?**
 > Sales tax is calculated at checkout based on your shipping address, per U.S. state requirements.
@@ -206,7 +209,7 @@ Every leaf answer ends with two persistent options: **Ask another question** (re
 > No. The collar is an optional companion. You can buy a tag alone, a collar alone, or both together. If both are in the order, they ship together.
 
 **Will the leather match my titanium tag?**
-> The collar hardware (buckle, D-ring) is the same titanium grade as the tag. Titanium Silver pairs most cleanly; the other finishes (Champagne Gold / Sky Blue / Storm Black / Rose Copper) work with all three leather colors.
+> The collar hardware (buckle, D-ring) is the same titanium grade as the tag. Titanium Silver pairs most cleanly with all three leathers; Gunmetal looks especially sharp against Saddle or Black.
 
 **How do I care for the leather?**
 > Wipe with a damp cloth and dry naturally. Treat with a small amount of unscented leather conditioner every 3–6 months. Avoid prolonged soaking. Tan leather will darken with use — this is expected patina, not damage.
@@ -227,26 +230,29 @@ Every leaf answer ends with two persistent options: **Ask another question** (re
 ### 主题 1 — 物流与配送
 
 **多久能收到？**
-> 生产需 7–10 个工作日，物流再加 3–5 个工作日。大多数美区订单从下单到收货约 11–16 个工作日。
+> 你在结账时已确认设计，付款后 24 小时安全窗里不会开雕。窗口过后，生产 7–10 个工作日，物流 5–8 个工作日。大多数美区订单从下单到收货约 13–19 个工作日。
 > 详见 [物流政策](shipping.html)
 
 **发货范围？**
 > 美国 50 州 + DC + 军方地址（APO/FPO/DPO）+ 美属领地。暂不发国际。
 
 **能追踪订单吗？**
-> 可以。发货当天我们会邮件发送 USPS Priority 或 UPS Ground 的追踪号。
+> 可以。发货当天我们会邮件发送 DHL Express 追踪号；最后一公里由 USPS 或 UPS 派送。
 
 ### 主题 2 — 取消与修改
 
 **如何取消订单？**
-> 定制订单下单后即视为最终，无法取消或退款——每枚牌都按单雕刻，下单后立即进入生产。如果你刚下单就发现问题（刻字错、底色错、地址错），请立即邮件 support@marlowe.example 附订单号——我们会尽力在开雕前拦下，但不保证一定能赶上。
+> 付款后 24 小时内，点击确认邮件里的 Request Redo（或直接回复邮件），客服会跟你对接：免费重做，或 3–5 个工作日内全额退款，看你选。24 小时之后雕刻已开始，订单终局。
 > 详见 [退换货政策](returns.html)
 
 **能改收货地址吗？**
-> 立即邮件 support@marlowe.example 附订单号和新地址。生产当天就开始，必须在我们开雕前收到你的邮件才能改。
+> 在付款后 24 小时安全窗内可以——邮件 support@marlowe.example 附订单号和新地址。24 小时后雕刻已开始、运单锁定。
 
-**下单后能改设计吗？**
-> 不能——Designer 实时预览即视为你的最终确认。下单后设计立即锁定，刻字、形状、底色都无法再改。
+**付款后能改设计吗？**
+> 24 小时安全窗内可以。点击确认邮件里的 Request Redo，我们安排客服跟你免费重做。24 小时后设计锁定。
+
+**什么时候真正开始雕刻？**
+> 付款后 24 小时整。除非你在这 24 小时内点了 Request Redo 或回复了确认邮件——否则一过窗口立即开雕。我们用这个缓冲做安全网，前 24 小时不会有任何不可逆操作。
 
 ### 主题 3 — 退换货
 
@@ -269,7 +275,7 @@ Every leaf answer ends with two persistent options: **Ask another question** (re
 > 上传一张清晰的宠物照片，系统转换为适合金属雕刻的灰阶影雕图。Designer 实时预览，所见即所刻。
 
 **如果不喜欢 AI 肖像怎么办？**
-> 下单前可无限次重新生成（合理范围内）。下单后设计立即锁定——定制商品按单雕刻，不可退改。
+> 两层保险。下单前在 Designer 里可以免费重新生成 3 次。付款后 24 小时内还能点 Request Redo 让客服帮你免费重做。窗口过后才开雕。
 
 **怎么重新生成？**
 > 在最终预览页点击"换一张肖像"即可重新跑 AI。形状/底色/刻字保持不变，只换肖像。
@@ -338,7 +344,7 @@ Every leaf answer ends with two persistent options: **Ask another question** (re
 ### 主题 8 — 价格与支付
 
 **一枚多少钱？**
-> $109，盾形钛合金牌，5 种表面处理可选，免费刻字，美区免标准运费。
+> $109，盾形钛合金牌，2 种表面处理可选（钛本色 / 枪黑色），免费刻字，美区免标准运费。
 
 **支持哪些支付方式？**
 > 信用卡、借记卡、Apple Pay、Google Pay——由 Stripe 安全处理。我们不接触也不存储你的卡号。
@@ -374,7 +380,7 @@ Every leaf answer ends with two persistent options: **Ask another question** (re
 > 不必。项圈是可选配件——可以只买牌、只买项圈、或两个一起。两个一起的话一并发货。
 
 **皮革会跟钛合金牌配吗？**
-> 项圈的扣件（buckle、D 环）跟牌是同款钛合金等级。钛本色最干净——其他底色（香槟金 / 钛蓝 / 深炭黑 / 玫瑰铜）跟三种皮色都搭。
+> 项圈的扣件（buckle、D 环）跟牌是同款钛合金等级。钛本色跟三种皮色都干净好搭；枪黑色配马鞍棕或墨黑特别有质感。
 
 **皮革怎么保养？**
 > 湿布擦拭，自然风干。每 3–6 个月涂一点无香皮革保养油。避免长时间泡水。Tan 色会随使用变深——这是包浆，不是损坏。
