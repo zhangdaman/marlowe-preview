@@ -1,6 +1,6 @@
 # Generate API — Rate-Limit & Anti-Abuse Spec
 
-> Purpose: prevent malicious / bot abuse of the AI portrait generation pipeline while keeping real-customer experience frictionless. This is the contract between the Marlowe frontend (customize stage in `designer.html`) and the backend `/api/generate` endpoint.
+> Purpose: prevent malicious / bot abuse of the AI portrait generation pipeline while keeping real-customer experience frictionless. This is the contract between the Mova Craft frontend (customize stage in `designer.html`) and the backend `/api/generate` endpoint.
 
 ---
 
@@ -83,7 +83,7 @@
 ```json
 { "job_id": "abc123def", "status": "queued" }
 ```
-Then poll `GET /api/jobs/:job_id` until `status === 'done'` → `{ status: "done", portrait_url: "https://cdn.marlowe.example/portraits/<id>.png" }`.
+Then poll `GET /api/jobs/:job_id` until `status === 'done'` → `{ status: "done", portrait_url: "https://cdn.movacraft.example/portraits/<id>.png" }`.
 On failure: `{ status: "failed", error: "generation_failed", message: "..." }`.
 
 **Response 429** (rate-limited):
@@ -189,7 +189,7 @@ Track in GA4 / Plausible / your analytics of choice:
 - [ ] Pick Turnstile site-key / secret-key environment (managed via .env / Secrets Manager).
 - [ ] Decide on uploads bucket: S3 + CloudFront? Cloudflare R2? Tied to photo retention policy.
 - [ ] Confirm newsletter consent capture format that satisfies CAN-SPAM / GDPR / CCPA — needs legal review of the checkbox copy.
-- [ ] Decide tax policy: Stripe Tax auto-handles US sales tax across 50 states, but Marlowe's nexus must be configured. Likely just CA initially.
+- [ ] Decide tax policy: Stripe Tax auto-handles US sales tax across 50 states, but Mova Craft's nexus must be configured. Likely just CA initially.
 
 ---
 

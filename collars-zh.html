@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>皮革项圈 — MARLOWE</title>
+<title>皮革项圈 — MOVA CRAFT</title>
 <meta name="description" content="植鞣牛皮项圈，配钛合金五金。3 种颜色 · 5 种尺寸 · 按单手工制作 · $49。">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -546,7 +546,7 @@ footer {
       <li><a href="collars-zh.html" class="active">皮革项圈</a></li>
       <li><a href="index-zh.html#story">品牌故事</a></li>
     </ul>
-    <a href="index-zh.html" class="logo">MARLOWE</a>
+    <a href="index-zh.html" class="logo">MOVA CRAFT</a>
     <div class="nav-right">
       <a href="cart-zh.html" class="cart-link">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4zM3 6h18M16 10a4 4 0 0 1-8 0"/></svg>
@@ -710,7 +710,7 @@ footer {
   <div class="container">
     <div class="footer-grid">
       <div class="footer-brand">
-        <a href="index-zh.html" class="logo">MARLOWE</a>
+        <a href="index-zh.html" class="logo">MOVA CRAFT</a>
         <p>钛合金肖像狗牌与植鞣皮革项圈，按单手工制作。</p>
       </div>
       <div class="footer-col">
@@ -748,7 +748,7 @@ footer {
       </div>
     </div>
     <div class="footer-bottom">
-      <span>© 2026 Marlowe &amp; Co. 用心制作。</span>
+      <span>© 2026 Mova Craft &amp; Co. 用心制作。</span>
       <div class="footer-trust">
         <span>Stripe 加密支付</span>
         <span>SSL 加密</span>
@@ -762,7 +762,7 @@ footer {
 // Auth pill — 同步登录状态
 (function updateAuthPill() {
   const pill = document.getElementById('nav-auth-pill');
-  if (!pill || !window.MarloweAuth) return;
+  if (!pill || !window.Mova CraftAuth) return;
   function paint(user) {
     if (user) {
       const initial = (user.email || '?').charAt(0).toUpperCase();
@@ -774,14 +774,14 @@ footer {
       pill.innerHTML = pill.dataset.i18nSignin || '登录';
     }
   }
-  paint(MarloweAuth.getUser());
-  MarloweAuth.onAuthChange(paint);
+  paint(Mova CraftAuth.getUser());
+  Mova CraftAuth.onAuthChange(paint);
 })();
 
 // 实时购物车数
 (function updateCartCount() {
   try {
-    const cart = JSON.parse(localStorage.getItem('marlowe_cart') || '[]');
+    const cart = JSON.parse(localStorage.getItem('movacraft_cart') || '[]');
     const total = cart.reduce((n, it) => n + (it.quantity || 1), 0);
     document.querySelectorAll('.cart-count').forEach(el => el.textContent = total);
   } catch (e) {}
@@ -842,7 +842,7 @@ function renderCollarSVG() {
       <ellipse cx="0" cy="0" rx="22" ry="14" fill="none" stroke="#E5E7EB" stroke-width="1.2"/>
     </g>
     <!-- 小品牌印 -->
-    <text x="200" y="290" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="9" fill="${c.edge}" opacity="0.6" letter-spacing="3">MARLOWE · CA</text>
+    <text x="200" y="290" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="9" fill="${c.edge}" opacity="0.6" letter-spacing="3">MOVA CRAFT · CA</text>
   `;
   document.getElementById('collar-svg').innerHTML = svg;
 }
@@ -878,9 +878,9 @@ function addCollarToCart() {
     quantity: 1,
     addedAt: new Date().toISOString(),
   };
-  const cart = JSON.parse(localStorage.getItem('marlowe_cart') || '[]');
+  const cart = JSON.parse(localStorage.getItem('movacraft_cart') || '[]');
   cart.push(item);
-  localStorage.setItem('marlowe_cart', JSON.stringify(cart));
+  localStorage.setItem('movacraft_cart', JSON.stringify(cart));
   window.location.href = 'cart-zh.html';
 }
 

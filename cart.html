@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Your Cart — MARLOWE</title>
+<title>Your Cart — MOVA CRAFT</title>
 <meta name="description" content="Review your custom titanium tags before checkout.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -537,7 +537,7 @@ footer {
       <span style="font-family: monospace;">←</span>
       Continue customizing
     </a>
-    <a href="index.html" class="logo">MARLOWE</a>
+    <a href="index.html" class="logo">MOVA CRAFT</a>
     <div class="nav-cta">
       <a href="designer.html">Open The Designer</a>
       <a href="login.html" class="auth-pill" id="nav-auth-pill">Sign in</a>
@@ -607,7 +607,7 @@ footer {
   <div class="container">
     <div class="footer-grid">
       <div class="footer-brand">
-        <a href="index.html" class="logo">MARLOWE</a>
+        <a href="index.html" class="logo">MOVA CRAFT</a>
         <p>Titanium portrait tags, engraved one at a time in our atelier.</p>
       </div>
       <div class="footer-col">
@@ -644,7 +644,7 @@ footer {
       </div>
     </div>
     <div class="footer-bottom">
-      <span>© 2026 Marlowe &amp; Co. Made with care.</span>
+      <span>© 2026 Mova Craft &amp; Co. Made with care.</span>
       <div class="footer-trust">
         <span>Stripe Secured</span>
         <span>SSL Protected</span>
@@ -654,7 +654,7 @@ footer {
 </footer>
 
 <script>
-const CART_KEY = 'marlowe_cart';
+const CART_KEY = 'movacraft_cart';
 
 function readCart() {
   try { return JSON.parse(localStorage.getItem(CART_KEY) || '[]'); }
@@ -823,7 +823,7 @@ render();
 <script>
 (function updateAuthPill() {
   const pill = document.getElementById('nav-auth-pill');
-  if (!pill || !window.MarloweAuth) return;
+  if (!pill || !window.Mova CraftAuth) return;
   function paint(user) {
     if (user) {
       const initial = (user.email || '?').charAt(0).toUpperCase();
@@ -835,8 +835,8 @@ render();
       pill.innerHTML = 'Sign in';
     }
   }
-  paint(MarloweAuth.getUser());
-  MarloweAuth.onAuthChange(paint);
+  paint(Mova CraftAuth.getUser());
+  Mova CraftAuth.onAuthChange(paint);
 })();
 </script>
 <script src="chat-widget.js" defer></script>

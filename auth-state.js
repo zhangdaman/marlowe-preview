@@ -1,4 +1,4 @@
-/* MARLOWE — Auth State (shared wrapper)
+/* MOVA CRAFT — Auth State (shared wrapper)
  *
  * v1 MOCK mode: uses localStorage/sessionStorage as fake session store so the
  * entire auth UX flow can be built and tested before Supabase is wired up.
@@ -19,10 +19,10 @@
 (function () {
   'use strict';
 
-  const STORAGE_KEY  = 'marlowe_auth_user';     // long-lived (remember me ON)
-  const SESSION_KEY  = 'marlowe_auth_user';     // session-scoped (remember me OFF)
-  const PENDING_KEY  = 'marlowe_auth_pending';  // mock OTP issuance + remember-me flag
-  const REDIRECT_KEY = 'marlowe_auth_redirect_to';
+  const STORAGE_KEY  = 'movacraft_auth_user';     // long-lived (remember me ON)
+  const SESSION_KEY  = 'movacraft_auth_user';     // session-scoped (remember me OFF)
+  const PENDING_KEY  = 'movacraft_auth_pending';  // mock OTP issuance + remember-me flag
+  const REDIRECT_KEY = 'movacraft_auth_redirect_to';
 
   // Remember-me session lifetime (mock). Real Supabase refresh-token TTL is
   // controlled in dashboard; this is the analog for the mock layer.
@@ -92,7 +92,7 @@
   // Public API
   // ====================================================================
 
-  const MarloweAuth = {
+  const Mova CraftAuth = {
     /**
      * @returns {object|null} { id, email, displayName?, avatarUrl?, provider, rememberMe, expiresAt? } or null
      */
@@ -117,7 +117,7 @@
       localStorage.setItem(PENDING_KEY, JSON.stringify({
         email, code, at: Date.now(),
       }));
-      console.info('[MarloweAuth mock] OTP code for', email, '→', code,
+      console.info('[Mova CraftAuth mock] OTP code for', email, '→', code,
         '(real backend will email this code)');
       return { ok: true, email, mockCode: code };
     },
@@ -168,7 +168,7 @@
       if (!['apple', 'google'].includes(provider)) return;
       if (rememberMe === undefined) rememberMe = true;
       // Remember-me preference must survive the OAuth round-trip.
-      sessionStorage.setItem('marlowe_auth_remember', rememberMe ? '1' : '0');
+      sessionStorage.setItem('movacraft_auth_remember', rememberMe ? '1' : '0');
       window.location.href = pageFor('auth-callback.html') + '?mock=' + encodeURIComponent(provider);
     },
 
@@ -187,14 +187,14 @@
       if (!email) {
         if (provider === 'apple')  email = 'demo.apple@privaterelay.appleid.com';
         else if (provider === 'google') email = 'demo.google@gmail.com';
-        else email = 'demo@marlowe.example';
+        else email = 'demo@movacraft.example';
       }
       if (rememberMe === undefined) {
         // For OAuth callbacks, read the preference stashed before redirect.
-        const stash = sessionStorage.getItem('marlowe_auth_remember');
+        const stash = sessionStorage.getItem('movacraft_auth_remember');
         rememberMe = stash === null ? true : stash === '1';
       }
-      sessionStorage.removeItem('marlowe_auth_remember');
+      sessionStorage.removeItem('movacraft_auth_remember');
 
       const user = {
         id: genId(),
@@ -226,7 +226,7 @@
     async signOut() {
       writeUser(null);
       localStorage.removeItem(PENDING_KEY);
-      sessionStorage.removeItem('marlowe_auth_remember');
+      sessionStorage.removeItem('movacraft_auth_remember');
     },
 
     /**
@@ -272,7 +272,7 @@
     },
   };
 
-  window.MarloweAuth = MarloweAuth;
+  window.Mova CraftAuth = Mova CraftAuth;
 
   // Listen for cross-tab sign-in/out via storage events
   window.addEventListener('storage', (e) => {

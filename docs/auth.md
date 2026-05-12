@@ -1,6 +1,6 @@
 # Authentication & Account System Spec
 
-> v1 promoted from v1.5 backlog (decided 2026-05-07). Marlowe is now an account-based DTC site with progressive sign-in: browse / cart guest-friendly, **generate requires sign-in**.
+> v1 promoted from v1.5 backlog (decided 2026-05-07). Mova Craft is now an account-based DTC site with progressive sign-in: browse / cart guest-friendly, **generate requires sign-in**.
 >
 > **2026-05-12 update**: Magic Link **replaced by 6-digit Email OTP** because magic links add 30-60s context-switching that hurts US e-commerce conversion. Also added **"Remember me on this device"** (7-day session) for the standard US "stay signed in" pattern.
 
@@ -82,7 +82,7 @@ OAuth scopes:
 A single JS file all pages load. Wraps the Supabase JS SDK with a stable interface:
 
 ```js
-window.MarloweAuth = {
+window.Mova CraftAuth = {
   // Read current user (null if not signed in). Returns:
   //   { id, email, displayName?, avatarUrl?, provider, rememberMe, expiresAt? }
   getUser(): User | null
@@ -128,11 +128,11 @@ Every page `<head>` loads:
 <script src="auth-state.js" defer></script>
 ```
 
-Pages that need auth state in nav (sign-in link or user pill) wait for `MarloweAuth.onAuthChange()` and update DOM.
+Pages that need auth state in nav (sign-in link or user pill) wait for `Mova CraftAuth.onAuthChange()` and update DOM.
 
 Pages requiring auth (`account.html`):
 ```js
-MarloweAuth.requireAuth('/login.html').then(user => { ... });
+Mova CraftAuth.requireAuth('/login.html').then(user => { ... });
 ```
 
 ## 5. Session storage
@@ -142,16 +142,16 @@ Supabase JS SDK manages session via:
 - Auto-refresh access token before expiry (1 hour default)
 - Refresh token rotates per refresh
 
-For our nav state checks, we read from `MarloweAuth.getUser()` which wraps `supabase.auth.getSession()`.
+For our nav state checks, we read from `Mova CraftAuth.getUser()` which wraps `supabase.auth.getSession()`.
 
 ## 6. Cart sync (guest → signed-in)
 
-When a guest with a non-empty `localStorage.marlowe_cart` signs in:
+When a guest with a non-empty `localStorage.movacraft_cart` signs in:
 
 1. Frontend detects sign-in event via `onAuthChange`
 2. POST guest cart items to `/api/cart/merge` with auth token
 3. Backend merges items into user's server cart (dedupe by `tagId`)
-4. Frontend clears `localStorage.marlowe_cart` and switches to server-cart mode
+4. Frontend clears `localStorage.movacraft_cart` and switches to server-cart mode
 5. Subsequent cart operations hit `/api/cart/*` endpoints
 
 Conflict resolution: if server cart already has the same `tagId`, **keep the server one** (likely from another device).
@@ -337,7 +337,7 @@ Manual QA checklist for v1 launch:
 - [ ] Confirm Apple Developer account exists (required for Sign in with Apple)
 - [ ] Confirm Google Cloud project exists for OAuth credentials
 - [ ] DPA with Supabase signed?
-- [ ] Email-from address for 6-digit codes (`auth@marlowe.example`?) — verify SPF/DKIM
+- [ ] Email-from address for 6-digit codes (`auth@movacraft.example`?) — verify SPF/DKIM
 - [ ] Account deletion grace period (30 days proposed) — legal review
 
 ---

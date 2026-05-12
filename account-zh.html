@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>我的账户 — MARLOWE</title>
+<title>我的账户 — MOVA CRAFT</title>
 <meta name="robots" content="noindex">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -389,7 +389,7 @@ nav.main-nav {
       <span style="font-family: monospace;">←</span>
       返回首页
     </a>
-    <a href="index-zh.html" class="logo">MARLOWE</a>
+    <a href="index-zh.html" class="logo">MOVA CRAFT</a>
     <div class="nav-cta">
       <a href="designer-zh.html">打开设计器</a>
       <button class="signout-btn" onclick="onSignOut()">退出登录</button>
@@ -450,7 +450,7 @@ nav.main-nav {
 <script src="chat-widget.js" defer></script>
 <script>
 // 需要登录 — 未登录就跳到登录页
-MarloweAuth.requireAuth().then(initAccountPage).catch(() => {});
+Mova CraftAuth.requireAuth().then(initAccountPage).catch(() => {});
 
 function initAccountPage(user) {
   // Header
@@ -475,13 +475,13 @@ function initAccountPage(user) {
   renderDesigns(mockData.designs);
 }
 
-// MOCK: 读取 checkout-zh.html 写入的 marlowe_last_order
+// MOCK: 读取 checkout-zh.html 写入的 movacraft_last_order
 // 真实流程：GET /api/me/orders + GET /api/me/designs
 function readMockData(user) {
   let orders = [];
   let designs = [];
   try {
-    const last = JSON.parse(localStorage.getItem('marlowe_last_order') || 'null');
+    const last = JSON.parse(localStorage.getItem('movacraft_last_order') || 'null');
     if (last) {
       // 根据下单时长 mock 不同状态，方便预览 4 种 UI 状态。
       // 真实流程下后端会直接给出 status + shipping。
@@ -694,7 +694,7 @@ function miniSVG(d) {
 // TODO BACKEND: 把 localStorage 查询替换为 GET /api/me/designs/:id
 
 async function onSignOut() {
-  await MarloweAuth.signOut();
+  await Mova CraftAuth.signOut();
   window.location.href = 'index-zh.html';
 }
 </script>

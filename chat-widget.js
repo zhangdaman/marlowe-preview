@@ -1,4 +1,4 @@
-/* MARLOWE — Chat Bot Widget v1
+/* MOVA CRAFT — Chat Bot Widget v1
  * Scripted bot (button-only). No AI, no backend.
  * Auto-detects page lang via <html lang>; loads matching FAQ.
  * Single-file: CSS + DOM + data + state machine.
@@ -15,13 +15,13 @@
     en: {
       ui: {
         toggleLabel: 'Help',
-        headerTitle: 'Marlowe — How can we help?',
-        greeting: "Hi, I'm Marlowe's helper. What can I help with today?",
+        headerTitle: 'Mova Craft — How can we help?',
+        greeting: "Hi, I'm Mova Craft's helper. What can I help with today?",
         chooseTopic: 'Choose a topic:',
         backToTopics: '← Back to topics',
         askAnother: 'Ask another question',
         emailSupport: 'Email support',
-        emailFooter: "Or email support@marlowe.example — we reply within 1 business day.",
+        emailFooter: "Or email support@movacraft.example — we reply within 1 business day.",
         readPolicy: 'Read full policy:',
         closeAria: 'Close chat',
       },
@@ -62,7 +62,7 @@
             },
             {
               q: 'Can I change my shipping address?',
-              a: 'Within the 24-hour rest period after payment, yes — email support@marlowe.example with your order number and the new address. After 24 hours, engraving starts and the shipping label is locked.',
+              a: 'Within the 24-hour rest period after payment, yes — email support@movacraft.example with your order number and the new address. After 24 hours, engraving starts and the shipping label is locked.',
             },
             {
               q: "When does engraving actually start?",
@@ -82,7 +82,7 @@
             },
             {
               q: 'How do I start a return?',
-              a: 'Email support@marlowe.example within 14 days of delivery with your order number and clear photos of the issue. We respond within 1 business day and send a prepaid shipping label if a return is approved.',
+              a: 'Email support@movacraft.example within 14 days of delivery with your order number and clear photos of the issue. We respond within 1 business day and send a prepaid shipping label if a return is approved.',
             },
             {
               q: 'Will I get a refund or a remake?',
@@ -180,7 +180,7 @@
             },
             {
               q: 'Can I delete my photo?',
-              a: 'Yes. Email privacy@marlowe.example to request deletion. We respond within 30 days.',
+              a: 'Yes. Email privacy@movacraft.example to request deletion. We respond within 30 days.',
             },
           ],
         },
@@ -203,7 +203,7 @@
             },
             {
               q: 'How do I delete my account?',
-              a: 'Email privacy@marlowe.example with the subject "Delete my account". We respond within 30 days. Linked orders are anonymized for tax compliance; saved designs and uploaded photos are deleted.',
+              a: 'Email privacy@movacraft.example with the subject "Delete my account". We respond within 30 days. Linked orders are anonymized for tax compliance; saved designs and uploaded photos are deleted.',
               link: { label: 'Privacy policy', href: 'privacy.html' },
             },
           ],
@@ -282,18 +282,18 @@
           questions: [
             {
               q: 'Order & product help',
-              a: 'support@marlowe.example',
-              email: 'support@marlowe.example',
+              a: 'support@movacraft.example',
+              email: 'support@movacraft.example',
             },
             {
               q: 'Privacy & data requests',
-              a: 'privacy@marlowe.example',
-              email: 'privacy@marlowe.example',
+              a: 'privacy@movacraft.example',
+              email: 'privacy@movacraft.example',
             },
             {
               q: 'Press & wholesale',
-              a: 'press@marlowe.example',
-              email: 'press@marlowe.example',
+              a: 'press@movacraft.example',
+              email: 'press@movacraft.example',
             },
           ],
         },
@@ -303,13 +303,13 @@
     zh: {
       ui: {
         toggleLabel: '客服',
-        headerTitle: 'Marlowe 客服',
-        greeting: '你好，我是 Marlowe 客服助手。需要哪方面的帮助？',
+        headerTitle: 'Mova Craft 客服',
+        greeting: '你好，我是 Mova Craft 客服助手。需要哪方面的帮助？',
         chooseTopic: '请选择主题：',
         backToTopics: '← 返回主题',
         askAnother: '再问一个',
         emailSupport: '邮件联系',
-        emailFooter: '或者邮件 support@marlowe.example —— 我们 1 个工作日内回复。',
+        emailFooter: '或者邮件 support@movacraft.example —— 我们 1 个工作日内回复。',
         readPolicy: '详见：',
         closeAria: '关闭客服',
       },
@@ -344,7 +344,7 @@
             },
             {
               q: '能改收货地址吗？',
-              a: '在 24 小时静置期内都可以——邮件 support@marlowe.example 附订单号和新地址。期满后雕刻已开始、运单锁定。',
+              a: '在 24 小时静置期内都可以——邮件 support@movacraft.example 附订单号和新地址。期满后雕刻已开始、运单锁定。',
             },
             {
               q: '什么时候真正开始雕刻？',
@@ -362,7 +362,7 @@
               a: '制造缺陷、刻字错误（与你提交的不一致）、发错形状或表面、物流损坏。收货后 14 天内联系我们。',
               link: { label: '退换货政策', href: 'returns-zh.html' },
             },
-            { q: '如何申请退换？', a: '收货 14 天内邮件 support@marlowe.example，附订单号和问题照片。我们 1 个工作日内回复。如批准，我们寄出预付运费的退货标签。' },
+            { q: '如何申请退换？', a: '收货 14 天内邮件 support@movacraft.example，附订单号和问题照片。我们 1 个工作日内回复。如批准，我们寄出预付运费的退货标签。' },
             { q: '退款还是重做？', a: '我们的默认方案是免费重做。如果无法重做，我们通过 Stripe 全额退款。' },
             { q: '几年后坏了怎么办？', a: '钛合金牌本身极少出问题——它比镀铬不锈钢更耐用，不掉色不生锈。日常使用磨损在我们的预期之内。如果是制造缺陷或刻字错误，14 天内联系我们处理（详见退换政策）。' },
           ],
@@ -406,7 +406,7 @@
             },
             { q: '会用我的照片训练 AI 模型吗？', a: '不会。我们绝不使用客户照片训练 AI 模型——无论是我们的还是别人的。' },
             { q: '照片保留多久？', a: '原始上传照片：发货后 1 年删除。影雕肖像：随订单记录保留（税务合规要求 7 年）。' },
-            { q: '能删除我的照片吗？', a: '可以。邮件 privacy@marlowe.example 申请删除，我们 30 天内响应。' },
+            { q: '能删除我的照片吗？', a: '可以。邮件 privacy@movacraft.example 申请删除，我们 30 天内响应。' },
           ],
         },
         {
@@ -419,7 +419,7 @@
             { q: '能不登录就结账吗？', a: '可以——加入购物车和结账不需要账户。只有"生成 AI 肖像"这一步需要登录，因为每次生成都有真实成本。登录后我们会保存你的设计，方便日后再订。' },
             {
               q: '怎么删除我的账户？',
-              a: '邮件 privacy@marlowe.example，主题写"删除账户"。我们 30 天内响应。关联订单做匿名化处理（税务合规要保留）；保存的设计与上传的照片会删除。',
+              a: '邮件 privacy@movacraft.example，主题写"删除账户"。我们 30 天内响应。关联订单做匿名化处理（税务合规要保留）；保存的设计与上传的照片会删除。',
               link: { label: '隐私政策', href: 'privacy.html' },
             },
           ],
@@ -460,9 +460,9 @@
           label: '联系真人',
           intro: '我们 1 个工作日内回复，通常更快。',
           questions: [
-            { q: '订单与产品', a: 'support@marlowe.example', email: 'support@marlowe.example' },
-            { q: '隐私与数据请求', a: 'privacy@marlowe.example', email: 'privacy@marlowe.example' },
-            { q: '媒体与合作', a: 'press@marlowe.example', email: 'press@marlowe.example' },
+            { q: '订单与产品', a: 'support@movacraft.example', email: 'support@movacraft.example' },
+            { q: '隐私与数据请求', a: 'privacy@movacraft.example', email: 'privacy@movacraft.example' },
+            { q: '媒体与合作', a: 'press@movacraft.example', email: 'press@movacraft.example' },
           ],
         },
       ],
@@ -804,7 +804,7 @@
     footerEl.appendChild(chips);
     footerEl.appendChild(el('a', {
       class: 'mw-email-link',
-      href: 'mailto:support@marlowe.example',
+      href: 'mailto:support@movacraft.example',
     }, data.ui.emailFooter));
 
     scrollBody();
@@ -850,7 +850,7 @@
     }, data.ui.askAnother));
     row.appendChild(el('button', {
       class: 'mw-chip muted',
-      onclick: () => window.location.href = 'mailto:support@marlowe.example',
+      onclick: () => window.location.href = 'mailto:support@movacraft.example',
     }, data.ui.emailSupport));
     footerEl.appendChild(row);
 
@@ -865,7 +865,7 @@
     }, data.ui.backToTopics));
     row.appendChild(el('button', {
       class: 'mw-chip muted',
-      onclick: () => window.location.href = 'mailto:support@marlowe.example',
+      onclick: () => window.location.href = 'mailto:support@movacraft.example',
     }, data.ui.emailSupport));
     return row;
   }

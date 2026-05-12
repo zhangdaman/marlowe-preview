@@ -1,4 +1,4 @@
-# MARLOWE — 产品方案 v1.0
+# MOVA CRAFT — 产品方案 v1.0
 
 > AI 定制钛合金宠物狗牌 · DTC 独立站 · 美国市场
 > 内部参考文档，给团队 / 后端工程师 / 设计师 / 潜在投资人 share。
@@ -7,7 +7,7 @@
 
 ## 0. 一句话产品
 
-**MARLOWE 是一个美国市场 DTC 独立站，主打 AI 定制钛合金狗牌（$109），可选配套皮革项圈（$49）。** 用户上传宠物照片，AI 处理成可雕刻的灰阶肖像，工厂用「浅浮雕 + 影雕」双工艺刻在钛合金上，按单生产，免运费 7–10 个工作日交付。项圈作为可选附件，跟牌一起按单制造、一起发货。
+**MOVA CRAFT 是一个美国市场 DTC 独立站，主打 AI 定制钛合金狗牌（$109），可选配套皮革项圈（$49）。** 用户上传宠物照片，AI 处理成可雕刻的灰阶肖像，工厂用「浅浮雕 + 影雕」双工艺刻在钛合金上，按单生产，免运费 7–10 个工作日交付。项圈作为可选附件，跟牌一起按单制造、一起发货。
 
 ---
 
@@ -19,7 +19,7 @@
 
 ### 客户为什么愿意花 $109 买一枚狗牌
 
-宠物用品市场（一般狗牌 $10–$25）和高端纪念品市场（手工镀金 $150+）之间存在一个空白带。MARLOWE 打的是这个中段：**把 AI + 影雕这种"看似科技"的工艺包装成"现代精密 craft"叙事**——不是迪士尼周边的塑料感，也不是假复古的纹章 logo，而是"航天级钛合金 + 像照片一样精度的影雕肖像，每一只狗只刻一枚"。
+宠物用品市场（一般狗牌 $10–$25）和高端纪念品市场（手工镀金 $150+）之间存在一个空白带。MOVA CRAFT 打的是这个中段：**把 AI + 影雕这种"看似科技"的工艺包装成"现代精密 craft"叙事**——不是迪士尼周边的塑料感，也不是假复古的纹章 logo，而是"航天级钛合金 + 像照片一样精度的影雕肖像，每一只狗只刻一枚"。
 
 ### 卖点 ranking（客户大脑里的购买理由）
 
@@ -183,7 +183,7 @@ designer.html · Stage 2（Customize）
 
 ```
 final view → "Add to Cart"
-   ↓（写 localStorage marlowe_cart）
+   ↓（写 localStorage movacraft_cart）
 cart.html（数量调整 / 移除 / 总价 / Proceed to Checkout）
    ↓
 checkout.html（联系信息 + 地址 + Stripe Payment Element）
@@ -316,7 +316,7 @@ AI 成本 ≈ **0.17% 营收**，可忽略。Margin 安全。
 - **前端**：原生 HTML/CSS/JS，9 个页面（[index](../index.html) / [index-zh](../index-zh.html) / [designer](../designer.html) / [designer-zh](../designer-zh.html) / [cart](../cart.html) / [checkout](../checkout.html) / [thank-you](../thank-you.html) / [privacy](../privacy.html) / [terms](../terms.html) / [returns](../returns.html) / [shipping](../shipping.html) / [contact](../contact.html)）
 - 无构建步骤，无框架依赖，无外部 CDN 除字体
 - 单文件可分发（CSS / JS 都内联）
-- localStorage 存购物车（key: `marlowe_cart`）
+- localStorage 存购物车（key: `movacraft_cart`）
 
 ### 8.2 v1 上线版（前端 + 后端）
 
@@ -347,7 +347,7 @@ AI 成本 ≈ **0.17% 营收**，可忽略。Margin 安全。
 
 未拍板：
 - 美东 us-east-1 还是 us-west-2 部署？（用户在加州 → west 网络更快，但 east 价格 / 第三方服务支持更好）
-- 域名（marlowe.example 是占位）
+- 域名（movacraft.example 是占位）
 - DNS / SSL（Cloudflare 免费层够用）
 
 ---
@@ -378,7 +378,7 @@ AI 成本 ≈ **0.17% 营收**，可忽略。Margin 安全。
 - 接 **Supabase Auth**（创建 project + 配置 OTP 邮件模板 + Google OAuth；Apple 推迟）
 - 接 Replicate / Stripe / Redis / SendGrid / R2
 - 真 Cloudflare Turnstile
-- 把所有 `[Atelier address]` / `marlowe.example` 占位替换为真实信息
+- 把所有 `[Atelier address]` / `movacraft.example` 占位替换为真实信息
 - 律师 review 4 个法律页 + 新增账户数据节
 
 **P1 上线后两周内补**：
@@ -476,7 +476,7 @@ AI 成本 ≈ **0.17% 营收**，可忽略。Margin 安全。
 ### P0 上线前必拍板
 
 - [ ] **工厂报价 + 毛利分析**——$109 售价是否够覆盖成本 + 70% 毛利目标？
-- [ ] **真实域名**——marlowe.example 占位要换
+- [ ] **真实域名**——movacraft.example 占位要换
 - [ ] **真实工坊地址**——多处法律页用 `[Atelier address]` 占位
 - [ ] **三个邮箱地址**——support@ / privacy@ / press@
 - [ ] **律师 review 法律页**——尤其 [privacy.html](../privacy.html) §03 AI 数据处理 + [terms.html](../terms.html) §07 责任限制
@@ -493,7 +493,7 @@ AI 成本 ≈ **0.17% 营收**，可忽略。Margin 安全。
 
 ### P2 战略层
 
-- [ ] **品牌名最终拍板**——MARLOWE 是占位，是否做正式商标注册？
+- [ ] **品牌名最终拍板**——MOVA CRAFT 是占位，是否做正式商标注册？
 - [ ] **首席摄影师 / 风格摄影**——Hero 实景照只有一张 ranger.png，需要更多 lifestyle
 - [ ] **Influencer 合作策略**
 - [ ] **B2B（兽医诊所 / pet boutique）渠道是否 v1.5 开**

@@ -9,7 +9,7 @@
 1. **Heritage tone, not techy.** No green pulsing bubble, no emoji, no "Hi! 👋". Brass icon, charcoal text, Fraunces serif for greeting.
 2. **Button-only.** No free-form input box (v1). Users click pre-written topic chips → see canned answer → see related sub-chips or back / email.
 3. **Don't interrupt.** No auto-popup, no "we noticed you've been here for 30s". Folded by default, opens only on click.
-4. **Fallback always visible.** Every screen shows "Email support@marlowe.example, reply within 1 business day" as last-resort exit.
+4. **Fallback always visible.** Every screen shows "Email support@movacraft.example, reply within 1 business day" as last-resort exit.
 5. **Bilingual.** Auto-detects `document.documentElement.lang` (en/zh) → loads matching FAQ.
 6. **Stateless.** No history persisted. Each page-load is a fresh session. Deferred to v1.5+.
 
@@ -25,7 +25,7 @@
 - Position: fixed, right: 24px, bottom: 24px
 - Size: 380×560 (mobile: full width minus 24px gutter, max-height 80vh)
 - Style: `background: var(--cream-light)` + 1px charcoal border + slight `box-shadow: 0 24px 48px -16px rgba(0,0,0,0.18)`
-- Header: brass-deep band with title "Marlowe — How can we help?" / "Marlowe 客服" + close X
+- Header: brass-deep band with title "Mova Craft — How can we help?" / "Mova Craft 客服" + close X
 - Body: scrollable message list
 - Footer: pinned topic chips (when at root) OR "← Back" / "Email support" buttons (deeper levels)
 
@@ -54,7 +54,7 @@ Every leaf answer ends with two persistent options: **Ask another question** (re
 ## 4. FAQ content — English
 
 ### Greeting
-> Hi, I'm Marlowe's helper. What can I help with today?
+> Hi, I'm Mova Craft's helper. What can I help with today?
 
 ### Topic 1 — Shipping & delivery
 
@@ -75,7 +75,7 @@ Every leaf answer ends with two persistent options: **Ask another question** (re
 > Read full policy: [Returns](returns.html)
 
 **Can I change my shipping address?**
-> Within the 24-hour safety window after payment, yes — email support@marlowe.example with your order number and the new address. After 24 hours, engraving starts and the shipping label is locked.
+> Within the 24-hour safety window after payment, yes — email support@movacraft.example with your order number and the new address. After 24 hours, engraving starts and the shipping label is locked.
 
 **Can I change the design after payment?**
 > Yes, within the 24-hour safety window. Click Request Redo in your confirmation email — we'll work with you on a free redo. After 24 hours the design is locked.
@@ -90,7 +90,7 @@ Every leaf answer ends with two persistent options: **Ask another question** (re
 > Read full policy: [Returns](returns.html)
 
 **How do I start a return?**
-> Email support@marlowe.example within 14 days of delivery with your order number and clear photos of the issue. We respond within 1 business day and send a prepaid shipping label if a return is approved.
+> Email support@movacraft.example within 14 days of delivery with your order number and clear photos of the issue. We respond within 1 business day and send a prepaid shipping label if a return is approved.
 
 **Will I get a refund or a remake?**
 > Our default is to remake the tag at no cost to you. If a remake isn't possible — same defect twice, or you no longer want the tag — we issue a full refund through Stripe.
@@ -154,7 +154,7 @@ Every leaf answer ends with two persistent options: **Ask another question** (re
 > Original uploaded photos: deleted one year after your order ships. Halftone portraits: kept with your order record (7 years for tax compliance).
 
 **Can I delete my photo?**
-> Yes. Email privacy@marlowe.example to request deletion. We respond within 30 days.
+> Yes. Email privacy@movacraft.example to request deletion. We respond within 30 days.
 
 ### Topic 7 — Account & login
 
@@ -168,7 +168,7 @@ Every leaf answer ends with two persistent options: **Ask another question** (re
 > Yes — adding to cart and checking out work without an account. The only step that requires sign-in is generating an AI portrait, since each generation has a real cost. Signing in also saves your design so you can reorder.
 
 **How do I delete my account?**
-> Email privacy@marlowe.example with the subject "Delete my account". We respond within 30 days. Linked orders are anonymized for tax compliance; saved designs and uploaded photos are deleted.
+> Email privacy@movacraft.example with the subject "Delete my account". We respond within 30 days. Linked orders are anonymized for tax compliance; saved designs and uploaded photos are deleted.
 
 ### Topic 8 — Pricing & payment
 
@@ -218,14 +218,14 @@ Every leaf answer ends with two persistent options: **Ask another question** (re
 
 > We respond within 1 business day, often sooner.
 >
-> - **Order & product help** — support@marlowe.example
-> - **Privacy & data requests** — privacy@marlowe.example
-> - **Press & wholesale** — press@marlowe.example
+> - **Order & product help** — support@movacraft.example
+> - **Privacy & data requests** — privacy@movacraft.example
+> - **Press & wholesale** — press@movacraft.example
 
 ## 5. FAQ content — 中文（zh 页面用）
 
 ### Greeting
-> 你好，我是 Marlowe 客服助手。需要哪方面的帮助？
+> 你好，我是 Mova Craft 客服助手。需要哪方面的帮助？
 
 ### 主题 1 — 物流与配送
 
@@ -246,7 +246,7 @@ Every leaf answer ends with two persistent options: **Ask another question** (re
 > 详见 [退换货政策](returns.html)
 
 **能改收货地址吗？**
-> 在付款后 24 小时安全窗内可以——邮件 support@marlowe.example 附订单号和新地址。24 小时后雕刻已开始、运单锁定。
+> 在付款后 24 小时安全窗内可以——邮件 support@movacraft.example 附订单号和新地址。24 小时后雕刻已开始、运单锁定。
 
 **付款后能改设计吗？**
 > 24 小时安全窗内可以。点击确认邮件里的 Request Redo，我们安排客服跟你免费重做。24 小时后设计锁定。
@@ -261,7 +261,7 @@ Every leaf answer ends with two persistent options: **Ask another question** (re
 > 详见 [退换货政策](returns.html)
 
 **如何申请退换？**
-> 收货 14 天内邮件 support@marlowe.example，附订单号和问题照片。我们 1 个工作日内回复。如批准，我们寄出预付运费的退货标签。
+> 收货 14 天内邮件 support@movacraft.example，附订单号和问题照片。我们 1 个工作日内回复。如批准，我们寄出预付运费的退货标签。
 
 **退款还是重做？**
 > 我们的默认方案是免费重做。如果无法重做（同样问题反复出现、或你不再想要），我们通过 Stripe 全额退款。
@@ -325,7 +325,7 @@ Every leaf answer ends with two persistent options: **Ask another question** (re
 > 原始上传照片：发货后 1 年删除。影雕肖像：随订单记录保留（税务合规要求 7 年）。
 
 **能删除我的照片吗？**
-> 可以。邮件 privacy@marlowe.example 申请删除，我们 30 天内响应。
+> 可以。邮件 privacy@movacraft.example 申请删除，我们 30 天内响应。
 
 ### 主题 7 — 账户与登录
 
@@ -339,7 +339,7 @@ Every leaf answer ends with two persistent options: **Ask another question** (re
 > 可以——加入购物车和结账不需要账户。只有"生成 AI 肖像"这一步需要登录，因为每次生成都有真实成本。登录后我们会保存你的设计，方便日后再订。
 
 **怎么删除我的账户？**
-> 邮件 privacy@marlowe.example，主题写"删除账户"。我们 30 天内响应。关联订单做匿名化处理（税务合规要保留）；保存的设计与上传的照片会删除。
+> 邮件 privacy@movacraft.example，主题写"删除账户"。我们 30 天内响应。关联订单做匿名化处理（税务合规要保留）；保存的设计与上传的照片会删除。
 
 ### 主题 8 — 价格与支付
 
@@ -389,9 +389,9 @@ Every leaf answer ends with two persistent options: **Ask another question** (re
 
 > 我们 1 个工作日内回复，通常更快。
 >
-> - **订单与产品** — support@marlowe.example
-> - **隐私与数据请求** — privacy@marlowe.example
-> - **媒体与合作** — press@marlowe.example
+> - **订单与产品** — support@movacraft.example
+> - **隐私与数据请求** — privacy@movacraft.example
+> - **媒体与合作** — press@movacraft.example
 
 ## 6. Trigger conditions for "Email support"
 

@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>购物车 — MARLOWE</title>
+<title>购物车 — MOVA CRAFT</title>
 <meta name="description" content="查看你的钛合金狗牌定制订单，结账前检查一遍。">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -389,7 +389,7 @@ footer { background: var(--ink); color: var(--cream); padding: 80px 0 40px; }
       <span style="font-family: monospace;">←</span>
       继续定制
     </a>
-    <a href="index-zh.html" class="logo">MARLOWE</a>
+    <a href="index-zh.html" class="logo">MOVA CRAFT</a>
     <div class="nav-cta">
       <a href="designer-zh.html">打开设计器</a>
       <a href="login-zh.html" class="auth-pill" id="nav-auth-pill">登录</a>
@@ -457,7 +457,7 @@ footer { background: var(--ink); color: var(--cream); padding: 80px 0 40px; }
   <div class="container">
     <div class="footer-grid">
       <div class="footer-brand">
-        <a href="index-zh.html" class="logo">MARLOWE</a>
+        <a href="index-zh.html" class="logo">MOVA CRAFT</a>
         <p>钛合金肖像铭牌。按单手工雕刻，一次一枚。</p>
       </div>
       <div class="footer-col">
@@ -496,7 +496,7 @@ footer { background: var(--ink); color: var(--cream); padding: 80px 0 40px; }
       </div>
     </div>
     <div class="footer-bottom">
-      <span>© 2026 Marlowe &amp; Co. 用心制作。</span>
+      <span>© 2026 Mova Craft &amp; Co. 用心制作。</span>
       <div class="footer-trust">
         <span>Stripe 加密支付</span>
         <span>SSL 加密</span>
@@ -506,7 +506,7 @@ footer { background: var(--ink); color: var(--cream); padding: 80px 0 40px; }
 </footer>
 
 <script>
-const CART_KEY = 'marlowe_cart';
+const CART_KEY = 'movacraft_cart';
 
 function readCart() {
   try { return JSON.parse(localStorage.getItem(CART_KEY) || '[]'); }
@@ -671,7 +671,7 @@ render();
 <script>
 (function updateAuthPill() {
   const pill = document.getElementById('nav-auth-pill');
-  if (!pill || !window.MarloweAuth) return;
+  if (!pill || !window.Mova CraftAuth) return;
   function paint(user) {
     if (user) {
       const initial = (user.email || '?').charAt(0).toUpperCase();
@@ -683,8 +683,8 @@ render();
       pill.innerHTML = '登录';
     }
   }
-  paint(MarloweAuth.getUser());
-  MarloweAuth.onAuthChange(paint);
+  paint(Mova CraftAuth.getUser());
+  Mova CraftAuth.onAuthChange(paint);
 })();
 </script>
 <script src="chat-widget.js" defer></script>

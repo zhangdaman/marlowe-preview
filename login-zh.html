@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>登录 — MARLOWE</title>
-<meta name="description" content="登录你的 Marlowe 账户 — 邮箱 6 位验证码或 Google。">
+<title>登录 — MOVA CRAFT</title>
+<meta name="description" content="登录你的 Mova Craft 账户 — 邮箱 6 位验证码或 Google。">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400..700;1,9..144,400..500&family=Manrope:wght@300..700&family=JetBrains+Mono:wght@400;500&family=Noto+Serif+SC:wght@400..600&family=Noto+Sans+SC:wght@400..600&display=swap" rel="stylesheet">
@@ -378,7 +378,7 @@ main {
       <span style="font-family: monospace;">←</span>
       返回首页
     </a>
-    <a href="index-zh.html" class="logo">MARLOWE</a>
+    <a href="index-zh.html" class="logo">MOVA CRAFT</a>
     <span></span>
   </div>
 </nav>
@@ -391,7 +391,7 @@ main {
       <div id="email-state">
         <header class="auth-header">
           <div class="eyebrow">§ 登录</div>
-          <h1>欢迎来到 <em>Marlowe。</em></h1>
+          <h1>欢迎来到 <em>Mova Craft。</em></h1>
           <p>一个账户管理下单、设计稿存档与回购。免密码登录。</p>
         </header>
 
@@ -523,7 +523,7 @@ async function onSendCode(e) {
   const btn = document.getElementById('send-code-btn');
   btn.disabled = true;
 
-  const result = await MarloweAuth.signInWithEmailOtp(email);
+  const result = await Mova CraftAuth.signInWithEmailOtp(email);
 
   if (result.error) {
     btn.disabled = false;
@@ -558,7 +558,7 @@ async function onVerifyCode(e) {
   const btn = document.getElementById('verify-btn');
   btn.disabled = true;
 
-  const result = await MarloweAuth.verifyEmailOtp(pendingEmail, code, pendingRemember);
+  const result = await Mova CraftAuth.verifyEmailOtp(pendingEmail, code, pendingRemember);
 
   if (result.error) {
     btn.disabled = false;
@@ -571,13 +571,13 @@ async function onVerifyCode(e) {
     return;
   }
 
-  const target = MarloweAuth.consumeRedirectTarget('account-zh.html');
+  const target = Mova CraftAuth.consumeRedirectTarget('account-zh.html');
   window.location.replace(target);
 }
 
 async function onResend() {
   if (!pendingEmail || resendCooldown > 0) return;
-  const result = await MarloweAuth.resendEmailOtp(pendingEmail);
+  const result = await Mova CraftAuth.resendEmailOtp(pendingEmail);
   if (result.mockCode) {
     document.getElementById('mock-code-display').textContent = result.mockCode;
   }
@@ -619,12 +619,12 @@ function resetForm() {
 
 function onOAuth(provider) {
   const remember = document.getElementById('remember-me').checked;
-  MarloweAuth.signInWithProvider(provider, remember);
+  Mova CraftAuth.signInWithProvider(provider, remember);
 }
 
 // 已登录？直接跳走
-if (MarloweAuth.getUser()) {
-  const target = MarloweAuth.consumeRedirectTarget('account-zh.html');
+if (Mova CraftAuth.getUser()) {
+  const target = Mova CraftAuth.consumeRedirectTarget('account-zh.html');
   window.location.replace(target);
 }
 </script>

@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Your account — MARLOWE</title>
+<title>Your account — MOVA CRAFT</title>
 <meta name="robots" content="noindex">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -397,7 +397,7 @@ nav.main-nav {
       <span style="font-family: monospace;">←</span>
       Back to home
     </a>
-    <a href="index.html" class="logo">MARLOWE</a>
+    <a href="index.html" class="logo">MOVA CRAFT</a>
     <div class="nav-cta">
       <a href="designer.html">Open The Designer</a>
       <button class="signout-btn" onclick="onSignOut()">Sign out</button>
@@ -457,7 +457,7 @@ nav.main-nav {
 <script src="chat-widget.js" defer></script>
 <script>
 // Require auth — bounce to login if not signed in
-MarloweAuth.requireAuth().then(initAccountPage).catch(() => {});
+Mova CraftAuth.requireAuth().then(initAccountPage).catch(() => {});
 
 function initAccountPage(user) {
   // Header
@@ -482,13 +482,13 @@ function initAccountPage(user) {
   renderDesigns(mockData.designs);
 }
 
-// MOCK: read from localStorage marlowe_last_order (set by checkout.html)
+// MOCK: read from localStorage movacraft_last_order (set by checkout.html)
 // Real flow: GET /api/me/orders + GET /api/me/designs
 function readMockData(user) {
   let orders = [];
   let designs = [];
   try {
-    const last = JSON.parse(localStorage.getItem('marlowe_last_order') || 'null');
+    const last = JSON.parse(localStorage.getItem('movacraft_last_order') || 'null');
     if (last) {
       // Mock status progression based on age — lets us preview the UI
       // for all states (received → in_production → shipped → delivered)
@@ -711,7 +711,7 @@ function miniSVG(d) {
 // TODO BACKEND: replace localStorage lookup with GET /api/me/designs/:id.
 
 async function onSignOut() {
-  await MarloweAuth.signOut();
+  await Mova CraftAuth.signOut();
   window.location.href = 'index.html';
 }
 </script>

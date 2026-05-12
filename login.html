@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Sign in — MARLOWE</title>
-<meta name="description" content="Sign in to your Marlowe account — 6-digit email code or Google.">
+<title>Sign in — MOVA CRAFT</title>
+<meta name="description" content="Sign in to your Mova Craft account — 6-digit email code or Google.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400..700;1,9..144,400..500&family=Manrope:wght@300..700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
@@ -375,7 +375,7 @@ main {
       <span style="font-family: monospace;">←</span>
       Back to home
     </a>
-    <a href="index.html" class="logo">MARLOWE</a>
+    <a href="index.html" class="logo">MOVA CRAFT</a>
     <span></span>
   </div>
 </nav>
@@ -388,7 +388,7 @@ main {
       <div id="email-state">
         <header class="auth-header">
           <div class="eyebrow">§ Sign in</div>
-          <h1>Welcome to <em>Marlowe.</em></h1>
+          <h1>Welcome to <em>Mova Craft.</em></h1>
           <p>One account for ordering, archived designs, and reorders. No password to remember.</p>
         </header>
 
@@ -522,7 +522,7 @@ async function onSendCode(e) {
   const btn = document.getElementById('send-code-btn');
   btn.disabled = true;
 
-  const result = await MarloweAuth.signInWithEmailOtp(email);
+  const result = await Mova CraftAuth.signInWithEmailOtp(email);
 
   if (result.error) {
     btn.disabled = false;
@@ -558,7 +558,7 @@ async function onVerifyCode(e) {
   const btn = document.getElementById('verify-btn');
   btn.disabled = true;
 
-  const result = await MarloweAuth.verifyEmailOtp(pendingEmail, code, pendingRemember);
+  const result = await Mova CraftAuth.verifyEmailOtp(pendingEmail, code, pendingRemember);
 
   if (result.error) {
     btn.disabled = false;
@@ -572,14 +572,14 @@ async function onVerifyCode(e) {
   }
 
   // Success → bounce to wherever they came from
-  const target = MarloweAuth.consumeRedirectTarget('account.html');
+  const target = Mova CraftAuth.consumeRedirectTarget('account.html');
   window.location.replace(target);
 }
 
 // Resend code, with a short cooldown to discourage spam
 async function onResend() {
   if (!pendingEmail || resendCooldown > 0) return;
-  const result = await MarloweAuth.resendEmailOtp(pendingEmail);
+  const result = await Mova CraftAuth.resendEmailOtp(pendingEmail);
   if (result.mockCode) {
     document.getElementById('mock-code-display').textContent = result.mockCode;
   }
@@ -622,12 +622,12 @@ function resetForm() {
 // OAuth path — pass the remember-me setting through to the callback
 function onOAuth(provider) {
   const remember = document.getElementById('remember-me').checked;
-  MarloweAuth.signInWithProvider(provider, remember);
+  Mova CraftAuth.signInWithProvider(provider, remember);
 }
 
 // Already signed in? Bounce out.
-if (MarloweAuth.getUser()) {
-  const target = MarloweAuth.consumeRedirectTarget('account.html');
+if (Mova CraftAuth.getUser()) {
+  const target = Mova CraftAuth.consumeRedirectTarget('account.html');
   window.location.replace(target);
 }
 </script>

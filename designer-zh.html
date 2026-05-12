@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>设计器 — MARLOWE</title>
+<title>设计器 — MOVA CRAFT</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,400;1,9..144,500&family=Manrope:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Noto+Serif+SC:wght@300;400;500;600;700&family=Noto+Sans+SC:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -1122,7 +1122,7 @@ nav.main-nav {
       <span style="font-family: monospace;">←</span>
       返回首页
     </a>
-    <a href="index-zh.html" class="logo">MARLOWE</a>
+    <a href="index-zh.html" class="logo">MOVA CRAFT</a>
     <div class="nav-cluster">
       <div class="lang-switch" aria-label="Language">
         <a href="designer.html">EN</a>
@@ -1464,7 +1464,7 @@ nav.main-nav {
 
 <!-- 页脚 -->
 <div class="footer-mini">
-  <span>© Marlowe &amp; Co.</span>
+  <span>© Mova Craft &amp; Co.</span>
   <span>·</span>
   <span>用心制作</span>
 </div>
@@ -1565,7 +1565,7 @@ function useSample(breed) {
 // 用户在 stage-2 customize 面板点 "生成肖像" CTA
 // 已登录 → 直接生成；未登录 → 弹登录模态
 function onGeneratePortrait() {
-  const user = window.MarloweAuth ? MarloweAuth.getUser() : null;
+  const user = window.Mova CraftAuth ? Mova CraftAuth.getUser() : null;
   if (user) {
     startGeneration();
   } else {
@@ -1583,8 +1583,8 @@ const modalAuthState = {
 };
 
 function openAuthModal() {
-  if (window.MarloweAuth) {
-    MarloweAuth.setRedirectTarget(window.location.pathname + '#stage-2');
+  if (window.Mova CraftAuth) {
+    Mova CraftAuth.setRedirectTarget(window.location.pathname + '#stage-2');
   }
   renderModalEmailState();
   const modal = document.getElementById('auth-modal');
@@ -1687,7 +1687,7 @@ async function onModalSendCode(event) {
   const remember = document.getElementById('modal-remember').checked;
   const btn = document.getElementById('modal-send-btn');
   btn.disabled = true;
-  const result = await MarloweAuth.signInWithEmailOtp(email);
+  const result = await Mova CraftAuth.signInWithEmailOtp(email);
   if (result.error) {
     btn.disabled = false;
     showModalError('modal-email-error', '邮箱格式不对，请检查后重试。');
@@ -1704,7 +1704,7 @@ async function onModalVerifyCode(event) {
   const code = document.getElementById('modal-code-input').value.replace(/\s/g, '');
   const btn = document.getElementById('modal-verify-btn');
   btn.disabled = true;
-  const result = await MarloweAuth.verifyEmailOtp(
+  const result = await Mova CraftAuth.verifyEmailOtp(
     modalAuthState.pendingEmail, code, modalAuthState.pendingRemember
   );
   if (result.error) {
@@ -1724,7 +1724,7 @@ async function onModalVerifyCode(event) {
 
 async function onModalResend() {
   if (!modalAuthState.pendingEmail || modalAuthState.resendCooldown > 0) return;
-  const result = await MarloweAuth.resendEmailOtp(modalAuthState.pendingEmail);
+  const result = await Mova CraftAuth.resendEmailOtp(modalAuthState.pendingEmail);
   const hint = document.querySelector('.auth-modal-mock-hint strong');
   if (hint && result.mockCode) hint.textContent = result.mockCode;
   clearModalError('modal-code-error');
@@ -1755,7 +1755,7 @@ function startModalResendCooldown(seconds) {
 
 function onModalOAuth(provider) {
   const remember = document.getElementById('modal-remember');
-  MarloweAuth.signInWithProvider(provider, remember ? remember.checked : true);
+  Mova CraftAuth.signInWithProvider(provider, remember ? remember.checked : true);
 }
 
 function startGeneration() {
@@ -2117,7 +2117,7 @@ function addToCart() {
     addedAt: new Date().toISOString(),
   };
 
-  const cart = JSON.parse(localStorage.getItem('marlowe_cart') || '[]');
+  const cart = JSON.parse(localStorage.getItem('movacraft_cart') || '[]');
   cart.push(item);
 
   // 若勾选项圈，一并加入购物车
@@ -2138,14 +2138,14 @@ function addToCart() {
     });
   }
 
-  localStorage.setItem('marlowe_cart', JSON.stringify(cart));
+  localStorage.setItem('movacraft_cart', JSON.stringify(cart));
   window.location.href = 'cart-zh.html';
 }
 
 // ============================================
 // 从 URL 参数 ?design=<id> 初始化
 // 账户页点击「再次定制」会跳到这里，读出原 design 数据预填
-// TODO BACKEND: 用 GET /api/me/designs/:id 替换 marlowe_last_order
+// TODO BACKEND: 用 GET /api/me/designs/:id 替换 movacraft_last_order
 // ============================================
 (function initFromSavedDesign() {
   const params = new URLSearchParams(window.location.search);
@@ -2154,7 +2154,7 @@ function addToCart() {
 
   let savedDesign = null;
   try {
-    const last = JSON.parse(localStorage.getItem('marlowe_last_order') || 'null');
+    const last = JSON.parse(localStorage.getItem('movacraft_last_order') || 'null');
     if (last && last.payload && last.payload.items) {
       // designId 形如 "design-<orderId>-<index>"，末位即数组下标
       const idx = parseInt(designId.split('-').pop(), 10);

@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>订单已收到 — MARLOWE</title>
-<meta name="description" content="你的 Marlowe 订单已收到。接下来是这样的流程。">
+<title>订单已收到 — MOVA CRAFT</title>
+<meta name="description" content="你的 Mova Craft 订单已收到。接下来是这样的流程。">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400..700;1,9..144,400..500&family=Manrope:wght@300..700&family=JetBrains+Mono:wght@400;500&family=Noto+Serif+SC:wght@400..600&family=Noto+Sans+SC:wght@400..600&display=swap" rel="stylesheet">
@@ -375,7 +375,7 @@ footer {
 <nav class="main-nav">
   <div class="container nav-grid">
     <span></span>
-    <a href="index-zh.html" class="logo">MARLOWE</a>
+    <a href="index-zh.html" class="logo">MOVA CRAFT</a>
     <div class="nav-right">
       <a href="login-zh.html" class="auth-pill" id="nav-auth-pill" data-i18n-signin="登录">登录</a>
     </div>
@@ -444,7 +444,7 @@ footer {
       </div>
 
       <p class="cancel-note">
-        发现哪里不对？24 小时内邮件 <a href="mailto:support@marlowe.example?subject=Order%20issue">support@marlowe.example</a> 附订单号，我们在开雕前能帮你处理。详见 <a href="returns-zh.html">退换政策</a>。
+        发现哪里不对？24 小时内邮件 <a href="mailto:support@movacraft.example?subject=Order%20issue">support@movacraft.example</a> 附订单号，我们在开雕前能帮你处理。详见 <a href="returns-zh.html">退换政策</a>。
       </p>
     </section>
 
@@ -466,7 +466,7 @@ footer {
   <div class="container">
     <div class="footer-grid">
       <div class="footer-brand">
-        <a href="index-zh.html" class="logo">MARLOWE</a>
+        <a href="index-zh.html" class="logo">MOVA CRAFT</a>
         <p>钛合金肖像狗牌，按单手工雕刻。</p>
       </div>
       <div class="footer-col">
@@ -505,7 +505,7 @@ footer {
       </div>
     </div>
     <div class="footer-bottom">
-      <span>© 2026 Marlowe &amp; Co. 用心制作。</span>
+      <span>© 2026 Mova Craft &amp; Co. 用心制作。</span>
       <div class="footer-trust">
         <span>Stripe 加密支付</span>
         <span>SSL 加密</span>
@@ -526,7 +526,7 @@ function getQuery(name) {
 
   // 读取 checkout-zh.html 保存的 mock 订单
   let savedOrder = null;
-  try { savedOrder = JSON.parse(localStorage.getItem('marlowe_last_order') || 'null'); }
+  try { savedOrder = JSON.parse(localStorage.getItem('movacraft_last_order') || 'null'); }
   catch (e) { savedOrder = null; }
 
   if (savedOrder && savedOrder.orderId === orderId) {
@@ -550,7 +550,7 @@ function getQuery(name) {
 // Auth pill — 同步登录状态
 (function updateAuthPill() {
   const pill = document.getElementById('nav-auth-pill');
-  if (!pill || !window.MarloweAuth) return;
+  if (!pill || !window.Mova CraftAuth) return;
   function paint(user) {
     if (user) {
       const initial = (user.email || '?').charAt(0).toUpperCase();
@@ -562,14 +562,14 @@ function getQuery(name) {
       pill.innerHTML = pill.dataset.i18nSignin || '登录';
     }
   }
-  paint(MarloweAuth.getUser());
-  MarloweAuth.onAuthChange(paint);
+  paint(Mova CraftAuth.getUser());
+  Mova CraftAuth.onAuthChange(paint);
 })();
 
 // 登录后增加「在账户中查看」按钮
 (function viewInAccountLink() {
-  if (!window.MarloweAuth) return;
-  const user = MarloweAuth.getUser();
+  if (!window.Mova CraftAuth) return;
+  const user = Mova CraftAuth.getUser();
   if (!user) return;
   const actions = document.querySelector('.actions');
   if (!actions) return;

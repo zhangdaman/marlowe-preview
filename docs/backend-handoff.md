@@ -1,4 +1,4 @@
-# Marlowe v1 后端对接清单
+# Mova Craft v1 后端对接清单
 
 > **目的**：把当前前端的功能、数据形状、API 需求、第三方依赖一次性讲清楚，让后端工程师不用反复看代码就能开工。
 >
@@ -393,8 +393,8 @@ designer 页用 `?design=<id>` 参数读取，预填 state 回 stage-2 让用户
 - 「记住我」ON 时，存 localStorage（7 天 TTL，前端层面再次校验过期）
 
 **回跳 URL（仅 OAuth）**：
-- EN: `https://marlowe.com/auth-callback.html`
-- ZH: `https://marlowe.com/auth-callback-zh.html`
+- EN: `https://movacraft.com/auth-callback.html`
+- ZH: `https://movacraft.com/auth-callback-zh.html`
 
 **前端包装层** `auth-state.js` 已经定义好接口，后端只需把以下函数体替换为 Supabase 调用：
 - `getUser()`
@@ -493,7 +493,7 @@ TURNSTILE_SECRET_KEY=
 
 # 邮件
 SENDGRID_API_KEY=
-SENDGRID_FROM_EMAIL=hello@marlowe.com
+SENDGRID_FROM_EMAIL=hello@movacraft.com
 
 # 限流
 REDIS_URL=
@@ -514,12 +514,12 @@ TAXJAR_API_KEY=               # 可选
 
 | Key | 类型 | 用途 | 后端接入后 |
 |---|---|---|---|
-| `marlowe_cart` | localStorage | 购物车（仍前端驱动） | 保留 |
-| `marlowe_last_order` | localStorage | mock 订单 | **删除**，改读 API |
-| `marlowe_auth_user` | localStorage / sessionStorage | mock 用户态（remember-me ON → local，OFF → session） | **删除**，Supabase 自管 |
-| `marlowe_auth_pending` | localStorage | mock 待验证 OTP（email + code + timestamp） | **删除** |
-| `marlowe_auth_remember` | sessionStorage | OAuth 跳转前后传递「记住我」偏好 | **保留**（前端层面） |
-| `marlowe_auth_redirect_to` | sessionStorage | 登录后回跳路径 | 保留（前端自管） |
+| `movacraft_cart` | localStorage | 购物车（仍前端驱动） | 保留 |
+| `movacraft_last_order` | localStorage | mock 订单 | **删除**，改读 API |
+| `movacraft_auth_user` | localStorage / sessionStorage | mock 用户态（remember-me ON → local，OFF → session） | **删除**，Supabase 自管 |
+| `movacraft_auth_pending` | localStorage | mock 待验证 OTP（email + code + timestamp） | **删除** |
+| `movacraft_auth_remember` | sessionStorage | OAuth 跳转前后传递「记住我」偏好 | **保留**（前端层面） |
+| `movacraft_auth_redirect_to` | sessionStorage | 登录后回跳路径 | 保留（前端自管） |
 
 ---
 

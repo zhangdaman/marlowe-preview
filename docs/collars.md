@@ -1,6 +1,6 @@
 # Collars — Product Spec
 
-> Companion accessory to the Marlowe titanium tag. v1 launch alongside tag.
+> Companion accessory to the Mova Craft titanium tag. v1 launch alongside tag.
 > Decision date: 2026-05-07. Pricing locked: **$49 USD**.
 
 ---

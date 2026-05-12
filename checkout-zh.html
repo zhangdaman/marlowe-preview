@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>结账 — MARLOWE</title>
-<meta name="description" content="完成 Marlowe 订单 — 配送地址与付款。">
+<title>结账 — MOVA CRAFT</title>
+<meta name="description" content="完成 Mova Craft 订单 — 配送地址与付款。">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400..700;1,9..144,400..500&family=Manrope:wght@300..700&family=JetBrains+Mono:wght@400;500&family=Noto+Serif+SC:wght@400..600&family=Noto+Sans+SC:wght@400..600&display=swap" rel="stylesheet">
@@ -196,41 +196,87 @@ nav.checkout-nav {
 .field input::placeholder { color: var(--charcoal-soft); opacity: 0.5; }
 
 /* Stripe Payment Element placeholder ============================== */
-.payment-placeholder {
-  border: 1.5px dashed var(--line);
-  background: var(--paper);
-  padding: 40px 24px;
-  text-align: center;
-  margin-top: 8px;
-}
-.payment-placeholder-eyebrow {
+/* Payment form mock (replaced once Stripe Payment Element mounts here) === */
+.payment-form { margin-top: 8px; }
+.payment-form .field { display: flex; flex-direction: column; gap: 6px; margin-bottom: 14px; }
+.payment-form .field label {
   font-family: 'JetBrains Mono', 'Noto Sans SC', monospace;
   font-size: 10px;
-  letter-spacing: 0.22em;
+  letter-spacing: 0.16em;
   text-transform: uppercase;
   color: var(--brass-deep);
-  margin-bottom: 12px;
 }
-.payment-placeholder-title {
-  font-family: 'Fraunces', 'Noto Serif SC', serif;
-  font-size: 18px;
-  color: var(--ink);
-  margin-bottom: 8px;
-}
-.payment-placeholder p {
-  font-size: 13px;
+.payment-form .mock-input {
+  font-family: 'Manrope', 'Noto Sans SC', sans-serif;
+  font-size: 15px;
+  padding: 14px 16px;
+  background: var(--cream);
+  border: 1px solid var(--line);
   color: var(--charcoal-soft);
-  max-width: 460px;
-  margin: 0 auto;
-  line-height: 1.7;
+  opacity: 0.7;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  min-height: 48px;
 }
-.payment-placeholder code {
+.payment-form .mock-input .ghost {
+  color: var(--charcoal-soft);
+  opacity: 0.5;
+  letter-spacing: 0.04em;
+}
+.payment-form .mock-input .brand-icons {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+}
+.payment-form .mock-input .brand-icons span {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 0.06em;
+  color: var(--charcoal-soft);
+  opacity: 0.55;
+  padding: 3px 6px;
+  border: 1px solid var(--line);
+  border-radius: 2px;
+}
+.payment-form .field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.payment-form .pay-methods {
+  margin-top: 18px;
+  padding-top: 18px;
+  border-top: 1px solid var(--line);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px 18px;
+  align-items: center;
+}
+.payment-form .pay-methods .label {
+  font-family: 'JetBrains Mono', 'Noto Sans SC', monospace;
+  font-size: 10px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--charcoal-soft);
+  margin-right: 4px;
+}
+.payment-form .pay-methods span:not(.label) {
   font-family: 'JetBrains Mono', monospace;
   font-size: 11px;
-  background: var(--cream);
-  padding: 2px 6px;
-  border: 1px solid var(--line);
+  letter-spacing: 0.04em;
+  color: var(--charcoal);
+  opacity: 0.6;
 }
+.payment-form .mock-tag {
+  position: absolute;
+  top: 32px;
+  right: 32px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--brass-deep);
+  opacity: 0.55;
+}
+.payment-form-wrap { position: relative; }
 
 /* Buttons ========================================================= */
 .btn {
@@ -367,7 +413,7 @@ nav.checkout-nav {
       <span style="font-family: monospace;">←</span>
       返回购物车
     </a>
-    <a href="index-zh.html" class="logo">MARLOWE</a>
+    <a href="index-zh.html" class="logo">MOVA CRAFT</a>
     <div class="secure-badge">
       <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
       Stripe 加密支付
@@ -459,20 +505,60 @@ nav.checkout-nav {
           </div>
         </div>
 
-        <div class="section">
+        <div class="section payment-form-wrap">
           <h2 data-num="§ 03">付款</h2>
           <p class="section-meta">由 Stripe 加密处理。我们不接触、也不存储你的卡号。</p>
+          <span class="mock-tag">v1 mock</span>
 
-          <!-- TODO BACKEND: replace this placeholder with the real Stripe Payment
-               Element. After backend returns clientSecret from POST /api/orders,
-               mount stripe.elements({ clientSecret }).create('payment') here. -->
-          <div class="payment-placeholder" id="payment-element">
-            <div class="payment-placeholder-eyebrow">§ Payment Element</div>
-            <div class="payment-placeholder-title">Stripe Payment Element 将在此挂载</div>
-            <p>这是一个占位符——待后端返回 Stripe publishable key 与 Payment Intent 后，<code>#payment-element</code> 容器会替换为 Stripe 官方托管的卡片输入框。</p>
-            <p style="margin-top: 12px;"><strong>Stripe 后台开启后，这里会出现以下支付方式：</strong></p>
-            <p>信用卡 · Apple Pay · Google Pay · Klarna · Afterpay · Affirm</p>
-            <p style="margin-top: 12px; font-size: 11px; opacity: 0.75;">分期付款（Klarna / Afterpay / Affirm）在 Stripe Dashboard 启用后会自动出现，客户在选择对应选项时会看到「分 4 期，每期 $X.XX 免息」的明细。</p>
+          <!-- TODO BACKEND: replace this entire <div id="payment-element"> with
+               the real Stripe Payment Element. After backend returns
+               clientSecret from POST /api/orders:
+                 const elements = stripe.elements({ clientSecret });
+                 elements.create('payment').mount('#payment-element');
+               Klarna / Afterpay / Affirm surface automatically when enabled
+               in Stripe Dashboard. -->
+          <div class="payment-form" id="payment-element">
+            <div class="field">
+              <label for="mock-card-number">卡号</label>
+              <div class="mock-input" id="mock-card-number">
+                <span class="ghost">1234 1234 1234 1234</span>
+                <span class="brand-icons">
+                  <span>VISA</span><span>MC</span><span>AMEX</span>
+                </span>
+              </div>
+            </div>
+            <div class="field-row">
+              <div class="field">
+                <label for="mock-expiry">有效期</label>
+                <div class="mock-input" id="mock-expiry">
+                  <span class="ghost">MM / YY</span>
+                </div>
+              </div>
+              <div class="field">
+                <label for="mock-cvc">CVC</label>
+                <div class="mock-input" id="mock-cvc">
+                  <span class="ghost">•••</span>
+                </div>
+              </div>
+            </div>
+            <div class="field">
+              <label for="mock-name">持卡人姓名</label>
+              <div class="mock-input" id="mock-name">
+                <span class="ghost">Full name on card</span>
+              </div>
+            </div>
+
+            <div class="pay-methods">
+              <span class="label">支持</span>
+              <span>Visa</span>
+              <span>Mastercard</span>
+              <span>Amex</span>
+              <span>Apple Pay</span>
+              <span>Google Pay</span>
+              <span>Klarna</span>
+              <span>Afterpay</span>
+              <span>Affirm</span>
+            </div>
           </div>
         </div>
 
@@ -523,7 +609,7 @@ nav.checkout-nav {
 </main>
 
 <script>
-const CART_KEY = 'marlowe_cart';
+const CART_KEY = 'movacraft_cart';
 
 function readCart() {
   try { return JSON.parse(localStorage.getItem(CART_KEY) || '[]'); }
@@ -623,7 +709,7 @@ function placeOrder(event) {
   // ============================================================
   // 占位流程 — 写入 localStorage 并跳到感谢页
   const orderId = 'M' + Date.now().toString(36).toUpperCase().slice(-6);
-  localStorage.setItem('marlowe_last_order', JSON.stringify({
+  localStorage.setItem('movacraft_last_order', JSON.stringify({
     orderId,
     placedAt: new Date().toISOString(),
     payload,
@@ -640,8 +726,8 @@ renderSummary();
 <script>
 // 若已登录，自动填充邮箱（仍支持 guest 结账）
 (function prefillFromAccount() {
-  if (!window.MarloweAuth) return;
-  const user = MarloweAuth.getUser();
+  if (!window.Mova CraftAuth) return;
+  const user = Mova CraftAuth.getUser();
   if (!user || !user.email) return;
   const emailEl = document.getElementById('email');
   if (emailEl && !emailEl.value) emailEl.value = user.email;

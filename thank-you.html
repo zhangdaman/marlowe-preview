@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Order received — MARLOWE</title>
-<meta name="description" content="Your Marlowe order has been received. Here's what happens next.">
+<title>Order received — MOVA CRAFT</title>
+<meta name="description" content="Your Mova Craft order has been received. Here's what happens next.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400..700;1,9..144,400..500&family=Manrope:wght@300..700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
@@ -368,7 +368,7 @@ footer {
 <nav class="main-nav">
   <div class="container nav-grid">
     <span></span>
-    <a href="index.html" class="logo">MARLOWE</a>
+    <a href="index.html" class="logo">MOVA CRAFT</a>
     <div class="nav-right">
       <a href="login.html" class="auth-pill" id="nav-auth-pill" data-i18n-signin="Sign in">Sign in</a>
     </div>
@@ -437,7 +437,7 @@ footer {
       </div>
 
       <p class="cancel-note">
-        Spotted something off? Email <a href="mailto:support@marlowe.example?subject=Order%20issue">support@marlowe.example</a> within 24 hours with your order number — we can still help before engraving starts. See <a href="returns.html">Returns Policy</a>.
+        Spotted something off? Email <a href="mailto:support@movacraft.example?subject=Order%20issue">support@movacraft.example</a> within 24 hours with your order number — we can still help before engraving starts. See <a href="returns.html">Returns Policy</a>.
       </p>
     </section>
 
@@ -459,7 +459,7 @@ footer {
   <div class="container">
     <div class="footer-grid">
       <div class="footer-brand">
-        <a href="index.html" class="logo">MARLOWE</a>
+        <a href="index.html" class="logo">MOVA CRAFT</a>
         <p>Titanium portrait tags, engraved one at a time in our atelier.</p>
       </div>
       <div class="footer-col">
@@ -496,7 +496,7 @@ footer {
       </div>
     </div>
     <div class="footer-bottom">
-      <span>© 2026 Marlowe &amp; Co. Made with care.</span>
+      <span>© 2026 Mova Craft &amp; Co. Made with care.</span>
       <div class="footer-trust">
         <span>Stripe Secured</span>
         <span>SSL Protected</span>
@@ -517,7 +517,7 @@ function getQuery(name) {
 
   // Try to read mock order saved by checkout.html
   let savedOrder = null;
-  try { savedOrder = JSON.parse(localStorage.getItem('marlowe_last_order') || 'null'); }
+  try { savedOrder = JSON.parse(localStorage.getItem('movacraft_last_order') || 'null'); }
   catch (e) { savedOrder = null; }
 
   if (savedOrder && savedOrder.orderId === orderId) {
@@ -542,7 +542,7 @@ function getQuery(name) {
 // Auth pill — reflects sign-in state
 (function updateAuthPill() {
   const pill = document.getElementById('nav-auth-pill');
-  if (!pill || !window.MarloweAuth) return;
+  if (!pill || !window.Mova CraftAuth) return;
   function paint(user) {
     if (user) {
       const initial = (user.email || '?').charAt(0).toUpperCase();
@@ -554,14 +554,14 @@ function getQuery(name) {
       pill.innerHTML = pill.dataset.i18nSignin || 'Sign in';
     }
   }
-  paint(MarloweAuth.getUser());
-  MarloweAuth.onAuthChange(paint);
+  paint(Mova CraftAuth.getUser());
+  Mova CraftAuth.onAuthChange(paint);
 })();
 
 // "View in Account" link on thank-you if signed in
 (function viewInAccountLink() {
-  if (!window.MarloweAuth) return;
-  const user = MarloweAuth.getUser();
+  if (!window.Mova CraftAuth) return;
+  const user = Mova CraftAuth.getUser();
   if (!user) return;
   const actions = document.querySelector('.actions');
   if (!actions) return;

@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Leather Collars — MARLOWE</title>
+<title>Leather Collars — MOVA CRAFT</title>
 <meta name="description" content="Veg-tan leather collars with titanium hardware. Three colors, five sizes, made to order. $49.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -541,7 +541,7 @@ footer {
       <li><a href="collars.html" class="active">Collars</a></li>
       <li><a href="index.html#story">Story</a></li>
     </ul>
-    <a href="index.html" class="logo">MARLOWE</a>
+    <a href="index.html" class="logo">MOVA CRAFT</a>
     <div class="nav-right">
       <a href="cart.html" class="cart-link">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4zM3 6h18M16 10a4 4 0 0 1-8 0"/></svg>
@@ -706,7 +706,7 @@ footer {
   <div class="container">
     <div class="footer-grid">
       <div class="footer-brand">
-        <a href="index.html" class="logo">MARLOWE</a>
+        <a href="index.html" class="logo">MOVA CRAFT</a>
         <p>Titanium portrait tags and veg-tan collars, made one at a time in our atelier.</p>
       </div>
       <div class="footer-col">
@@ -742,7 +742,7 @@ footer {
       </div>
     </div>
     <div class="footer-bottom">
-      <span>© 2026 Marlowe &amp; Co. Made with care.</span>
+      <span>© 2026 Mova Craft &amp; Co. Made with care.</span>
       <div class="footer-trust">
         <span>Stripe Secured</span>
         <span>SSL Protected</span>
@@ -756,7 +756,7 @@ footer {
 // Auth pill — reflects sign-in state
 (function updateAuthPill() {
   const pill = document.getElementById('nav-auth-pill');
-  if (!pill || !window.MarloweAuth) return;
+  if (!pill || !window.Mova CraftAuth) return;
   function paint(user) {
     if (user) {
       const initial = (user.email || '?').charAt(0).toUpperCase();
@@ -768,14 +768,14 @@ footer {
       pill.innerHTML = pill.dataset.i18nSignin || 'Sign in';
     }
   }
-  paint(MarloweAuth.getUser());
-  MarloweAuth.onAuthChange(paint);
+  paint(Mova CraftAuth.getUser());
+  Mova CraftAuth.onAuthChange(paint);
 })();
 
 // Live cart count
 (function updateCartCount() {
   try {
-    const cart = JSON.parse(localStorage.getItem('marlowe_cart') || '[]');
+    const cart = JSON.parse(localStorage.getItem('movacraft_cart') || '[]');
     const total = cart.reduce((n, it) => n + (it.quantity || 1), 0);
     document.querySelectorAll('.cart-count').forEach(el => el.textContent = total);
   } catch (e) {}
@@ -836,7 +836,7 @@ function renderCollarSVG() {
       <ellipse cx="0" cy="0" rx="22" ry="14" fill="none" stroke="#E5E7EB" stroke-width="1.2"/>
     </g>
     <!-- Brand mark (small heritage stamp) -->
-    <text x="200" y="290" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="9" fill="${c.edge}" opacity="0.6" letter-spacing="3">MARLOWE · CA</text>
+    <text x="200" y="290" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="9" fill="${c.edge}" opacity="0.6" letter-spacing="3">MOVA CRAFT · CA</text>
   `;
   document.getElementById('collar-svg').innerHTML = svg;
 }
@@ -872,9 +872,9 @@ function addCollarToCart() {
     quantity: 1,
     addedAt: new Date().toISOString(),
   };
-  const cart = JSON.parse(localStorage.getItem('marlowe_cart') || '[]');
+  const cart = JSON.parse(localStorage.getItem('movacraft_cart') || '[]');
   cart.push(item);
-  localStorage.setItem('marlowe_cart', JSON.stringify(cart));
+  localStorage.setItem('movacraft_cart', JSON.stringify(cart));
   window.location.href = 'cart.html';
 }
 
