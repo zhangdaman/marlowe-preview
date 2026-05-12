@@ -589,15 +589,12 @@ footer {
             Proceed to Checkout
             <span class="btn-arrow">→</span>
           </button>
-          <!-- TODO BACKEND: replace with Stripe Payment Method Messaging Element.
-               Amount = subtotal in cents. Updates as cart contents change. -->
-          <div class="bnpl-messaging" id="bnpl-mount-cart" style="display: none;">
-            Or <strong>4 interest-free payments of <span id="bnpl-installment">$0.00</span></strong>
-            <div class="bnpl-brands">Klarna · Afterpay · Affirm</div>
-          </div>
+          <!-- BNPL static messaging removed (per brand-voice decision 2026-05-12).
+               Klarna / Afterpay / Affirm options will appear automatically in the
+               Stripe Payment Element at checkout once enabled in Stripe Dashboard. -->
           <div class="summary-meta">
             Each tag is engraved to order in our atelier.<br>
-            You'll approve every detail at checkout · 24-hour safety window after payment · 7–10 days production · Free U.S. delivery.
+            You'll approve every detail at checkout · We rest every order for 24 hours before engraving · 7–10 days production · Free U.S. delivery.
           </div>
         </div>
       </aside>
@@ -651,7 +648,6 @@ footer {
       <div class="footer-trust">
         <span>Stripe Secured</span>
         <span>SSL Protected</span>
-        <span>30-Day Quality Guarantee</span>
       </div>
     </div>
   </div>
@@ -698,7 +694,6 @@ function render() {
     checkoutBtn.style.cursor = 'not-allowed';
     document.getElementById('sum-subtotal').textContent = '$0.00';
     document.getElementById('sum-total').textContent = '$0.00';
-    document.getElementById('bnpl-mount-cart').style.display = 'none';
     return;
   }
 
@@ -714,14 +709,6 @@ function render() {
   const subtotal = cart.reduce((sum, it) => sum + (it.unitPrice * it.quantity), 0);
   document.getElementById('sum-subtotal').textContent = fmt(subtotal);
   document.getElementById('sum-total').textContent = fmt(subtotal);
-  // BNPL only shows when subtotal ≥ $35 (Klarna / Afterpay minimum)
-  const bnpl = document.getElementById('bnpl-mount-cart');
-  if (subtotal >= 35) {
-    bnpl.style.display = 'block';
-    document.getElementById('bnpl-installment').textContent = fmt(subtotal / 4);
-  } else {
-    bnpl.style.display = 'none';
-  }
 }
 
 function renderItem(it, idx) {

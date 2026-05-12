@@ -626,12 +626,9 @@ footer {
             Add to Cart · <span id="price-display">$49</span>
             <span class="btn-arrow">→</span>
           </button>
-          <!-- TODO BACKEND: replace with Stripe Payment Method Messaging Element
-               once Klarna/Afterpay/Affirm are enabled in Stripe Dashboard. -->
-          <div class="bnpl-messaging" id="bnpl-mount-collar">
-            Or <strong>4 interest-free payments of $12.25</strong>
-            <div class="bnpl-brands">Klarna · Afterpay · Affirm</div>
-          </div>
+          <!-- BNPL static messaging removed (per brand-voice decision 2026-05-12).
+               Klarna / Afterpay / Affirm surface automatically at checkout via
+               Stripe Payment Element. -->
           <div class="cta-helper">
             Made to order · 7–10 business days · <a href="returns.html">30-day size exchange</a>
           </div>
@@ -749,7 +746,6 @@ footer {
       <div class="footer-trust">
         <span>Stripe Secured</span>
         <span>SSL Protected</span>
-        <span>30-Day Quality Guarantee</span>
       </div>
     </div>
   </div>

@@ -1348,8 +1348,7 @@ nav.main-nav {
             <span class="btn-arrow">→</span>
           </button>
           <div class="summary-meta">
-            生成完成后会让你确认最终效果再下单。<br>
-            7–10 个工作日交付 · 美区免运费
+            生成完成后会让你确认最终效果再下单。
           </div>
         </div>
       </div>
@@ -1411,8 +1410,8 @@ nav.main-nav {
 
       <div class="customize-col">
         <div class="summary">
-          <div class="approve-eyebrow">§ 确认细节</div>
-          <p class="approve-lede">点击下方 <strong>确认并加入购物车</strong> 即视为你确认下面这些是要雕在金属上的。再看一眼。</p>
+          <div class="approve-eyebrow">§ 最后核对</div>
+          <p class="approve-lede">下面这些细节将直接刻入金属。请最后核对一次。</p>
           <div class="summary-line">
             <span>样式</span>
             <span><span id="product-name-final">盾形铭牌</span></span>
@@ -1438,17 +1437,14 @@ nav.main-nav {
             <span>$<span id="total-final">109</span>.00</span>
           </div>
           <button class="btn btn-primary btn-block" onclick="addToCart()">
-            确认并加入购物车
+            加入购物车
             <span class="btn-arrow">→</span>
           </button>
-          <!-- TODO BACKEND: 替换为 Stripe Payment Method Messaging Element -->
-          <div class="bnpl-messaging" id="bnpl-mount-stage3">
-            也可分 4 期，每期 <strong id="bnpl-installment">$27.25</strong> 免息
-            <div class="bnpl-brands">Klarna · Afterpay · Affirm</div>
-          </div>
+          <!-- 静态分期提示已移除（2026-05-12 品牌调性决策）。
+               Stripe Payment Element 在 checkout 会自动展示 Klarna / Afterpay / Affirm。 -->
           <button onclick="goToStage(2)" style="background: none; border: none; color: var(--charcoal-soft); font-family: inherit; font-size: 13px; cursor: pointer; text-decoration: underline; text-underline-offset: 4px; padding: 16px 0 0; display: block; margin: 0 auto;">← 改一下</button>
           <div class="summary-meta" style="margin-top: 16px;">
-            付款后 24 小时安全窗 · 美区免邮<br>
+            订单静置 24 小时再开雕 · 美区免邮<br>
             窗口结束后才开始雕刻
           </div>
         </div>
@@ -1471,8 +1467,6 @@ nav.main-nav {
   <span>© Marlowe &amp; Co.</span>
   <span>·</span>
   <span>用心制作</span>
-  <span>·</span>
-  <span>30 天质量保证</span>
 </div>
 
 <script>
@@ -1982,10 +1976,6 @@ function updateTotal() {
       line.style.display = 'none';
     }
   }
-
-  // BNPL 分 4 期金额
-  const bnpl = document.getElementById('bnpl-installment');
-  if (bnpl) bnpl.textContent = '$' + (total / 4).toFixed(2);
 }
 
 // ============================================

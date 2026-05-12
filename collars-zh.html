@@ -631,14 +631,10 @@ footer {
             加入购物车 · <span id="price-display">$49</span>
             <span class="btn-arrow">→</span>
           </button>
-          <!-- TODO BACKEND: replace with Stripe Payment Method Messaging Element
-               once Klarna/Afterpay/Affirm are enabled in Stripe Dashboard. -->
-          <div class="bnpl-messaging" id="bnpl-mount-collar">
-            或分 <strong>4 期，每期 $12.25 免息</strong>
-            <div class="bnpl-brands">Klarna · Afterpay · Affirm</div>
-          </div>
+          <!-- 静态分期提示已移除（2026-05-12 品牌调性决策）。
+               Klarna / Afterpay / Affirm 由 Stripe Payment Element 在 checkout 自动展示。 -->
           <div class="cta-helper">
-            按单制作 · 7–10 个工作日 · <a href="returns.html">30 天尺码换货</a>
+            按单制作 · 7–10 个工作日 · <a href="returns-zh.html">30 天尺码换货</a>
           </div>
         </div>
       </div>
@@ -737,7 +733,7 @@ footer {
         <h4>帮助</h4>
         <ul>
           <li><a href="shipping.html">配送说明</a></li>
-          <li><a href="returns.html">退换政策</a></li>
+          <li><a href="returns-zh.html">退换政策</a></li>
           <li><a href="contact.html">联系我们</a></li>
         </ul>
         <span class="lang-note">以上为英文页面</span>
@@ -756,7 +752,6 @@ footer {
       <div class="footer-trust">
         <span>Stripe 加密支付</span>
         <span>SSL 加密</span>
-        <span>30 天质量保证</span>
       </div>
     </div>
   </div>

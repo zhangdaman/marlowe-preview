@@ -33,7 +33,7 @@
           questions: [
             {
               q: 'How long does delivery take?',
-              a: "After you approve the design at checkout, you have a 24-hour safety window (engraving doesn't start during it). After that, production takes 7–10 business days and shipping adds 5–8. Most U.S. orders arrive within 13–19 business days of placing the order.",
+              a: "After you approve the design at checkout, we rest every order for 24 hours before the engraver picks it up. After that, production takes 7–10 business days and shipping adds 5–8. Most U.S. orders arrive within 13–19 business days of placing the order.",
               link: { label: 'Shipping policy', href: 'shipping.html' },
             },
             {
@@ -62,7 +62,7 @@
             },
             {
               q: 'Can I change my shipping address?',
-              a: 'Within the 24-hour safety window after payment, yes — email support@marlowe.example with your order number and the new address. After 24 hours, engraving starts and the shipping label is locked.',
+              a: 'Within the 24-hour rest period after payment, yes — email support@marlowe.example with your order number and the new address. After 24 hours, engraving starts and the shipping label is locked.',
             },
             {
               q: "When does engraving actually start?",
@@ -73,7 +73,7 @@
         {
           id: 'returns',
           label: 'Returns & exchanges',
-          intro: "Custom goods are final sale, with exceptions for our errors and shipping damage:",
+          intro: "We rest every order 24 hours before engraving — that's your window to redo or cancel. After engraving begins, we cover defects and shipping damage:",
           questions: [
             {
               q: "What's covered?",
@@ -235,7 +235,7 @@
             },
             {
               q: 'Can I pay in installments?',
-              a: "Yes — at checkout you can pay in 4 interest-free installments via Klarna, Afterpay, or Affirm. For a $109 tag that's $27.25 every 2 weeks. No application, no credit-check impact for the Pay-in-4 option. All processed securely through Stripe.",
+              a: 'Yes — at checkout Stripe shows the Klarna, Afterpay, and Affirm options if you want them. Pay-in-4 has no credit-check impact.',
             },
           ],
         },
@@ -321,7 +321,7 @@
           questions: [
             {
               q: '多久能收到？',
-              a: '你在结账时已确认设计，付款后 24 小时安全窗里不会开雕。窗口过后，生产 7–10 个工作日，物流 5–8 个工作日。大多数美区订单从下单到收货约 13–19 个工作日。',
+              a: '你在结账时已确认设计，订单先在工作台上静置 24 小时再开雕。开雕后生产 7–10 个工作日，物流 5–8 个工作日。大多数美区订单从下单到收货约 13–19 个工作日。',
               link: { label: '物流政策', href: 'shipping.html' },
             },
             { q: '发货范围？', a: '美国 50 州 + DC + 军方地址（APO/FPO/DPO）+ 美属领地。暂不发国际。' },
@@ -331,12 +331,12 @@
         {
           id: 'cancel',
           label: '取消与修改',
-          intro: '付款前你已在结账页逐项确认了设计。付款后还有 24 小时安全窗——这期间可重做或全额退款，雕刻只在 24 小时之后才开始。',
+          intro: '付款前你已在结账页逐项确认了设计。每份订单还会先在工作台上静置 24 小时再开雕——这段时间可以重做或全额退款。',
           questions: [
             {
               q: '如何取消订单？',
               a: '付款后 24 小时内，点击确认邮件里的 Request Redo（或直接回复邮件），客服会跟你对接：免费重做，或 3–5 个工作日内全额退款，看你选。24 小时之后雕刻已开始，订单终局。',
-              link: { label: '退换货政策', href: 'returns.html' },
+              link: { label: '退换货政策', href: 'returns-zh.html' },
             },
             {
               q: '不喜欢设计——能改吗？',
@@ -344,7 +344,7 @@
             },
             {
               q: '能改收货地址吗？',
-              a: '在付款后 24 小时安全窗内可以——邮件 support@marlowe.example 附订单号和新地址。24 小时后雕刻已开始、运单锁定。',
+              a: '在 24 小时静置期内都可以——邮件 support@marlowe.example 附订单号和新地址。期满后雕刻已开始、运单锁定。',
             },
             {
               q: '什么时候真正开始雕刻？',
@@ -355,12 +355,12 @@
         {
           id: 'returns',
           label: '退换货',
-          intro: '定制商品 final sale，但我们承担制造缺陷、错件错色和物流损坏：',
+          intro: '每份订单先静置 24 小时再开雕——这段时间内可重做或取消。开雕后我们仍兜底制造缺陷、错件错色和物流损坏：',
           questions: [
             {
               q: '什么情况支持退换？',
               a: '制造缺陷、刻字错误（与你提交的不一致）、发错形状或表面、物流损坏。收货后 14 天内联系我们。',
-              link: { label: '退换货政策', href: 'returns.html' },
+              link: { label: '退换货政策', href: 'returns-zh.html' },
             },
             { q: '如何申请退换？', a: '收货 14 天内邮件 support@marlowe.example，附订单号和问题照片。我们 1 个工作日内回复。如批准，我们寄出预付运费的退货标签。' },
             { q: '退款还是重做？', a: '我们的默认方案是免费重做。如果无法重做，我们通过 Stripe 全额退款。' },
@@ -434,7 +434,7 @@
             { q: '有折扣吗？', a: '目前没有。每一枚都是按单制造，没有库存清仓的折扣空间。' },
             { q: '要交销售税吗？', a: '销售税在结账时根据你的收货地址自动计算，符合美国各州规定。' },
             { q: '项圈多少钱？', a: '$49，任意颜色（Tan / Saddle / Black）和尺寸（XS–XL）。美区免运费。跟牌一起下单的话两件一起发货。' },
-            { q: '可以分期吗？', a: '可以——结账时可选 Klarna、Afterpay 或 Affirm 分 4 期免息。$109 的牌就是每 2 周 $27.25。Pay-in-4 不查信用、不影响信用记录。全部由 Stripe 安全处理。' },
+            { q: '可以分期吗？', a: '可以——结账时 Stripe 会展示 Klarna、Afterpay、Affirm 选项，需要就用。Pay-in-4 不查信用、不影响信用记录。' },
           ],
         },
         {

@@ -1485,8 +1485,7 @@ nav.main-nav {
             <span class="btn-arrow">→</span>
           </button>
           <div class="summary-meta">
-            We'll show you the engraving-ready portrait before checkout.<br>
-            Crafted in 7–10 business days · Free U.S. shipping
+            We'll show you the engraving-ready portrait before checkout.
           </div>
         </div>
       </div>
@@ -1569,8 +1568,8 @@ nav.main-nav {
 
       <div class="customize-col">
         <div class="summary">
-          <div class="approve-eyebrow">§ Review &amp; approve</div>
-          <p class="approve-lede">Clicking <strong>Approve &amp; Add to Cart</strong> below means this is what we engrave. Take a last look.</p>
+          <div class="approve-eyebrow">§ Last look</div>
+          <p class="approve-lede">These details will be engraved into the metal. Take one last look before checkout.</p>
           <div class="summary-line">
             <span>Tag</span>
             <span><span id="product-name-final">The Shield Tag</span></span>
@@ -1596,23 +1595,16 @@ nav.main-nav {
             <span>$<span id="total-final">109</span>.00</span>
           </div>
           <button class="btn btn-primary btn-block" onclick="addToCart()">
-            Approve &amp; Add to Cart
+            Add to Cart
             <span class="btn-arrow">→</span>
           </button>
-          <!-- TODO BACKEND: replace with Stripe Payment Method Messaging Element.
-               stripe.elements({amount: 10900, currency:'usd', country:'US'})
-                 .create('paymentMethodMessaging', {})
-                 .mount('#bnpl-mount-stage3');
-               This appears automatically once Klarna/Afterpay/Affirm are
-               enabled in Stripe Dashboard → Payment Methods. -->
-          <div class="bnpl-messaging" id="bnpl-mount-stage3">
-            Or <strong>4 interest-free payments of <span id="bnpl-installment">$27.25</span></strong>
-            <div class="bnpl-brands">Klarna · Afterpay · Affirm</div>
-          </div>
+          <!-- BNPL static messaging removed (per brand-voice decision 2026-05-12).
+               Stripe Payment Element at checkout will surface Klarna / Afterpay /
+               Affirm automatically once those methods are enabled in Stripe Dashboard. -->
           <button onclick="goToStage(2)" style="background: none; border: none; color: var(--charcoal-soft); font-family: inherit; font-size: 13px; cursor: pointer; text-decoration: underline; text-underline-offset: 4px; padding: 16px 0 0; display: block; margin: 0 auto;">← Change something</button>
           <div class="summary-meta" style="margin-top: 16px;">
-            24-hour safety window after payment · Free U.S. delivery<br>
-            Engraving only starts after the window closes
+            We rest every order 24 hours before engraving · Free U.S. delivery<br>
+            Email us in that window if anything needs to change
           </div>
         </div>
       </div>
@@ -1634,8 +1626,6 @@ nav.main-nav {
   <span>© Marlowe &amp; Co.</span>
   <span>·</span>
   <span>Made with care</span>
-  <span>·</span>
-  <span>30-day quality guarantee</span>
 </div>
 
 <script>
@@ -2303,10 +2293,6 @@ function updateTotal() {
       line.style.display = 'none';
     }
   }
-
-  // BNPL installment
-  const bnpl = document.getElementById('bnpl-installment');
-  if (bnpl) bnpl.textContent = '$' + (total / 4).toFixed(2);
 }
 
 // ============================================

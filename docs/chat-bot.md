@@ -188,7 +188,7 @@ Every leaf answer ends with two persistent options: **Ask another question** (re
 > $49 for any color (Tan, Saddle, Black) and any size (XS–XL). Free U.S. shipping. If you add it to a tag order, both ship together.
 
 **Can I pay in installments?**
-> Yes — at checkout you can pay in 4 interest-free installments via Klarna, Afterpay, or Affirm. For a $109 tag that's $27.25 every 2 weeks. No application, no credit-check impact for the Pay-in-4 option. All processed securely through Stripe.
+> Yes — at checkout Stripe shows the Klarna, Afterpay, and Affirm options if you want them. Pay-in-4 has no credit-check impact.
 
 ### Topic 9 — Collars
 
@@ -359,7 +359,7 @@ Every leaf answer ends with two persistent options: **Ask another question** (re
 > $49，任意颜色（Tan / Saddle / Black）和尺寸（XS–XL）。美区免运费。跟牌一起下单的话两件一起发货。
 
 **可以分期吗？**
-> 可以——结账时可选 Klarna、Afterpay 或 Affirm 分 4 期免息。$109 的牌就是每 2 周 $27.25。Pay-in-4 不查信用、不影响信用记录。全部由 Stripe 安全处理。
+> 可以——结账时 Stripe 会展示 Klarna、Afterpay、Affirm 选项，需要就用。Pay-in-4 不查信用、不影响信用记录。
 
 ### 主题 9 — 皮革项圈
 

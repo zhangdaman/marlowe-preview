@@ -251,49 +251,20 @@ nav.main-nav {
   .timeline-step:last-child { border-bottom: none; }
 }
 
-/* Cancellation note ============================================== */
+/* Cancellation footer note (deliberately small, doesn't shout) ===== */
 .cancel-note {
-  max-width: 720px;
-  margin: 56px auto 0;
-  background: var(--paper);
-  border: 1px solid var(--line);
-  padding: 24px 28px;
-  font-size: 14px;
-  color: var(--charcoal-soft);
+  max-width: 640px;
+  margin: 48px auto 0;
+  font-size: 13px;
+  color: rgba(31, 41, 55, 0.55);
+  text-align: center;
   line-height: 1.7;
-}
-.cancel-note strong {
-  color: var(--ink);
-  font-family: 'JetBrains Mono', 'Noto Sans SC', monospace;
-  font-size: 11px;
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
-  display: block;
-  margin-bottom: 6px;
 }
 .cancel-note a {
   color: var(--brass-deep);
   text-decoration: underline;
   text-underline-offset: 3px;
 }
-.redo-btn {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  margin-top: 16px;
-  padding: 12px 22px;
-  background: var(--ink);
-  color: var(--cream);
-  border: 1.5px solid var(--ink);
-  font-family: 'Manrope', 'Noto Sans SC', sans-serif;
-  font-size: 13px;
-  font-weight: 500;
-  letter-spacing: 0.04em;
-  cursor: pointer;
-  transition: all 200ms;
-}
-.redo-btn:hover { background: var(--cream); color: var(--ink); }
-.redo-btn svg { color: currentColor; }
 
 /* CTAs =========================================================== */
 .actions {
@@ -420,10 +391,10 @@ footer {
           <path d="M14 24l7 7 14-14"/>
         </svg>
       </div>
-      <div class="eyebrow">§ 订单已收到</div>
-      <h1>它的牌已经上<em>工作台。</em></h1>
+      <div class="eyebrow">§ 订单已确认</div>
+      <h1>已接<em>单。</em></h1>
       <p class="lede">
-        谢谢。我们已收到订单，确认邮件已发往 <span id="confirmation-email">你的邮箱</span>。下面是接下来的流程。
+        设计稿已锁定。确认邮件已发到 <span id="confirmation-email">你的邮箱</span>，下面是接下来的流程。
       </p>
       <div class="order-meta">
         <div>
@@ -450,19 +421,19 @@ footer {
           <span class="step-num">01</span>
           <div class="step-title">订单已确认</div>
           <div class="step-time">今天</div>
-          <div class="step-desc">你在结账时已确认设计稿。确认邮件已发出，邮件里有「Request Redo」按钮，以防你反悔。</div>
+          <div class="step-desc">收到了。设计稿已锁定，确认邮件已发到你邮箱。</div>
         </div>
         <div class="timeline-step">
           <span class="step-num">02</span>
-          <div class="step-title">24 小时安全窗</div>
-          <div class="step-time">未来 24 小时</div>
-          <div class="step-desc">改变主意了？在确认邮件里点 <strong>Request Redo</strong>（或者直接回复），我们会免费重做或全额退款，你说了算。</div>
+          <div class="step-title">准备开工</div>
+          <div class="step-time">24 小时内</div>
+          <div class="step-desc">我们正在为你的牌备好工作台，下个工作日开雕。</div>
         </div>
         <div class="timeline-step">
           <span class="step-num">03</span>
           <div class="step-title">手工雕刻 &amp; 发货</div>
           <div class="step-time">7–10 个工作日</div>
-          <div class="step-desc">过了 24 小时窗口就开始雕刻、抛光、亚麻布包装，发货时邮件发物流单号。</div>
+          <div class="step-desc">雕刻、抛光、亚麻布包装，发货时邮件发物流单号。</div>
         </div>
         <div class="timeline-step">
           <span class="step-num">04</span>
@@ -472,14 +443,9 @@ footer {
         </div>
       </div>
 
-      <div class="cancel-note">
-        <strong>§ 你还有 24 小时余地</strong>
-        刚刚的确认邮件里有一个 <strong>Request Redo</strong> 按钮。未来 24 小时内点击它（或下方按钮，或者直接回复邮件），客服会跟你对接——重做或全额退款，看你想要哪种。24 小时无动静的话，雕刻自动开始、订单终局。详见 <a href="returns.html">退换政策（英文）</a>。
-        <button class="redo-btn" type="button" onclick="onRequestRedo()">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 4 23 10 17 10"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10"/></svg>
-          Request Redo
-        </button>
-      </div>
+      <p class="cancel-note">
+        发现哪里不对？24 小时内邮件 <a href="mailto:support@marlowe.example?subject=Order%20issue">support@marlowe.example</a> 附订单号，我们在开雕前能帮你处理。详见 <a href="returns-zh.html">退换政策</a>。
+      </p>
     </section>
 
     <div class="actions">
@@ -524,7 +490,7 @@ footer {
         <h4>帮助</h4>
         <ul>
           <li><a href="shipping.html">配送说明</a></li>
-          <li><a href="returns.html">退换政策</a></li>
+          <li><a href="returns-zh.html">退换政策</a></li>
           <li><a href="contact.html">联系我们</a></li>
         </ul>
         <span class="lang-note">以上为英文页面</span>
@@ -543,7 +509,6 @@ footer {
       <div class="footer-trust">
         <span>Stripe 加密支付</span>
         <span>SSL 加密</span>
-        <span>30 天质量保证</span>
       </div>
     </div>
   </div>
@@ -578,19 +543,6 @@ function getQuery(name) {
     document.getElementById('order-count').textContent = '—';
   }
 })();
-
-// Request Redo — 跟确认邮件里的按钮平行
-// TODO BACKEND: POST /api/orders/:displayId/request-redo（见 backend-handoff §3.2）
-// 真实流程会弹个小表单（让客户写想改什么）→ 提交后端 → 客服 1 个工作日内联系
-function onRequestRedo() {
-  const orderId = (document.getElementById('order-number').textContent || '—').trim();
-  alert(
-    "Request Redo (占位)\n\n" +
-    "订单 " + orderId + "\n\n" +
-    "真实流程会弹出一个小表单让你写想改什么，然后提交给客服。" +
-    "1 个工作日内会有真人联系你——免费重做或全额退款，看你选。"
-  );
-}
 </script>
 
 <script src="auth-state.js"></script>

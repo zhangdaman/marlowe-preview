@@ -251,49 +251,20 @@ nav.main-nav {
   .timeline-step:last-child { border-bottom: none; }
 }
 
-/* Cancellation note ============================================== */
+/* Cancellation footer note (deliberately small, doesn't shout) ===== */
 .cancel-note {
-  max-width: 720px;
-  margin: 56px auto 0;
-  background: var(--paper);
-  border: 1px solid var(--line);
-  padding: 24px 28px;
-  font-size: 14px;
-  color: var(--charcoal-soft);
-}
-.cancel-note strong {
-  color: var(--ink);
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 11px;
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
-  display: block;
-  margin-bottom: 6px;
+  max-width: 640px;
+  margin: 48px auto 0;
+  font-size: 13px;
+  color: rgba(31, 41, 55, 0.55);
+  text-align: center;
+  line-height: 1.7;
 }
 .cancel-note a {
   color: var(--brass-deep);
   text-decoration: underline;
   text-underline-offset: 3px;
 }
-.redo-btn {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  margin-top: 16px;
-  padding: 12px 22px;
-  background: var(--ink);
-  color: var(--cream);
-  border: 1.5px solid var(--ink);
-  font-family: 'Manrope', sans-serif;
-  font-size: 13px;
-  font-weight: 500;
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
-  cursor: pointer;
-  transition: all 200ms;
-}
-.redo-btn:hover { background: var(--cream); color: var(--ink); }
-.redo-btn svg { color: currentColor; }
 
 /* CTAs =========================================================== */
 .actions {
@@ -413,10 +384,10 @@ footer {
           <path d="M14 24l7 7 14-14"/>
         </svg>
       </div>
-      <div class="eyebrow">§ Order received</div>
-      <h1>Your tag is on its <em>bench.</em></h1>
+      <div class="eyebrow">§ Order confirmed</div>
+      <h1>We've got <em>it.</em></h1>
       <p class="lede">
-        Thank you. We've got your order and a confirmation email is on its way to <span id="confirmation-email">your inbox</span>. Below is what happens next.
+        Your design is locked. A confirmation just landed in <span id="confirmation-email">your inbox</span>. Here's what happens next.
       </p>
       <div class="order-meta">
         <div>
@@ -441,21 +412,21 @@ footer {
       <div class="timeline">
         <div class="timeline-step current">
           <span class="step-num">01</span>
-          <div class="step-title">Order received &amp; approved</div>
+          <div class="step-title">Order confirmed</div>
           <div class="step-time">Today</div>
-          <div class="step-desc">You approved the design at checkout. Confirmation email sent with a Request Redo button — just in case.</div>
+          <div class="step-desc">We've got it. Your design is locked. Receipt is in your inbox.</div>
         </div>
         <div class="timeline-step">
           <span class="step-num">02</span>
-          <div class="step-title">24-hour safety window</div>
-          <div class="step-time">Next 24 hours</div>
-          <div class="step-desc">Second thoughts? Click <strong>Request Redo</strong> in your email (or just reply) and we'll redo the design or refund you in full. No questions asked.</div>
+          <div class="step-title">Prepping the bench</div>
+          <div class="step-time">Within 24 hours</div>
+          <div class="step-desc">We're preparing your tag for hand-engraving — starts the next business day.</div>
         </div>
         <div class="timeline-step">
           <span class="step-num">03</span>
           <div class="step-title">Hand-engraved &amp; shipped</div>
           <div class="step-time">7–10 business days</div>
-          <div class="step-desc">Engraving begins after the 24-hour window. Polished, packaged in linen, tracking emailed when it ships.</div>
+          <div class="step-desc">Engraved, polished, packaged in linen. Tracking emailed when it ships.</div>
         </div>
         <div class="timeline-step">
           <span class="step-num">04</span>
@@ -465,14 +436,9 @@ footer {
         </div>
       </div>
 
-      <div class="cancel-note">
-        <strong>§ Got 24 hours to change your mind</strong>
-        We just emailed your confirmation with a <strong>Request Redo</strong> button. Click it any time in the next 24 hours (or use the button below) and a real person will reach out to redo the design or process a full refund, whichever you prefer. If we don't hear from you in 24 hours, engraving begins and the order is final. See <a href="returns.html">Returns Policy</a> for details.
-        <button class="redo-btn" type="button" onclick="onRequestRedo()">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 4 23 10 17 10"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10"/></svg>
-          Request Redo
-        </button>
-      </div>
+      <p class="cancel-note">
+        Spotted something off? Email <a href="mailto:support@marlowe.example?subject=Order%20issue">support@marlowe.example</a> within 24 hours with your order number — we can still help before engraving starts. See <a href="returns.html">Returns Policy</a>.
+      </p>
     </section>
 
     <div class="actions">
@@ -534,7 +500,6 @@ footer {
       <div class="footer-trust">
         <span>Stripe Secured</span>
         <span>SSL Protected</span>
-        <span>30-Day Quality Guarantee</span>
       </div>
     </div>
   </div>
@@ -570,20 +535,6 @@ function getQuery(name) {
   }
 })();
 
-// Request Redo — mirrors the button in the customer's confirmation email.
-// TODO BACKEND: POST /api/orders/:displayId/request-redo (see backend-handoff §3.2).
-// Real flow opens a small form (free-text reason) → submits to backend → shows
-// confirmation state. Mock here just shows an alert with the order ID.
-function onRequestRedo() {
-  const orderId = (document.getElementById('order-number').textContent || '—').trim();
-  alert(
-    "Request Redo (mock)\n\n" +
-    "Order " + orderId + "\n\n" +
-    "In the real flow this opens a short form asking what you'd like changed, " +
-    "then sends to our team. A real person will email you back within 1 business day " +
-    "to either redo the design or process a full refund — your choice."
-  );
-}
 </script>
 
 <script src="auth-state.js"></script>

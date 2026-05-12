@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>退换政策 — MARLOWE</title>
+<meta name="description" content="Marlowe 退换政策：定制钛合金牌按单雕刻。制造缺陷、刻字错误、物流损坏我们包。">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400..700;1,9..144,400..500&family=Manrope:wght@300..700&family=JetBrains+Mono:wght@400;500&family=Noto+Serif+SC:wght@400..600&family=Noto+Sans+SC:wght@400..600&display=swap" rel="stylesheet">
+
+<style>
+:root {
+  --cream: #F5F1E8;
+  --cream-light: #FBF8F1;
+  --paper: #EDE8DA;
+  --charcoal: #1F2937;
+  --charcoal-soft: #374151;
+  --ink: #111827;
+  --brass: #B8956A;
+  --brass-deep: #8E6F47;
+  --brass-light: #D4B896;
+  --line: rgba(31, 41, 55, 0.12);
+  --line-soft: rgba(31, 41, 55, 0.06);
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: 'Manrope', 'Noto Sans SC', system-ui, sans-serif;
+  background: var(--cream);
+  color: var(--charcoal);
+  font-size: 16px;
+  line-height: 1.85;
+  -webkit-font-smoothing: antialiased;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+}
+
+.container { max-width: 1320px; margin: 0 auto; padding: 0 32px; }
+@media (max-width: 768px) { .container { padding: 0 20px; } }
+
+.eyebrow {
+  font-family: 'JetBrains Mono', 'Noto Sans SC', monospace;
+  font-size: 11px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--brass-deep);
+}
+
+nav.main-nav {
+  background: rgba(245, 241, 232, 0.95);
+  border-bottom: 1px solid var(--line-soft);
+  padding: 22px 0;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  backdrop-filter: blur(12px);
+}
+.nav-grid {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  gap: 40px;
+}
+.logo {
+  font-family: 'Fraunces', serif;
+  font-variation-settings: 'opsz' 144;
+  font-size: 24px;
+  font-weight: 500;
+  letter-spacing: 0.18em;
+  color: var(--ink);
+  text-decoration: none;
+  text-align: center;
+}
+.back-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  color: var(--charcoal-soft);
+  text-decoration: none;
+  transition: color 200ms;
+}
+.back-link:hover { color: var(--charcoal); }
+
+.nav-cta {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 24px;
+}
+.nav-cta a {
+  font-size: 13px;
+  color: var(--charcoal-soft);
+  text-decoration: none;
+  transition: color 200ms;
+}
+.nav-cta a:hover { color: var(--brass-deep); }
+
+@media (max-width: 768px) {
+  .nav-grid { grid-template-columns: auto 1fr auto; gap: 16px; }
+}
+
+.legal-page { padding: 80px 0 120px; }
+.legal-content { max-width: 720px; margin: 0 auto; }
+
+.legal-header { margin-bottom: 56px; text-align: center; }
+.legal-header .eyebrow { margin-bottom: 18px; display: inline-block; }
+.legal-header h1 {
+  font-family: 'Fraunces', 'Noto Serif SC', serif;
+  font-variation-settings: 'opsz' 144;
+  font-size: clamp(40px, 5vw, 56px);
+  line-height: 1.2;
+  letter-spacing: -0.01em;
+  font-weight: 400;
+  color: var(--ink);
+  margin-bottom: 16px;
+}
+.last-updated {
+  font-family: 'JetBrains Mono', 'Noto Sans SC', monospace;
+  font-size: 11px;
+  letter-spacing: 0.16em;
+  color: var(--charcoal-soft);
+  opacity: 0.7;
+}
+
+.legal-intro {
+  font-size: 17px;
+  line-height: 1.85;
+  color: var(--charcoal-soft);
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+  padding: 32px 0;
+  margin-bottom: 56px;
+}
+
+.legal-content h2 {
+  font-family: 'Fraunces', 'Noto Serif SC', serif;
+  font-size: 24px;
+  font-weight: 500;
+  color: var(--ink);
+  margin-top: 56px;
+  margin-bottom: 20px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--line);
+  display: flex;
+  align-items: baseline;
+  gap: 14px;
+  line-height: 1.4;
+}
+.legal-content h2::before {
+  content: attr(data-num);
+  font-family: 'JetBrains Mono', 'Noto Sans SC', monospace;
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  color: var(--brass-deep);
+  font-weight: 400;
+  flex-shrink: 0;
+}
+.legal-content p { margin-bottom: 16px; color: var(--charcoal-soft); }
+.legal-content p strong { color: var(--charcoal); font-weight: 600; }
+.legal-content ul {
+  list-style: none;
+  margin-bottom: 16px;
+  padding-left: 0;
+}
+.legal-content ul li {
+  position: relative;
+  padding-left: 24px;
+  margin-bottom: 10px;
+  color: var(--charcoal-soft);
+}
+.legal-content ul li::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 16px;
+  width: 12px;
+  height: 1px;
+  background: var(--brass);
+}
+.legal-content a {
+  color: var(--brass-deep);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  text-decoration-thickness: 0.5px;
+}
+.legal-content a:hover { color: var(--charcoal); }
+
+.legal-callout {
+  background: var(--cream-light);
+  border: 1px solid var(--line);
+  padding: 24px 28px;
+  margin: 28px 0;
+  font-size: 15px;
+}
+.legal-callout strong { display: block; margin-bottom: 6px; color: var(--ink); }
+
+.legal-related {
+  max-width: 720px;
+  margin: 80px auto 0;
+  padding-top: 40px;
+  border-top: 1px solid var(--line);
+}
+.legal-related .eyebrow { margin-bottom: 16px; display: inline-block; }
+.legal-related ul {
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 28px;
+  font-family: 'JetBrains Mono', 'Noto Sans SC', monospace;
+  font-size: 12px;
+  letter-spacing: 0.12em;
+}
+.legal-related a {
+  color: var(--charcoal-soft);
+  text-decoration: none;
+  transition: color 200ms;
+}
+.legal-related a:hover { color: var(--charcoal); border-bottom: 1px solid var(--brass); padding-bottom: 2px; }
+.legal-related .lang-note {
+  display: block;
+  width: 100%;
+  margin-top: 12px;
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  color: rgba(31, 41, 55, 0.4);
+}
+
+footer {
+  background: var(--ink);
+  color: var(--cream);
+  padding: 80px 0 40px;
+}
+.footer-grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr 1fr 1fr;
+  gap: 60px;
+  margin-bottom: 60px;
+}
+.footer-brand p {
+  font-size: 14px;
+  color: rgba(245, 241, 232, 0.6);
+  max-width: 280px;
+  margin-top: 16px;
+}
+.footer-brand .logo { color: var(--cream); }
+.footer-col h4 {
+  font-family: 'JetBrains Mono', 'Noto Sans SC', monospace;
+  font-size: 11px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--brass-light);
+  margin-bottom: 20px;
+}
+.footer-col ul { list-style: none; }
+.footer-col ul li { margin-bottom: 10px; }
+.footer-col ul a {
+  color: rgba(245, 241, 232, 0.7);
+  text-decoration: none;
+  font-size: 14px;
+  transition: color 200ms;
+}
+.footer-col ul a:hover { color: var(--cream); }
+.footer-col .lang-note {
+  display: block;
+  margin-top: 6px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  color: rgba(245, 241, 232, 0.4);
+}
+.footer-bottom {
+  padding-top: 32px;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 12px;
+  color: rgba(245, 241, 232, 0.5);
+}
+.footer-trust { display: flex; gap: 24px; }
+@media (max-width: 1024px) {
+  .footer-grid { grid-template-columns: 1fr 1fr; gap: 40px; }
+  .footer-brand { grid-column: span 2; }
+}
+@media (max-width: 600px) {
+  .footer-grid { grid-template-columns: 1fr; }
+  .footer-brand { grid-column: span 1; }
+  .footer-bottom { flex-direction: column; align-items: flex-start; gap: 16px; }
+}
+</style>
+</head>
+<body>
+
+<nav class="main-nav">
+  <div class="container nav-grid">
+    <a href="index-zh.html" class="back-link">
+      <span style="font-family: monospace;">←</span>
+      返回首页
+    </a>
+    <a href="index-zh.html" class="logo">MARLOWE</a>
+    <div class="nav-cta">
+      <a href="designer-zh.html">打开设计器</a>
+    </div>
+  </div>
+</nav>
+
+<main class="legal-page">
+  <article class="legal-content">
+
+    <header class="legal-header">
+      <div class="eyebrow">§ 法律条款</div>
+      <h1>退换与退款</h1>
+      <p class="last-updated">2026 年 5 月 12 日 · 最后更新</p>
+    </header>
+
+    <p class="legal-intro">
+      每一枚 Marlowe 牌都为你的狗专门制作——刻上它的名字、你的电话，以及一幅由你提供的照片转化而来的肖像。正因为每一枚都独一无二，我们不接受「不喜欢就退」「不想要了」这类退货。但如果是我们出了问题——刻字模糊、刻错字、运输损坏、邮件丢失——我们会修好。不来回扯皮，不需要你付运费，不麻烦。
+    </p>
+
+    <h2 data-num="§ 01">付款前你已确认每个细节</h2>
+    <p>在 Designer 里，肖像生成之后我们会把要雕刻的所有细节列在你面前——名字拼写、电话号码、底色、最终肖像。你在那一屏点击「加入购物车」，即代表设计稿锁定。</p>
+    <p>慢慢看这一步。所见即所刻。</p>
+
+    <h2 data-num="§ 02">我们让每份订单静置 24 小时再开雕</h2>
+    <div class="legal-callout">
+      <strong>每份订单在我们的工作台上静置 24 小时，雕刻师才会拿起来。</strong>
+      这 24 小时是给你和我们共同的缓冲。如果发现哪里需要调整——刻字错、底色错、肖像感觉不对——邮件 <a href="mailto:support@marlowe.example">support@marlowe.example</a> 附订单号（或点击确认邮件里的 Request Redo），我们会免费重做或全额退款。24 小时之后，雕刻自动开始。
+    </div>
+
+    <h2 data-num="§ 03">雕刻开始后，这枚牌就属于你和它</h2>
+    <p>雕刻师拿起订单的那一刻起，这枚牌就是为你的狗专门做的，无法取消、退货或退款。规则听起来有点严——道理跟纹身店一样：一旦刻进金属，它就只属于你和你的狗。</p>
+
+    <h2 data-num="§ 04">牌本身有问题？免费重做</h2>
+    <p>如果你收到的牌有以下情况，我们包了：</p>
+    <ul>
+      <li>刻字模糊、褪色或对位歪了</li>
+      <li>名字或电话拼错（跟你确认过的不一致？还是我们的责任，我们重做）</li>
+      <li>牌本身破损、划伤或凹陷</li>
+      <li>颜色跟你确认的明显不一样</li>
+      <li>扣环、链子、五金件坏了</li>
+    </ul>
+    <p>拍张照邮件 <a href="mailto:support@marlowe.example">support@marlowe.example</a>，<strong>收货 30 天内</strong>有效。我们直接寄新的——不用退回原件。留着、送人、扔了都行。</p>
+
+    <h2 data-num="§ 05">物流丢件或损坏？免费重发</h2>
+    <p>包裹丢失是会发生的。如果你的包裹：</p>
+    <ul>
+      <li>物流状态 <strong>14 天以上</strong>没有更新</li>
+      <li>显示「已送达」但你没收到（先跟邻居和家人确认一下）</li>
+      <li>收到时破损或被打开过</li>
+    </ul>
+    <p>邮件我们就行。立刻重做并重新发——你不该为了等物流公司查一个月而干等。</p>
+
+    <h2 data-num="§ 06">这些情况我们做不了</h2>
+    <p>提前讲清楚，免得事后大家都不开心。以下情况我们不能退换或退款：</p>
+    <ul>
+      <li>静置期（24 小时）结束后再来要求改单——雕刻师已经动手了</li>
+      <li>「屏幕上看着不一样」</li>
+      <li>主观上不喜欢雕刻出来的肖像（Designer 预览 + 24 小时静置已经是两次审核机会了）</li>
+      <li>雕刻开始后想换底色或样式</li>
+      <li>你自己填错的信息且已确认（请在审核那一步仔细看）</li>
+      <li>正常使用磨损、划痕、表面随时间形成的包浆</li>
+    </ul>
+    <p>这不是为难——是按单定制的本质。你这枚牌刻着你家狗的名字和你的电话，对别人零价值。正因如此，我们让你在结账时逐项确认，然后把订单静置 24 小时才开雕。</p>
+
+    <h2 data-num="§ 07">退款怎么处理</h2>
+    <p>需要退款的话（你在静置期内取消，或我们处理不了的问题），通过 Stripe 原路返回你的支付方式。退款通常 <strong>5–10 个工作日</strong>到账，具体看你的银行。</p>
+
+    <h2 data-num="§ 08">需要帮忙？写信给我们——我们是真人</h2>
+    <p>邮件 <a href="mailto:support@marlowe.example">support@marlowe.example</a>。我们一个工作日内回复。</p>
+    <p>邮件里附上：</p>
+    <ul>
+      <li>订单号</li>
+      <li>如果有问题，附张照片</li>
+      <li>用你自己的话描述发生了什么</li>
+    </ul>
+    <p>就这样。剩下交给我们。</p>
+
+    <div class="legal-callout">
+      <strong>一句话</strong>
+      我们是一个小团队，为像我们一样在乎自家狗的人做 Marlowe。绝大多数问题都能解决——而且我们真的想帮你解决。直接来找我们就行。
+    </div>
+
+  </article>
+
+  <aside class="legal-related">
+    <div class="container">
+      <div style="max-width: 720px; margin: 0 auto;">
+        <div class="eyebrow">相关</div>
+        <ul>
+          <li><a href="shipping.html">配送说明</a></li>
+          <li><a href="terms.html">服务条款</a></li>
+          <li><a href="privacy.html">隐私政策</a></li>
+          <li><a href="contact.html">联系我们</a></li>
+        </ul>
+        <span class="lang-note">以上 4 个页面目前为英文</span>
+      </div>
+    </div>
+  </aside>
+
+</main>
+
+<footer>
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <a href="index-zh.html" class="logo">MARLOWE</a>
+        <p>钛合金肖像狗牌，按单手工雕刻，一次一枚。</p>
+      </div>
+      <div class="footer-col">
+        <h4>购物</h4>
+        <ul>
+          <li><a href="designer-zh.html">设计你的牌</a></li>
+          <li><a href="collars-zh.html">皮革项圈</a></li>
+          <li><a href="#">礼品卡</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>关于</h4>
+        <ul>
+          <li><a href="index-zh.html#story">品牌故事</a></li>
+          <li><a href="index-zh.html#how">工艺流程</a></li>
+          <li><a href="#">媒体报道</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>帮助</h4>
+        <ul>
+          <li><a href="shipping.html">配送说明</a></li>
+          <li><a href="returns-zh.html">退换政策</a></li>
+          <li><a href="contact.html">联系我们</a></li>
+        </ul>
+        <span class="lang-note">配送 / 联系仍为英文</span>
+      </div>
+      <div class="footer-col">
+        <h4>条款</h4>
+        <ul>
+          <li><a href="privacy.html">隐私政策</a></li>
+          <li><a href="terms.html">服务条款</a></li>
+        </ul>
+        <span class="lang-note">以上为英文页面</span>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2026 Marlowe &amp; Co. 用心制作。</span>
+      <div class="footer-trust">
+        <span>Stripe 加密支付</span>
+        <span>SSL 加密</span>
+      </div>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
