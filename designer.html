@@ -917,6 +917,79 @@ nav.main-nav {
 }
 .auth-modal-mock-link:hover { color: var(--charcoal); }
 
+/* Auth modal — OTP additions ====================================== */
+.auth-modal-error {
+  background: rgba(139, 46, 46, 0.06);
+  border: 1px solid rgba(139, 46, 46, 0.25);
+  color: var(--rust, #8B2E2E);
+  font-size: 12px;
+  padding: 8px 12px;
+  margin-bottom: 12px;
+  line-height: 1.5;
+  display: none;
+}
+.auth-modal-error.active { display: block; }
+.auth-modal-remember {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 10px 0 14px;
+  padding: 4px 2px;
+  cursor: pointer;
+  user-select: none;
+}
+.auth-modal-remember input[type="checkbox"] {
+  width: 14px; height: 14px; cursor: pointer; accent-color: var(--charcoal);
+}
+.auth-modal-remember .text { font-size: 12px; color: var(--charcoal-soft); line-height: 1.4; }
+.auth-modal-remember .sub {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px; letter-spacing: 0.18em; color: var(--brass-deep);
+  margin-left: 6px;
+}
+.auth-modal-otp {
+  font-family: 'JetBrains Mono', monospace !important;
+  font-size: 22px !important;
+  text-align: center;
+  letter-spacing: 0.4em;
+  padding: 14px 14px 14px 22px !important;
+}
+.auth-modal-code-sub {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--charcoal-soft);
+  margin-bottom: 14px;
+  text-align: center;
+}
+.auth-modal-mock-hint {
+  margin-top: 12px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  color: var(--charcoal-soft);
+  text-align: center;
+  padding: 8px 10px;
+  background: var(--paper);
+  border: 1px dashed var(--line);
+}
+.auth-modal-mock-hint strong { color: var(--charcoal); }
+.auth-modal-mock-hint .label { color: var(--brass-deep); margin-right: 6px; }
+.auth-modal-resend, .auth-modal-back {
+  background: none; border: none;
+  font-family: 'Manrope', sans-serif;
+  font-size: 12px;
+  color: var(--charcoal-soft);
+  text-decoration: underline;
+  text-underline-offset: 4px;
+  cursor: pointer;
+  padding: 4px 8px;
+}
+.auth-modal-resend:disabled { opacity: 0.4; cursor: not-allowed; }
+.auth-modal-resend:hover:not(:disabled), .auth-modal-back:hover { color: var(--charcoal); }
+.auth-modal-actions { display: flex; flex-direction: column; gap: 2px; align-items: center; margin-top: 10px; }
+
 /* Order summary =================================================== */
 .summary {
   background: var(--ink);
@@ -1498,41 +1571,11 @@ nav.main-nav {
 
 </div>
 
-<!-- Auth modal (shown when guest clicks Generate) ===================== -->
+<!-- Auth modal (shown when guest clicks Generate). Two-state: email → code -->
 <div class="auth-modal" id="auth-modal" role="dialog" aria-modal="true" aria-labelledby="auth-modal-title">
   <div class="auth-modal-overlay" onclick="closeAuthModal()"></div>
   <div class="auth-modal-card">
-    <button class="auth-modal-close" onclick="closeAuthModal()" aria-label="Close">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
-    </button>
-    <div class="auth-modal-eyebrow">§ One more step</div>
-    <h2 class="auth-modal-title" id="auth-modal-title">Sign in to <em>generate.</em></h2>
-    <p class="auth-modal-lede">We'll save your design to your account so you can reorder later — at every age, for every dog, or just in case.</p>
-
-    <div class="auth-modal-oauth">
-      <button class="oauth-btn apple" onclick="MarloweAuth.signInWithProvider('apple')">
-        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill="currentColor"><path d="M17.05 20.28c-.98.95-2.05.88-3.08.4-1.09-.5-2.09-.52-3.24 0-1.44.62-2.2.44-3.06-.4C2.79 15.25 3.51 7.59 9.05 7.31c1.35.07 2.29.74 3.08.8 1.18-.24 2.31-.93 3.57-.84 1.51.12 2.65.72 3.4 1.8-3.12 1.87-2.38 5.98.48 7.13-.57 1.5-1.31 2.99-2.54 4.09l.01-.01zM12.03 7.25c-.15-2.23 1.66-4.07 3.74-4.25.29 2.58-2.34 4.5-3.74 4.25z"/></svg>
-        Continue with Apple
-      </button>
-      <button class="oauth-btn" onclick="MarloweAuth.signInWithProvider('google')">
-        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>
-        Continue with Google
-      </button>
-    </div>
-
-    <div class="auth-modal-divider">or with email</div>
-
-    <form id="modal-magic-form" onsubmit="onModalMagicSubmit(event)">
-      <input type="email" class="input-field" id="modal-email" required placeholder="you@example.com" autocomplete="email">
-      <button type="submit" class="btn btn-primary btn-block" id="modal-magic-btn" style="margin-top: 12px;">
-        Send me a link
-        <span class="btn-arrow">→</span>
-      </button>
-    </form>
-
-    <p class="auth-modal-helper">
-      By continuing you agree to our <a href="terms.html">Terms</a> and <a href="privacy.html">Privacy Policy</a>.
-    </p>
+    <!-- Content rendered by renderModalEmailState() / renderModalCodeState() -->
   </div>
 </div>
 
@@ -1684,67 +1727,45 @@ function onGeneratePortrait() {
 }
 
 // ============================================
-// Auth modal controls (for guest Generate clicks)
+// Auth modal — 2-state flow (email → 6-digit code)
 // ============================================
+const modalAuthState = {
+  pendingEmail: null,
+  pendingRemember: true,
+  resendCooldown: 0,
+};
+
 function openAuthModal() {
-  // Stash where to return after sign-in
   if (window.MarloweAuth) {
     MarloweAuth.setRedirectTarget(window.location.pathname + '#stage-2');
   }
+  renderModalEmailState();
   const modal = document.getElementById('auth-modal');
   if (modal) modal.classList.add('open');
-  const emailInput = document.getElementById('modal-email');
-  if (emailInput) setTimeout(() => emailInput.focus(), 250);
+  setTimeout(() => {
+    const e = document.getElementById('modal-email');
+    if (e) e.focus();
+  }, 250);
 }
 
 function closeAuthModal() {
   const modal = document.getElementById('auth-modal');
   if (modal) modal.classList.remove('open');
-  // Reset modal to initial state in case user reopens it
-  const card = modal && modal.querySelector('.auth-modal-card');
-  if (card && card.dataset.inboxState === '1') {
-    card.dataset.inboxState = '0';
-    renderModalInitialState();
-  }
+  modalAuthState.pendingEmail = null;
+  modalAuthState.resendCooldown = 0;
 }
 
-async function onModalMagicSubmit(event) {
-  event.preventDefault();
-  const emailEl = document.getElementById('modal-email');
-  const btn = document.getElementById('modal-magic-btn');
-  const email = emailEl.value.trim();
-  btn.disabled = true;
-
-  const result = await MarloweAuth.signInWithMagicLink(email);
-  if (result.error) {
-    btn.disabled = false;
-    alert('Email format looks off — try again.');
-    return;
-  }
-  renderModalInboxState(email);
+function showModalError(id, msg) {
+  const el = document.getElementById(id);
+  if (el) { el.textContent = msg; el.classList.add('active'); }
+}
+function clearModalError(id) {
+  const el = document.getElementById(id);
+  if (el) { el.textContent = ''; el.classList.remove('active'); }
 }
 
-function renderModalInboxState(email) {
-  const card = document.querySelector('#auth-modal .auth-modal-card');
-  if (!card) return;
-  card.dataset.inboxState = '1';
-  card.innerHTML = `
-    <button class="auth-modal-close" onclick="closeAuthModal()" aria-label="Close">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
-    </button>
-    <div class="auth-modal-inbox">
-      <div class="auth-modal-eyebrow">§ Check your inbox</div>
-      <h3>One link, one click.</h3>
-      <p>We sent a sign-in link to <strong>${email.replace(/[<>"&]/g, '')}</strong>. Click it to finish signing in. The link expires in 15 minutes.</p>
-      <button class="auth-modal-mock-link" onclick="onModalMockClick('${encodeURIComponent(email)}')">
-        [Mock] Click to simulate the link →
-      </button>
-    </div>
-  `;
-}
-
-function renderModalInitialState() {
-  // Re-render the initial modal content (used when reopening after inbox state)
+// State 1: email + OAuth + remember-me
+function renderModalEmailState() {
   const card = document.querySelector('#auth-modal .auth-modal-card');
   if (!card) return;
   card.innerHTML = `
@@ -1754,21 +1775,23 @@ function renderModalInitialState() {
     <div class="auth-modal-eyebrow">§ One more step</div>
     <h2 class="auth-modal-title" id="auth-modal-title">Sign in to <em>generate.</em></h2>
     <p class="auth-modal-lede">We'll save your design to your account so you can reorder later — at every age, for every dog, or just in case.</p>
+    <div class="auth-modal-error" id="modal-email-error"></div>
     <div class="auth-modal-oauth">
-      <button class="oauth-btn apple" onclick="MarloweAuth.signInWithProvider('apple')">
-        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill="currentColor"><path d="M17.05 20.28c-.98.95-2.05.88-3.08.4-1.09-.5-2.09-.52-3.24 0-1.44.62-2.2.44-3.06-.4C2.79 15.25 3.51 7.59 9.05 7.31c1.35.07 2.29.74 3.08.8 1.18-.24 2.31-.93 3.57-.84 1.51.12 2.65.72 3.4 1.8-3.12 1.87-2.38 5.98.48 7.13-.57 1.5-1.31 2.99-2.54 4.09l.01-.01zM12.03 7.25c-.15-2.23 1.66-4.07 3.74-4.25.29 2.58-2.34 4.5-3.74 4.25z"/></svg>
-        Continue with Apple
-      </button>
-      <button class="oauth-btn" onclick="MarloweAuth.signInWithProvider('google')">
+      <!-- v1 ships Google-only; Apple deferred to v1.5. See login.html for context. -->
+      <button class="oauth-btn" onclick="onModalOAuth('google')">
         <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>
         Continue with Google
       </button>
     </div>
     <div class="auth-modal-divider">or with email</div>
-    <form id="modal-magic-form" onsubmit="onModalMagicSubmit(event)">
+    <form id="modal-email-form" onsubmit="onModalSendCode(event)">
       <input type="email" class="input-field" id="modal-email" required placeholder="you@example.com" autocomplete="email">
-      <button type="submit" class="btn btn-primary btn-block" id="modal-magic-btn" style="margin-top: 12px;">
-        Send me a link
+      <label class="auth-modal-remember" for="modal-remember">
+        <input type="checkbox" id="modal-remember" checked>
+        <span class="text">Keep me signed in on this device<span class="sub">7 DAYS</span></span>
+      </label>
+      <button type="submit" class="btn btn-primary btn-block" id="modal-send-btn">
+        Send 6-digit code
         <span class="btn-arrow">→</span>
       </button>
     </form>
@@ -1776,8 +1799,116 @@ function renderModalInitialState() {
   `;
 }
 
-function onModalMockClick(emailEnc) {
-  window.location.href = 'auth-callback.html?mock=email&email=' + emailEnc;
+// State 2: 6-digit code entry
+function renderModalCodeState(email, mockCode) {
+  const card = document.querySelector('#auth-modal .auth-modal-card');
+  if (!card) return;
+  const safeEmail = email.replace(/[<>"&]/g, '');
+  card.innerHTML = `
+    <button class="auth-modal-close" onclick="closeAuthModal()" aria-label="Close">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+    </button>
+    <div class="auth-modal-inbox">
+      <div class="auth-modal-eyebrow">§ Check your inbox</div>
+      <h3>Enter your code.</h3>
+      <p>We sent a 6-digit code to <strong>${safeEmail}</strong>.</p>
+    </div>
+    <div class="auth-modal-code-sub">EXPIRES IN 10 MIN</div>
+    <div class="auth-modal-error" id="modal-code-error"></div>
+    <form id="modal-code-form" onsubmit="onModalVerifyCode(event)">
+      <input type="text" class="input-field auth-modal-otp" id="modal-code-input"
+             inputmode="numeric" autocomplete="one-time-code" maxlength="6"
+             pattern="[0-9]{6}" placeholder="••••••" required autofocus>
+      <button type="submit" class="btn btn-primary btn-block" id="modal-verify-btn" style="margin-top: 8px;">
+        Verify
+        <span class="btn-arrow">→</span>
+      </button>
+    </form>
+    ${mockCode ? `<div class="auth-modal-mock-hint"><span class="label">[Mock]</span>Code: <strong>${mockCode}</strong></div>` : ''}
+    <div class="auth-modal-actions">
+      <button class="auth-modal-resend" id="modal-resend-btn" type="button" onclick="onModalResend()">Didn't get it? Resend</button>
+      <button class="auth-modal-back" type="button" onclick="renderModalEmailState()">Use a different email</button>
+    </div>
+  `;
+  startModalResendCooldown(30);
+}
+
+async function onModalSendCode(event) {
+  event.preventDefault();
+  clearModalError('modal-email-error');
+  const email = document.getElementById('modal-email').value.trim();
+  const remember = document.getElementById('modal-remember').checked;
+  const btn = document.getElementById('modal-send-btn');
+  btn.disabled = true;
+  const result = await MarloweAuth.signInWithEmailOtp(email);
+  if (result.error) {
+    btn.disabled = false;
+    showModalError('modal-email-error', 'Email format looks off — try again.');
+    return;
+  }
+  modalAuthState.pendingEmail = email;
+  modalAuthState.pendingRemember = remember;
+  renderModalCodeState(email, result.mockCode);
+}
+
+async function onModalVerifyCode(event) {
+  event.preventDefault();
+  clearModalError('modal-code-error');
+  const code = document.getElementById('modal-code-input').value.replace(/\s/g, '');
+  const btn = document.getElementById('modal-verify-btn');
+  btn.disabled = true;
+  const result = await MarloweAuth.verifyEmailOtp(
+    modalAuthState.pendingEmail, code, modalAuthState.pendingRemember
+  );
+  if (result.error) {
+    btn.disabled = false;
+    const msg = ({
+      invalid_code: "That code doesn't match. Check the digits and try again.",
+      expired: 'This code expired. Send a fresh one.',
+      no_pending: 'No code is pending — please request one again.',
+    })[result.error] || 'Something went wrong. Try again.';
+    showModalError('modal-code-error', msg);
+    return;
+  }
+  // Signed in — close modal and immediately start the generation the user originally clicked
+  closeAuthModal();
+  startGeneration();
+}
+
+async function onModalResend() {
+  if (!modalAuthState.pendingEmail || modalAuthState.resendCooldown > 0) return;
+  const result = await MarloweAuth.resendEmailOtp(modalAuthState.pendingEmail);
+  const hint = document.querySelector('.auth-modal-mock-hint strong');
+  if (hint && result.mockCode) hint.textContent = result.mockCode;
+  clearModalError('modal-code-error');
+  const input = document.getElementById('modal-code-input');
+  if (input) { input.value = ''; input.focus(); }
+  startModalResendCooldown(30);
+}
+
+function startModalResendCooldown(seconds) {
+  modalAuthState.resendCooldown = seconds;
+  const btn = document.getElementById('modal-resend-btn');
+  if (!btn) return;
+  btn.disabled = true;
+  btn.textContent = `Resend in ${seconds}s`;
+  const interval = setInterval(() => {
+    modalAuthState.resendCooldown--;
+    const b = document.getElementById('modal-resend-btn');
+    if (!b) { clearInterval(interval); return; }
+    if (modalAuthState.resendCooldown <= 0) {
+      clearInterval(interval);
+      b.disabled = false;
+      b.textContent = "Didn't get it? Resend";
+    } else {
+      b.textContent = `Resend in ${modalAuthState.resendCooldown}s`;
+    }
+  }, 1000);
+}
+
+function onModalOAuth(provider) {
+  const remember = document.getElementById('modal-remember');
+  MarloweAuth.signInWithProvider(provider, remember ? remember.checked : true);
 }
 
 // ============================================

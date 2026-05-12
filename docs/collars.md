@@ -55,7 +55,7 @@
 
 - **$49 USD** flat, all colors / all sizes
 - Free U.S. shipping (combined with tag if both in cart)
-- Same Stripe checkout, same Sales Tax handling, same 24-hour cancellation window
+- Same Stripe checkout, same Sales Tax handling. Collars are made-to-order alongside the tag, so they follow the same "final once placed" policy as the tag (no buyer-cancellation; 30-day size exchange covers fit issues).
 
 ## 5. Production & fulfillment
 

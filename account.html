@@ -253,6 +253,42 @@ nav.main-nav {
 .order-status.delivered { border-color: var(--charcoal-soft); color: var(--charcoal-soft); }
 .order-status.shipped { border-color: var(--brass-deep); color: var(--brass-deep); }
 .order-status.in_production { border-color: var(--brass); color: var(--brass-deep); }
+
+/* Shipping sub-block (rendered when order.shipping is present) ===== */
+.order-shipping {
+  margin-top: 14px;
+  padding-top: 12px;
+  border-top: 1px dashed var(--line);
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px 24px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  color: var(--charcoal-soft);
+  text-transform: uppercase;
+}
+.order-shipping .label {
+  color: var(--brass-deep);
+  margin-right: 6px;
+}
+.order-shipping .tracking-link {
+  color: var(--charcoal);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.order-shipping .tracking-link:hover { color: var(--brass-deep); }
+.order-shipping .ship-pending {
+  grid-column: 1 / -1;
+  font-style: italic;
+  color: var(--charcoal-soft);
+  letter-spacing: 0.06em;
+  text-transform: none;
+}
+@media (max-width: 600px) {
+  .order-shipping { grid-template-columns: 1fr; }
+}
+
 .order-action {
   font-family: 'JetBrains Mono', monospace;
   font-size: 11px;
@@ -429,7 +465,8 @@ function initAccountPage(user) {
   document.getElementById('display-name').textContent = handle;
   document.getElementById('user-email').textContent = user.email;
   const providerLabel = {
-    magic_link: 'Magic link',
+    email_otp: 'Email code',
+    magic_link: 'Email code',
     apple: 'Apple',
     google: 'Google',
   }[user.provider] || user.provider;
@@ -453,12 +490,38 @@ function readMockData(user) {
   try {
     const last = JSON.parse(localStorage.getItem('marlowe_last_order') || 'null');
     if (last) {
+      // Mock status progression based on age — lets us preview the UI
+      // for all states (received → in_production → shipped → delivered)
+      // without manual fixtures. Real flow: backend sets order.status + shipping.
+      const ageMs = Date.now() - new Date(last.placedAt).getTime();
+      const ageDays = ageMs / (24 * 60 * 60 * 1000);
+      let status = 'in_production';
+      let shipping = null;
+      if (ageDays >= 16)      status = 'delivered';
+      else if (ageDays >= 10) status = 'shipped';
+      else                    status = 'in_production';
+
+      if (status === 'shipped' || status === 'delivered') {
+        const shippedAt = new Date(new Date(last.placedAt).getTime() + 10 * 24 * 60 * 60 * 1000).toISOString();
+        const etaStart  = new Date(new Date(last.placedAt).getTime() + 13 * 24 * 60 * 60 * 1000).toISOString();
+        const etaEnd    = new Date(new Date(last.placedAt).getTime() + 16 * 24 * 60 * 60 * 1000).toISOString();
+        shipping = {
+          carrier: 'USPS Priority',
+          tracking_number: '9400 1118 9956 ' + last.orderId.replace(/[^A-Z0-9]/g, '').slice(0, 10),
+          tracking_url: 'https://tools.usps.com/go/TrackConfirmAction',
+          shipped_at: shippedAt,
+          eta_date_start: etaStart,
+          eta_date_end: etaEnd,
+        };
+      }
+
       orders.push({
         id: last.orderId,
         placed_at: last.placedAt,
-        status: 'in_production',
+        status: status,
         total_cents: (last.payload && last.payload.subtotal || 109) * 100,
         items: (last.payload && last.payload.items) || [],
+        shipping: shipping,
       });
       // Promote each ordered tag item to a "saved design".
       // Collars are not designs — they're accessories — so we skip them.
@@ -505,7 +568,7 @@ function renderOrders(orders) {
 
   container.innerHTML = orders.map(order => {
     const itemCount = (order.items || []).reduce((n, it) => n + (it.quantity || 1), 0);
-    const itemSummary = itemCount + (itemCount === 1 ? ' tag' : ' tags');
+    const itemSummary = itemCount + (itemCount === 1 ? ' item' : ' items');
     return `
       <article class="order-item">
         <div>
@@ -516,11 +579,52 @@ function renderOrders(orders) {
           </div>
           <h3 class="order-title">${itemSummary}</h3>
           <span class="order-status ${escapeHTML(order.status)}">${escapeHTML(formatStatus(order.status))}</span>
+          ${renderShipping(order)}
         </div>
         <a href="thank-you.html?order=${encodeURIComponent(order.id)}" class="order-action">View details →</a>
       </article>
     `;
   }).join('');
+}
+
+// Shipping sub-block — appears once the order has shipping info on it.
+// TODO BACKEND: order.shipping comes from /api/me/orders payload. Schema:
+//   shipping: {
+//     carrier: 'USPS Priority' | 'UPS Ground' | ...,
+//     tracking_number: string,
+//     tracking_url: string,             // deep link to carrier site
+//     shipped_at: ISO timestamp,
+//     eta_date_start: ISO date,         // e.g. 2026-05-18
+//     eta_date_end: ISO date,           // e.g. 2026-05-20
+//     last_event?: { at, status_text, location }   // optional, for inline status
+//   }
+function renderShipping(order) {
+  const s = order.shipping;
+  // No shipping yet — show a single pending line for in-production orders
+  if (!s) {
+    if (order.status === 'in_production' || order.status === 'received') {
+      return `<div class="order-shipping"><span class="ship-pending">Tracking will appear here once your tag ships.</span></div>`;
+    }
+    return '';
+  }
+  const trackUrl = s.tracking_url || '#';
+  const etaText = (s.eta_date_start && s.eta_date_end)
+    ? fmtShortDate(s.eta_date_start) + '–' + fmtShortDate(s.eta_date_end)
+    : (s.eta_date_start ? fmtShortDate(s.eta_date_start) : '—');
+  return `
+    <div class="order-shipping">
+      <span><span class="label">Carrier</span>${escapeHTML(s.carrier || '—')}</span>
+      <span><span class="label">ETA</span>${etaText}</span>
+      <span style="grid-column: 1 / -1;">
+        <span class="label">Tracking</span>
+        <a class="tracking-link" href="${escapeHTML(trackUrl)}" target="_blank" rel="noopener">${escapeHTML(s.tracking_number || '—')} →</a>
+      </span>
+    </div>
+  `;
+}
+
+function fmtShortDate(iso) {
+  return new Date(iso).toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
 }
 
 function formatStatus(status) {

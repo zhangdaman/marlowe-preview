@@ -12,8 +12,11 @@
 <!--
   AUTH CALLBACK — landing target for:
     1. OAuth provider redirects (Apple / Google)
-    2. Magic link email clicks
-    3. Mock-mode simulated clicks (?mock=apple|google|email&email=...)
+    2. Mock-mode simulated OAuth (?mock=apple|google)
+
+  Email OTP no longer routes through this page — verification happens on
+  login.html directly. The ?mock=email&email=... path is kept as a back-compat
+  fallback only.
 
   TODO BACKEND: Supabase SDK auto-handles real sessions via URL hash parameters
   (#access_token=...&refresh_token=...). After it sets the session, we just
@@ -151,7 +154,7 @@ p {
   </div>
   <span class="eyebrow">§ Sign-in error</span>
   <h1 id="error-title">Link didn't work.</h1>
-  <p id="error-body">This link may have expired or already been used. Try requesting a new one.</p>
+  <p id="error-body">Something went wrong with the sign-in. Try requesting a new code.</p>
   <a href="login.html" class="btn-primary">
     Back to sign in
     <span style="font-family: monospace;">→</span>
@@ -190,9 +193,9 @@ p {
 
   if (errorParam) {
     if (errorParam === 'expired') {
-      showError('Link expired.', 'Magic links last 15 minutes. Request a new one and try again.');
+      showError('Code expired.', 'Codes last 10 minutes. Request a new one and try again.');
     } else if (errorParam === 'oauth_failed') {
-      showError("Sign-in didn't go through.", "Something blocked the sign-in. Try again, or use email magic link instead.");
+      showError("Sign-in didn't go through.", "Something blocked the sign-in. Try again, or use the email code option instead.");
     } else {
       showError(); // default copy
     }

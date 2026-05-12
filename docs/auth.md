@@ -1,6 +1,8 @@
 # Authentication & Account System Spec
 
 > v1 promoted from v1.5 backlog (decided 2026-05-07). Marlowe is now an account-based DTC site with progressive sign-in: browse / cart guest-friendly, **generate requires sign-in**.
+>
+> **2026-05-12 update**: Magic Link **replaced by 6-digit Email OTP** because magic links add 30-60s context-switching that hurts US e-commerce conversion. Also added **"Remember me on this device"** (7-day session) for the standard US "stay signed in" pattern.
 
 ---
 
@@ -9,51 +11,54 @@
 | Decision | Choice | Rationale |
 |---|---|---|
 | **Sign-in pattern** | Progressive — browse + cart as guest; **Generate requires login** | Preserves first-touch conversion; uses Generate (the AI-cost moment) as account anchor |
-| **Auth methods** | **Magic link** (primary) + **Apple OAuth** + **Google OAuth** | Magic link for inclusivity (no password to remember); OAuth for Apple/Google users (zero friction, plays nice with Apple Pay) |
-| **Auth provider** | **Supabase Auth** | Free tier ≤ 50K MAU; built-in magic link + OAuth + session cookies; SDK handles browser side |
+| **Auth methods** | **Email OTP** (primary, 6-digit code) + **Google OAuth**. Apple OAuth **deferred to v1.5** (code-ready, UI hidden). | OTP keeps user on the same page (no app-switching to inbox-and-back); Google for one-tap users; no passwords to remember/leak |
+| **Auth provider** | **Supabase Auth** | Free tier ≤ 50K MAU; native OTP + OAuth + sessions; SDK handles browser side |
 | **Password support** | **None** | Heritage brand; password-less is calmer, fewer support tickets |
 | **Identity = email** | One account per email; OAuth-linked emails are the same account | Avoid duplicate accounts; matches privacy expectation |
+| **Session persistence** | "Remember me on this device" toggle (default ON) | ON = 7-day refresh token in localStorage. OFF = session-only (cleared on tab close). Matches Amazon / Apple ID convention. |
 
 ## 2. Sign-in flow
 
-### 2.1 Magic link (primary)
+### 2.1 Email OTP (primary)
 
 ```
 User clicks "Sign in" / triggers auth gate
     ↓
-Modal/page: email input → "Send me a link"
+Email input + "Remember me on this device" toggle → "Send 6-digit code"
     ↓
-Supabase emails magic link to address
+Supabase emails 6-digit code (no link, no redirect)
     ↓
-User clicks link in email (opens Marlowe in browser)
+User reads code from inbox, types it back on the same page
     ↓
-Supabase verifies token, sets session cookie
+Supabase verifies code, sets session
     ↓
 Redirect to:
-  - if user came from designer Generate → resume designer Stage 2
+  - if user came from designer Generate → resume designer Stage 2 (modal closes, generate fires)
   - if user came from cart → resume cart
   - else → /account.html
 ```
 
-Magic link TTL: **15 minutes** (Supabase default). Single-use.
+OTP TTL: **10 minutes**. Single-use. Resend cooldown **30 seconds**.
 
-### 2.2 OAuth (Apple / Google)
+### 2.2 OAuth (Google only in v1; Apple deferred)
 
 ```
-User clicks "Continue with Apple" or "Continue with Google"
+User clicks "Continue with Google"
     ↓
-Redirect to Apple/Google consent screen
+"Remember me" preference stashed in sessionStorage
     ↓
-User approves → callback to /auth-callback.html?code=...
+Redirect to Google consent screen
     ↓
-Supabase exchanges code for session, sets cookie
+User approves → callback to /auth-callback.html
+    ↓
+Supabase exchanges code for session; remember-me preference applied
     ↓
 Redirect to original page
 ```
 
 OAuth scopes:
 - **Google**: `email`, `profile` (display name + avatar URL)
-- **Apple**: `email`, `name` (Apple Pay-friendly)
+- **Apple** (deferred v1.5): would use `email`, `name`. The button HTML lives commented-out in `login.html`, `login-zh.html`, and both designer auth-modal templates; `auth-state.js` already accepts `provider: 'apple'`. To re-enable: uncomment the buttons and add Apple Developer credentials to Supabase.
 
 ## 3. When sign-in is required
 
@@ -62,7 +67,7 @@ OAuth scopes:
 | Home (`index.html` / `index-zh.html`) | ✅ | No gate; nav shows "Sign in" link |
 | Designer Stage 1 (Upload) | ✅ | Photo upload allowed pre-login (sample chips and real photos) |
 | Designer Stage 2 (Customize) | ✅ | Shape / finish / engraving — no gate |
-| **Designer Generate button** | ❌ **Must be signed in** | Primary auth trigger. If guest clicks → modal with magic link + OAuth |
+| **Designer Generate button** | ❌ **Must be signed in** | Primary auth trigger. If guest clicks → modal with 6-digit email code + OAuth |
 | Designer Stage 3 (Loading + Final) | ❌ Implies signed in | Flowed through Generate gate |
 | Cart (`cart.html`) | ✅ | localStorage cart; signed-in users sync to server cart |
 | Checkout (`checkout.html`) | ✅ | Guest can checkout. Signed-in users skip pre-filled fields |
@@ -78,27 +83,43 @@ A single JS file all pages load. Wraps the Supabase JS SDK with a stable interfa
 
 ```js
 window.MarloweAuth = {
-  // Read current user (null if not signed in)
-  getUser(): { id, email, displayName?, avatarUrl?, provider } | null
+  // Read current user (null if not signed in). Returns:
+  //   { id, email, displayName?, avatarUrl?, provider, rememberMe, expiresAt? }
+  getUser(): User | null
 
-  // Trigger magic link to email
-  signInWithMagicLink(email): Promise<{ ok: true } | { error }>
+  // Send a 6-digit OTP code to the email address.
+  // Returns { ok, email, mockCode? } on success (mockCode only in dev mode).
+  signInWithEmailOtp(email): Promise<{ ok: true, email, mockCode? } | { error }>
 
-  // Trigger OAuth flow (provider = 'apple' | 'google')
-  signInWithProvider(provider): void  // navigates away
+  // Verify the 6-digit code and sign the user in.
+  // rememberMe: true → 7-day localStorage session. false → session-only.
+  verifyEmailOtp(email, code, rememberMe?): Promise<{ ok: true, user } | { error: 'invalid_code' | 'expired' | 'no_pending' }>
 
-  // Sign out (clears session, redirects to /)
+  // Resend a fresh OTP code.
+  resendEmailOtp(email): Promise<{ ok: true, email, mockCode? } | { error }>
+
+  // Trigger OAuth flow (provider = 'apple' | 'google'). rememberMe stashed
+  // in sessionStorage so the callback applies it after the redirect round-trip.
+  signInWithProvider(provider, rememberMe?): void  // navigates away
+
+  // Sign out (clears session)
   signOut(): Promise<void>
 
   // Subscribe to auth state changes
   onAuthChange(callback): unsubscribe
 
-  // Verify current session token (call on protected pages)
-  requireAuth(redirectTo?): Promise<User>  // throws / redirects if not authed
+  // Verify current session (call on protected pages); redirects if not signed in
+  requireAuth(redirectTo?): Promise<User>
 };
 ```
 
-In v1 dev/mock mode (before Supabase keys are wired), this file uses `localStorage` as a fake session store. To swap to real Supabase: replace function bodies with `supabase.auth.*` calls, no other file changes.
+In v1 dev/mock mode (before Supabase keys are wired), this file stores sessions in `localStorage` (remember-me ON) or `sessionStorage` (remember-me OFF). To swap to real Supabase: replace function bodies with `supabase.auth.*` calls — no other file changes.
+
+**Supabase real-flow mapping**:
+- `signInWithEmailOtp(email)` → `supabase.auth.signInWithOtp({ email })` *(without `emailRedirectTo` → returns 6-digit code rather than a link)*
+- `verifyEmailOtp(email, code)` → `supabase.auth.verifyOtp({ email, token: code, type: 'email' })`
+- `signInWithProvider('apple')` → `supabase.auth.signInWithOAuth({ provider: 'apple', options: { redirectTo: '<abs>/auth-callback.html' } })`
+- `signOut()` → `supabase.auth.signOut()`
 
 ### 4.2 Page integration
 
@@ -249,20 +270,21 @@ All endpoints require Supabase auth header: `Authorization: Bearer <access_token
 
 | Scenario | Handling |
 |---|---|
-| Magic link expired / invalid | Redirect to `/login.html?error=expired`, show "Link expired, request a new one" |
+| OTP code expired / invalid | Inline error banner on the code-entry view; user can resend (30s cooldown) |
 | OAuth provider error | Redirect to `/login.html?error=oauth_failed` |
 | Sign-in modal shown but user cancels | Stage 2 customize panel preserved; user can try Generate again later |
 | User signs in, then signs out mid-cart | Clear server cart UI, show localStorage cart (if any) |
 | Email already exists when OAuth user has different displayName | Trust email as canonical; OAuth links to existing account |
-| Magic link clicked on different device | Supabase handles via cross-device session; user lands on Marlowe with active session |
+| OTP requested on phone, verified on desktop (or vice versa) | Works — the code is just digits, not tied to device |
 | Account deletion request | Email confirmation required; 30-day soft-delete grace period; then hard delete |
 
 ## 11. Security considerations
 
-- Magic link tokens are single-use, 15-min TTL — Supabase managed
+- OTP codes are 6 digits, single-use, **10-minute TTL** — Supabase managed
+- Resend cooldown **30 seconds** to discourage email-bombing
 - Session cookies marked `Secure`, `HttpOnly`, `SameSite=Lax` — Supabase managed when using SSR helpers
 - All `/api/me/*` endpoints verify JWT — backend middleware
-- Rate-limit on `signInWithMagicLink` (5 / hour per email + 5 / hour per IP) to prevent email-bombing
+- Rate-limit on `signInWithEmailOtp` (5 / hour per email + 5 / hour per IP) to prevent email-bombing
 - Never store passwords (we don't accept them)
 - OAuth state parameter to prevent CSRF — Supabase managed
 
@@ -272,15 +294,17 @@ Manual QA checklist for v1 launch:
 
 - [ ] Guest browses home → cart → checkout → places order (no sign-in required)
 - [ ] Guest enters designer Stage 1 → 2, clicks Generate → sees auth modal
-- [ ] Modal: enter email → "Check your inbox" state shown → click magic link in email → returns to designer Stage 2 with state preserved → generates portrait
-- [ ] Modal: click "Continue with Google" → Google consent → returns to designer
-- [ ] Modal: click "Continue with Apple" → Apple consent → returns to designer
+- [ ] Modal: enter email → 6-digit code email arrives → type code back into the same page → modal closes → generation fires
+- [ ] "Remember me" ON → session persists across page reloads & 7 days
+- [ ] "Remember me" OFF → session lives only while tab is open
+- [ ] Modal: click "Continue with Google" → Google consent → returns to designer (remember-me preference applied)
+- [ ] *(Deferred to v1.5)* Modal: click "Continue with Apple" → Apple consent → returns to designer
 - [ ] Signed-in user adds cart item → signs out → cart preserved on this device (server cart cleared but localStorage takes over? or cleared entirely?) — **decide policy**
 - [ ] Guest with non-empty localStorage cart signs in → cart merges to server
 - [ ] Account page shows 0 orders (new user) and 0 designs
 - [ ] After completing checkout, account page shows 1 order + 1 archived design
-- [ ] Click "Reorder" on archived design → cart populated → checkout works
-- [ ] Account → Sign out → localStorage cleared → home page nav shows "Sign in"
+- [ ] Click a past design card → designer pre-populated → finish/engraving editable → Generate works
+- [ ] Account → Sign out → both localStorage + sessionStorage cleared → home nav shows "Sign in"
 - [ ] Privacy: account deletion works, all linked data removed (or anonymized for orders)
 
 ## 13. Frontend pages to add / modify
@@ -288,8 +312,8 @@ Manual QA checklist for v1 launch:
 | File | Action |
 |---|---|
 | `auth-state.js` | **NEW** — shared auth wrapper |
-| `login.html` | **NEW** — magic link form + OAuth buttons + check-your-inbox state |
-| `auth-callback.html` | **NEW** — OAuth redirect target; sets session, redirects |
+| `login.html` | **NEW** — 2-state form (email → 6-digit code) + remember-me + OAuth |
+| `auth-callback.html` | **NEW** — OAuth redirect target only (OTP verifies on login page) |
 | `account.html` | **NEW** — orders + designs + sign out |
 | `designer.html` / `designer-zh.html` | Remove D — Email section; add auth modal triggered on Generate |
 | `index.html` / `index-zh.html` | Nav: "Sign in" link / signed-in user pill |
@@ -303,7 +327,7 @@ Manual QA checklist for v1 launch:
 
 - Multi-device session sync (Supabase covers basic; we may add device-aware UX)
 - 2FA (TOTP) for high-value accounts (decide based on fraud signals)
-- Social account merging (e.g., user signs in with Google, later wants to add magic-link too)
+- Social account merging (e.g., user signs in with Google, later wants to add email-code too)
 - Address book (multiple shipping addresses per user)
 - Subscriptions (recurring orders for multi-dog families)
 
@@ -313,7 +337,7 @@ Manual QA checklist for v1 launch:
 - [ ] Confirm Apple Developer account exists (required for Sign in with Apple)
 - [ ] Confirm Google Cloud project exists for OAuth credentials
 - [ ] DPA with Supabase signed?
-- [ ] Email-from address for magic link (`auth@marlowe.example`?) — verify SPF/DKIM
+- [ ] Email-from address for 6-digit codes (`auth@marlowe.example`?) — verify SPF/DKIM
 - [ ] Account deletion grace period (30 days proposed) — legal review
 
 ---

@@ -18,7 +18,7 @@
 |---|---|---|
 | 支付 | Stripe | Payment Element + Payment Method Messaging |
 | 支付方式 | 卡 / Apple Pay / Google Pay / Klarna / Afterpay / Affirm | BNPL 在 Stripe Dashboard 开启即可自动出现 |
-| 认证 | Supabase Auth | Magic Link + Apple OAuth + Google OAuth |
+| 认证 | Supabase Auth | 6 位邮箱验证码（OTP）+ Google OAuth（Apple OAuth 代码已就绪、UI 暂隐藏，v1.5 解锁） |
 | AI 出图 | Replicate API 或自部署 SD + ControlNet | halftone portrait pipeline，输出同时用于网站预览 + 影雕机源文件 |
 | 邮件 | SendGrid | 订单确认、生产通知、发货通知 |
 | 防滥用 | Cloudflare Turnstile + Redis 限流 | 见 §3.1 |
@@ -39,7 +39,7 @@
 | 购物车 | `cart.html` | `cart-zh.html` | localStorage 驱动 |
 | 结账 | `checkout.html` | `checkout-zh.html` | 地址 + Stripe Payment Element |
 | 感谢页 | `thank-you.html` | `thank-you-zh.html` | 订单确认 + 4 步时间线 |
-| 登录 | `login.html` | `login-zh.html` | Magic link + OAuth |
+| 登录 | `login.html` | `login-zh.html` | 6 位邮箱验证码 + OAuth |
 | 回跳页 | `auth-callback.html` | `auth-callback-zh.html` | Supabase session 落地 |
 | 账户中心 | `account.html` | `account-zh.html` | 订单列表 + 历史生成 |
 | 法律页 | `privacy.html` `terms.html` `returns.html` `shipping.html` `contact.html` | 仅 EN（ZH footer 有「以上为英文页面」备注） | 静态 |
@@ -98,8 +98,31 @@ tax_cents                int
 total_cents              int
 status                   text                  -- received | in_production | shipped | delivered | cancelled
 stripe_payment_intent_id text
+
+-- 物流字段（status=shipped 后填）
+carrier                  text                  -- 'USPS Priority' | 'UPS Ground' | 'FedEx Ground' ...
+tracking_number          text
+tracking_url             text                  -- 深链到承运商查询页
+shipped_at               timestamptz
+eta_date_start           date                  -- 预计送达日期下限
+eta_date_end             date                  -- 预计送达日期上限
+delivered_at             timestamptz           -- status=delivered 后填
+
 created_at               timestamptz DEFAULT now()
 updated_at               timestamptz
+```
+
+> 物流字段也可以拆到独立 `order_shipments` 表，支持一单多包裹（牌 + 项圈分包发）；v1 单包裹即可，直接放 orders 表上。
+
+**可选**：`order_shipping_events` 表用于「实时物流事件」展示（Picked Up / Out for Delivery / Delivered）：
+
+```sql
+id              uuid PRIMARY KEY
+order_id        uuid REFERENCES orders(id)
+at              timestamptz                -- 事件时间
+status_text     text                       -- 'In transit' | 'Out for delivery' | 'Delivered' ...
+location        text                       -- 'San Francisco, CA'
+raw             jsonb                      -- 承运商原始事件（审计用）
 ```
 
 ### `order_items_tag` — 钛合金牌订单项
@@ -233,7 +256,7 @@ turnstile_token: string # Cloudflare 验证 token
 3. 调 Stripe 建 PaymentIntent（金额 = subtotal + tax）
 4. 返回 `{ orderId, clientSecret }` 给前端
 5. 前端用 `stripe.confirmPayment({ clientSecret, return_url: '...thank-you.html?order=' + orderId })`
-6. 支付成功 → Stripe webhook → 后端把 status 改为 `received`（或保持 `received`，下单后 24 小时进入 `in_production`）
+6. 支付成功 → Stripe webhook → 后端把 status 改为 `received`，立即排入生产队列（无取消窗口；当天进入 `in_production`）
 
 #### `GET /api/orders/:displayId` — Thank-you 页 + Account 页查详情
 
@@ -241,15 +264,33 @@ turnstile_token: string # Cloudflare 验证 token
 {
   "orderId": "M3K2X9",
   "placedAt": "2026-05-11T12:00:00Z",
-  "status": "in_production",
+  "status": "in_production",          // received | in_production | shipped | delivered | cancelled
   "totalCents": 15800,
-  "items": [...]
+  "items": [ /* tag/collar 同 §3.2 items */ ],
+
+  // 物流字段：status='shipped' 之后填；status='received' / 'in_production' 时为 null
+  "shipping": {
+    "carrier": "USPS Priority",
+    "tracking_number": "9400 1118 9956 ...",
+    "tracking_url": "https://tools.usps.com/...",
+    "shipped_at": "2026-05-21T17:00:00Z",
+    "eta_date_start": "2026-05-24",
+    "eta_date_end": "2026-05-27",
+    "delivered_at": null,             // status='delivered' 后填
+    "last_event": {                   // 可选——前端目前不渲染，预留
+      "at": "2026-05-22T09:15:00Z",
+      "status_text": "In transit",
+      "location": "San Francisco, CA"
+    }
+  }
 }
 ```
 
-#### `POST /api/orders/:displayId/cancel` — 24 小时取消窗口
+> **前端目前显示什么**：account 页 / 订单卡上，当 `shipping != null` 时展示 carrier + ETA 区间 + tracking 单号（点击跳承运商页面）。`status='in_production'` 时显示「物流单号会在发货后出现在这里」占位。后续可在 thank-you 页也加同样一块。
 
-下单 24 小时内可取消：把 status 改为 `cancelled`，调 Stripe 退款，发送邮件。
+#### `POST /api/admin/orders/:displayId/cancel` — 客服后台取消（仅内部使用）
+
+定制订单对外不开放取消（每枚按单雕刻，下单即进入生产）。但客服后台保留一个内部取消接口，处理「客户刚下单立即邮件求救」的边缘 case——若订单仍在 `received` 且工厂未开雕，可由客服把 status 改为 `cancelled`，调 Stripe 退款，发送邮件。**前端不暴露此功能**。
 
 ---
 
@@ -261,7 +302,7 @@ turnstile_token: string # Cloudflare 验证 token
   "id": "uuid",
   "email": "user@example.com",
   "displayName": "Jane",
-  "provider": "magic_link",  // 或 apple / google
+  "provider": "email_otp",  // 或 apple / google
   "signedInAt": "2026-05-11T12:00:00Z"
 }
 ```
@@ -303,22 +344,44 @@ designer 页用 `?design=<id>` 参数读取，预填 state 回 stage-2 让用户
 
 ### 3.4 Auth API（Supabase 自带，无需自建）
 
-前端通过 Supabase SDK 直接调用：
-- `supabase.auth.signInWithOtp({ email })` — Magic Link
-- `supabase.auth.signInWithOAuth({ provider: 'apple' | 'google' })`
-- `supabase.auth.signOut()`
-- `supabase.auth.onAuthStateChange()` — 监听登录态
+> **重要变更（2026-05-12）**：前端登录改成 **6 位邮箱验证码**（不是 Magic Link）。
+> 验证码在 login 页 / designer auth modal 内直接输入，**不再跳到 auth-callback**。
+> 默认勾选「在这台设备上保持登录」→ 7 天 session。
 
-**回跳 URL**：
+前端通过 Supabase SDK 直接调用：
+
+| 前端动作 | Supabase 调用 | 备注 |
+|---|---|---|
+| 发送 6 位验证码 | `supabase.auth.signInWithOtp({ email })` | **不带 `emailRedirectTo`**，Supabase 默认发数字码而非链接 |
+| 验证 6 位验证码 | `supabase.auth.verifyOtp({ email, token: code, type: 'email' })` | OTP 10 分钟有效，单次使用 |
+| Google OAuth | `supabase.auth.signInWithOAuth({ provider: 'google', options: { redirectTo: '<abs>/auth-callback.html' } })` | 仅 OAuth 走 callback 页 |
+| ~~Apple OAuth~~ | （**v1 暂不开**，代码 ready）`supabase.auth.signInWithOAuth({ provider: 'apple', ... })` | UI 已注释，v1.5 取消注释 + 在 Supabase 后台配 Apple Developer 凭据即可 |
+| 监听登录态 | `supabase.auth.onAuthStateChange((event, session) => {...})` | callback 页用这个回收 OAuth session |
+| 退出 | `supabase.auth.signOut()` | |
+
+**Session 持续时间**（Supabase Dashboard 配置）：
+- 默认 access token 1 小时，refresh token 自动续期
+- 「记住我」OFF 时，前端把 session 存 sessionStorage（关页面即清）
+- 「记住我」ON 时，存 localStorage（7 天 TTL，前端层面再次校验过期）
+
+**回跳 URL（仅 OAuth）**：
 - EN: `https://marlowe.com/auth-callback.html`
 - ZH: `https://marlowe.com/auth-callback-zh.html`
 
-**前端包装层** `auth-state.js` 已经定义好接口，后端只需把 5 个函数体替换为 Supabase 调用：
+**前端包装层** `auth-state.js` 已经定义好接口，后端只需把以下函数体替换为 Supabase 调用：
 - `getUser()`
-- `signInWithMagicLink(email)`
-- `signInWithProvider(provider)`
+- `signInWithEmailOtp(email)` — 发送验证码
+- `verifyEmailOtp(email, code, rememberMe)` — 验证验证码
+- `resendEmailOtp(email)` — 重发
+- `signInWithProvider(provider, rememberMe)` — OAuth 跳走
 - `signOut()`
 - `requireAuth(redirectTo)`
+
+**错误码合约**：
+- `invalid_email`：邮箱格式错
+- `invalid_code`：验证码不对
+- `expired`：验证码超过 10 分钟
+- `no_pending`：未先调用 send 就直接 verify
 
 ---
 
@@ -334,6 +397,26 @@ designer 页用 `?design=<id>` 参数读取，预填 state 回 stage-2 让用户
 - `payment_intent.succeeded` → orders.status = `received`，发送确认邮件
 - `payment_intent.payment_failed` → 通知用户
 - `charge.refunded` → orders.status = `cancelled`
+
+---
+
+### 3.6 物流 / 履约（v1 半人工，v1.5 自动化）
+
+**当前阶段**：工厂打完雕、贴完标签后人工录入 → 后台管理界面（或客服 API）把 tracking_number / carrier / shipped_at 写到 `orders` 表，状态置 `shipped`，触发邮件。
+
+**预留对接点**（v1 完成、v1.5 接通）：
+
+| 方向 | 形式 | 用途 |
+|---|---|---|
+| 入站 webhook | `POST /api/webhooks/shipment` | 工厂 / EasyPost / Shippo / ShipStation 在创建运单后回调，自动写入物流字段 |
+| 入站 webhook | `POST /api/webhooks/tracking` | EasyPost / Shippo 把承运商的扫码事件推过来，按 order_id 落 `order_shipping_events` |
+| 手动后台 | `POST /api/admin/orders/:id/ship` | 客服在没有承运商集成时手动录入 tracking 数据 |
+| 出站邮件 | `shipping.shipped` → SendGrid template | 「你的牌发出来了」+ tracking 链接 |
+| 出站邮件 | `shipping.delivered` | 「希望你和狗狗喜欢」（可选）|
+
+**API 服务备选**：EasyPost / Shippo / ShipStation / Stripe Shipping（皆有 carrier-agnostic tracking webhook）。选哪一家由 ops 决定，影响前端的只有 `tracking_url` 域。
+
+**前端兜底**：在 `tracking_url` 没有时，render 单号字符串本身（不可点）；UI 已实现。
 
 ---
 
@@ -382,8 +465,9 @@ TAXJAR_API_KEY=               # 可选
 |---|---|---|---|
 | `marlowe_cart` | localStorage | 购物车（仍前端驱动） | 保留 |
 | `marlowe_last_order` | localStorage | mock 订单 | **删除**，改读 API |
-| `marlowe_auth_user` | localStorage | mock 用户态 | **删除**，Supabase 自管 |
-| `marlowe_auth_pending` | localStorage | mock magic link | **删除** |
+| `marlowe_auth_user` | localStorage / sessionStorage | mock 用户态（remember-me ON → local，OFF → session） | **删除**，Supabase 自管 |
+| `marlowe_auth_pending` | localStorage | mock 待验证 OTP（email + code + timestamp） | **删除** |
+| `marlowe_auth_remember` | sessionStorage | OAuth 跳转前后传递「记住我」偏好 | **保留**（前端层面） |
 | `marlowe_auth_redirect_to` | sessionStorage | 登录后回跳路径 | 保留（前端自管） |
 
 ---
@@ -392,7 +476,7 @@ TAXJAR_API_KEY=               # 可选
 
 1. **定价**：钛合金牌 $109，皮革项圈 $49，统一定价不打折（v1）。BNPL 4 期均分。
 2. **配送**：美国境内免邮。生产 7–10 工作日 + 物流 3–5 天 = **11–16 个工作日到货**。
-3. **取消窗口**：下单后 24 小时内可任意取消；过窗口进入生产，不能改不能退。
+3. **订单终局性**：每枚牌按单雕刻，下单后立即进入生产——**对客户不提供取消窗口**，订单不可改不可退（除制造缺陷 / 物流损坏外）。客服后台可以在工厂开雕前手动取消极端 case。
 4. **退换政策**：制造缺陷 / 刻字错误 / 发错款 / 物流损坏 → 14 天内重做或退款。详见 `returns.html`。
 5. **Generate 防滥用**：三层（Turnstile + 用户限流 + IP 限流），细节见 `docs/api-generate.md`。
 6. **AI 出图规范**：halftone 灰阶肖像，**同一张图既给客户预览也直接驱动影雕机**——所以输出尺寸 / 灰阶 bit 深度要匹配工厂参数（待工厂确认后写到 CLAUDE.md §7）。
@@ -417,7 +501,6 @@ TAXJAR_API_KEY=               # 可选
 | 事件 | 收件人 | 内容 |
 |---|---|---|
 | 订单确认 | 客户 | 订单号、items、合计、预计交付时间 |
-| 24 小时窗口提醒（可选） | 客户 | 距进入生产还有 X 小时 |
 | 进入生产 | 客户 | 「你的牌在工作台上了」 |
 | 发货 | 客户 | 物流单号 + 跟踪链接 |
 | 送达（可选） | 客户 | 「希望你和狗狗喜欢」 |
@@ -462,7 +545,7 @@ grep -rn "TODO BACKEND" . --include="*.html" --include="*.js"
 
 ## 10. 上线前 checklist
 
-- [ ] Supabase 项目创建 + OAuth providers（Apple / Google）配置完成
+- [ ] Supabase 项目创建 + Google OAuth 配置完成（Apple 推迟到 v1.5）
 - [ ] Stripe 账户开通 + Klarna / Afterpay / Affirm 在 Dashboard 启用
 - [ ] Replicate 或自部署 GPU 的 halftone pipeline 跑通
 - [ ] Cloudflare Turnstile 站点 key 申请 + 限流 Redis 部署

@@ -1,7 +1,15 @@
 /* MARLOWE — Auth State (shared wrapper)
  *
- * v1 MOCK mode: uses localStorage as fake session store so the entire
- * auth UX flow can be built and tested before Supabase is wired up.
+ * v1 MOCK mode: uses localStorage/sessionStorage as fake session store so the
+ * entire auth UX flow can be built and tested before Supabase is wired up.
+ *
+ * v1 auth flow:
+ *   1. Email OTP — user enters email, gets a 6-digit code, types it back.
+ *      (Not a magic link — Magic Links add 30-60s of context switching that
+ *       hurts US e-commerce conversion. OTP keeps users on the page.)
+ *   2. Apple / Google OAuth — one-tap, redirects through auth-callback.html.
+ *   3. Remember-me — default ON. 7-day session via localStorage. When OFF,
+ *      session lives in sessionStorage (clears on browser close).
  *
  * To swap to real Supabase: replace the function bodies marked
  * "TODO BACKEND" with `supabase.auth.*` calls. No other file changes.
@@ -11,9 +19,17 @@
 (function () {
   'use strict';
 
-  const STORAGE_KEY = 'marlowe_auth_user';
-  const PENDING_KEY = 'marlowe_auth_pending'; // for mock magic-link flow
+  const STORAGE_KEY  = 'marlowe_auth_user';     // long-lived (remember me ON)
+  const SESSION_KEY  = 'marlowe_auth_user';     // session-scoped (remember me OFF)
+  const PENDING_KEY  = 'marlowe_auth_pending';  // mock OTP issuance + remember-me flag
   const REDIRECT_KEY = 'marlowe_auth_redirect_to';
+
+  // Remember-me session lifetime (mock). Real Supabase refresh-token TTL is
+  // controlled in dashboard; this is the analog for the mock layer.
+  const REMEMBER_TTL_MS = 7 * 24 * 60 * 60 * 1000; // 7 days
+  // OTP code expiry — matches what most US providers use.
+  const OTP_TTL_MS = 10 * 60 * 1000; // 10 minutes
+
   const subscribers = [];
 
   // Language-aware page routing. Pages set <html lang="zh"> for Chinese,
@@ -27,13 +43,41 @@
     return isZh() ? base.replace(/\.html$/, '-zh.html') : base;
   }
 
+  // Read user from either localStorage (remember-me) or sessionStorage (session-only).
   function readUser() {
-    try { return JSON.parse(localStorage.getItem(STORAGE_KEY) || 'null'); }
-    catch (e) { return null; }
+    try {
+      // Prefer localStorage (long-lived); fall back to sessionStorage.
+      const fromLocal = JSON.parse(localStorage.getItem(STORAGE_KEY) || 'null');
+      if (fromLocal) {
+        // Check if remember-me TTL expired (mock-only; real Supabase handles via refresh tokens)
+        if (fromLocal.expiresAt && Date.now() > fromLocal.expiresAt) {
+          localStorage.removeItem(STORAGE_KEY);
+          return null;
+        }
+        return fromLocal;
+      }
+      const fromSession = JSON.parse(sessionStorage.getItem(SESSION_KEY) || 'null');
+      return fromSession;
+    } catch (e) { return null; }
   }
-  function writeUser(user) {
-    if (user) localStorage.setItem(STORAGE_KEY, JSON.stringify(user));
-    else localStorage.removeItem(STORAGE_KEY);
+  function writeUser(user, rememberMe) {
+    if (!user) {
+      localStorage.removeItem(STORAGE_KEY);
+      sessionStorage.removeItem(SESSION_KEY);
+      notify(null);
+      return;
+    }
+    if (rememberMe) {
+      user.expiresAt = Date.now() + REMEMBER_TTL_MS;
+      user.rememberMe = true;
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(user));
+      sessionStorage.removeItem(SESSION_KEY);
+    } else {
+      user.rememberMe = false;
+      delete user.expiresAt;
+      sessionStorage.setItem(SESSION_KEY, JSON.stringify(user));
+      localStorage.removeItem(STORAGE_KEY);
+    }
     notify(user);
   }
   function notify(user) {
@@ -50,48 +94,89 @@
 
   const MarloweAuth = {
     /**
-     * @returns {object|null} { id, email, displayName?, avatarUrl?, provider } or null
+     * @returns {object|null} { id, email, displayName?, avatarUrl?, provider, rememberMe, expiresAt? } or null
      */
     getUser() {
       return readUser();
     },
 
     /**
-     * Trigger magic link to email.
-     * MOCK: stashes pending email and returns success; user can "click" the
-     * link by visiting auth-callback.html?mock=email&email=...
+     * Send a 6-digit OTP code to the email.
+     * MOCK: generates a code locally and stashes it; logs it to console so
+     *       you can copy it during dev. UI also surfaces it on the code-entry view.
      *
      * TODO BACKEND: replace with
-     *   await supabase.auth.signInWithOtp({ email, options: { emailRedirectTo: '<absolute-url>/auth-callback.html' }})
+     *   await supabase.auth.signInWithOtp({ email, options: { shouldCreateUser: true } })
+     *   (Without emailRedirectTo, Supabase sends a 6-digit OTP code instead of a link.)
      */
-    async signInWithMagicLink(email) {
+    async signInWithEmailOtp(email) {
       if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
         return { error: 'invalid_email' };
       }
-      localStorage.setItem(PENDING_KEY, JSON.stringify({ email, at: Date.now() }));
-      // In mock mode, don't actually send mail — just simulate success.
-      console.info('[MarloweAuth mock] magic link "sent" to', email,
-        '— to simulate clicking it, visit auth-callback.html?mock=email');
-      return { ok: true, email };
+      const code = String(Math.floor(100000 + Math.random() * 900000));
+      localStorage.setItem(PENDING_KEY, JSON.stringify({
+        email, code, at: Date.now(),
+      }));
+      console.info('[MarloweAuth mock] OTP code for', email, '→', code,
+        '(real backend will email this code)');
+      return { ok: true, email, mockCode: code };
+    },
+
+    /**
+     * Verify a 6-digit OTP. On success, creates the session.
+     * @param email
+     * @param code 6-digit string
+     * @param rememberMe whether to use 7-day localStorage session (default true)
+     *
+     * TODO BACKEND: replace with
+     *   const { data, error } = await supabase.auth.verifyOtp({
+     *     email, token: code, type: 'email'
+     *   })
+     */
+    async verifyEmailOtp(email, code, rememberMe) {
+      if (rememberMe === undefined) rememberMe = true;
+      let pending = null;
+      try { pending = JSON.parse(localStorage.getItem(PENDING_KEY) || 'null'); }
+      catch (e) {}
+      if (!pending || pending.email !== email) return { error: 'no_pending' };
+      if (Date.now() - pending.at > OTP_TTL_MS) {
+        localStorage.removeItem(PENDING_KEY);
+        return { error: 'expired' };
+      }
+      const cleanCode = String(code || '').replace(/\D/g, '');
+      if (cleanCode !== pending.code) return { error: 'invalid_code' };
+      const user = this._completeSignIn('email', email, rememberMe);
+      return { ok: true, user };
+    },
+
+    /**
+     * Resend OTP — generates a fresh 6-digit code.
+     */
+    async resendEmailOtp(email) {
+      return this.signInWithEmailOtp(email);
     },
 
     /**
      * Trigger OAuth provider sign-in. Navigates away.
-     * MOCK: redirects to auth-callback.html?mock=<provider>
+     * @param provider 'apple' | 'google'
+     * @param rememberMe (default true). Stashed in sessionStorage for callback to read.
      *
      * TODO BACKEND: replace with
      *   await supabase.auth.signInWithOAuth({ provider, options: { redirectTo: '<absolute-url>/auth-callback.html' }})
      */
-    signInWithProvider(provider) {
+    signInWithProvider(provider, rememberMe) {
       if (!['apple', 'google'].includes(provider)) return;
+      if (rememberMe === undefined) rememberMe = true;
+      // Remember-me preference must survive the OAuth round-trip.
+      sessionStorage.setItem('marlowe_auth_remember', rememberMe ? '1' : '0');
       window.location.href = pageFor('auth-callback.html') + '?mock=' + encodeURIComponent(provider);
     },
 
     /**
-     * Complete a sign-in. Called by auth-callback.html.
-     * MOCK only — in real flow, Supabase SDK handles this in onAuthStateChange.
+     * Complete a sign-in. Internal helper — called by verifyEmailOtp
+     * and by auth-callback.html (for OAuth round-trips).
      */
-    _mockCompleteSignIn(provider, emailFromQuery) {
+    _completeSignIn(provider, emailFromQuery, rememberMe) {
       let email = emailFromQuery;
       if (!email && provider === 'email') {
         try {
@@ -100,21 +185,37 @@
         } catch (e) {}
       }
       if (!email) {
-        if (provider === 'apple') email = 'demo.apple@privaterelay.appleid.com';
+        if (provider === 'apple')  email = 'demo.apple@privaterelay.appleid.com';
         else if (provider === 'google') email = 'demo.google@gmail.com';
         else email = 'demo@marlowe.example';
       }
+      if (rememberMe === undefined) {
+        // For OAuth callbacks, read the preference stashed before redirect.
+        const stash = sessionStorage.getItem('marlowe_auth_remember');
+        rememberMe = stash === null ? true : stash === '1';
+      }
+      sessionStorage.removeItem('marlowe_auth_remember');
+
       const user = {
         id: genId(),
         email,
         displayName: email.split('@')[0],
         avatarUrl: null,
-        provider: provider === 'email' ? 'magic_link' : provider,
+        provider: provider === 'email' ? 'email_otp' : provider,
         signedInAt: new Date().toISOString(),
       };
-      writeUser(user);
+      writeUser(user, !!rememberMe);
       localStorage.removeItem(PENDING_KEY);
       return user;
+    },
+
+    /**
+     * Back-compat alias for the auth-callback.html mock=email path.
+     * The new flow verifies OTP on the login page itself; this is kept so
+     * an old `?mock=email&email=...` callback link still works during dev.
+     */
+    _mockCompleteSignIn(provider, emailFromQuery) {
+      return this._completeSignIn(provider, emailFromQuery);
     },
 
     /**
@@ -125,7 +226,7 @@
     async signOut() {
       writeUser(null);
       localStorage.removeItem(PENDING_KEY);
-      // In real flow Supabase clears its own keys too.
+      sessionStorage.removeItem('marlowe_auth_remember');
     },
 
     /**

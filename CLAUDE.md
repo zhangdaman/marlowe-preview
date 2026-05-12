@@ -7,7 +7,7 @@
 > **后端对接清单（给后端工程师）**：[docs/backend-handoff.md](docs/backend-handoff.md)（页面 / 数据模型 / API / 环境变量 / 业务规则全套）
 > **Generate API 防滥用**：[docs/api-generate.md](docs/api-generate.md)（Turnstile + 限流细节）
 > **客服聊天机器人**：[docs/chat-bot.md](docs/chat-bot.md)（FAQ 内容 EN/ZH + UX 规约 + AI 升级路径）；widget 实现 [chat-widget.js](chat-widget.js)，挂载在 7 个核心页面（首页/designer/cart/checkout/thank-you），不挂法律页
-> **账户系统 / 登录注册**：[docs/auth.md](docs/auth.md)（Magic link + Apple/Google OAuth + Supabase Auth，渐进强制——cart 仍 guest，generate 需登录）；shared wrapper [auth-state.js](auth-state.js)
+> **账户系统 / 登录注册**：[docs/auth.md](docs/auth.md)（6 位邮箱验证码 + Google OAuth + Supabase Auth，渐进强制——cart 仍 guest，generate 需登录；Apple Sign-In 推迟到 v1.5，UI 已注释、代码 ready）；shared wrapper [auth-state.js](auth-state.js)
 > **皮革项圈（companion accessory）**：[docs/collars.md](docs/collars.md)（3 色 × 5 尺寸 × $49，按单制造跟牌一起发货；[collars.html](collars.html) 产品页；cart 自动支持 productType:'tag'\|'collar'）
 
 ---

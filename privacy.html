@@ -342,7 +342,7 @@ footer {
 
     <h2 data-num="§ 01">What we collect</h2>
     <ul>
-      <li><strong>Account information:</strong> email address (mandatory for sign-in); display name and avatar URL if you sign in with Apple or Google; sign-in provider (magic link / Apple / Google); newsletter consent state and timestamp</li>
+      <li><strong>Account information:</strong> email address (mandatory for sign-in); display name and avatar URL if you sign in with Google; sign-in provider (email code / Google); newsletter consent state and timestamp</li>
       <li><strong>Contact information:</strong> name, phone number (collected at checkout)</li>
       <li><strong>Shipping address</strong></li>
       <li><strong>Payment information:</strong> processed by Stripe — we never see or store your card number</li>
@@ -365,10 +365,10 @@ footer {
     <h2 data-num="§ 03">Your account &amp; sign-in</h2>
     <p>Marlowe uses passwordless sign-in. We don't store passwords. You sign in by:</p>
     <ul>
-      <li><strong>Magic link:</strong> we email a single-use link valid for 15 minutes</li>
-      <li><strong>Continue with Apple</strong> or <strong>Continue with Google</strong>: standard OAuth — Apple/Google share your email (and optionally display name + avatar) with us based on the scopes you approve</li>
+      <li><strong>6-digit email code:</strong> we email a single-use 6-digit code valid for 10 minutes</li>
+      <li><strong>Continue with Google</strong>: standard OAuth — Google shares your email (and optionally display name + avatar) with us based on the scopes you approve</li>
     </ul>
-    <p><strong>Auth provider:</strong> our authentication is operated by <strong>Supabase</strong> (Supabase Inc., U.S.). Supabase processes session tokens and email-link delivery on our behalf under a Data Processing Agreement.</p>
+    <p><strong>Auth provider:</strong> our authentication is operated by <strong>Supabase</strong> (Supabase Inc., U.S.). Supabase processes session tokens and email-code delivery on our behalf under a Data Processing Agreement.</p>
     <p><strong>Why an account is required to generate portraits:</strong> AI portrait generation has a real per-call cost. Tying generation to an account lets us prevent abuse without making the experience hostile to real customers, and lets us archive your design so you can reorder it later (every age, every dog, or a backup if the first goes missing).</p>
     <p><strong>Account deletion:</strong> email <a href="mailto:privacy@marlowe.example">privacy@marlowe.example</a> to delete your account. We respond within 30 days. Linked orders are anonymized (we keep the order record for tax compliance — 7 years — but strip your identifiers); saved designs and uploaded photos are deleted; cart is cleared; your auth record is removed from Supabase.</p>
 
@@ -390,12 +390,12 @@ footer {
 
     <h2 data-num="§ 05">Who we share data with</h2>
     <ul>
-      <li><strong>Supabase</strong> — authentication (account creation, magic link delivery, session management)</li>
-      <li><strong>Apple &amp; Google</strong> — only if you choose "Continue with Apple/Google" sign-in; they share email + (optional) profile with us</li>
+      <li><strong>Supabase</strong> — authentication (account creation, email-code delivery, session management)</li>
+      <li><strong>Google</strong> — only if you choose "Continue with Google" sign-in; Google shares your email + (optional) profile with us</li>
       <li><strong>Stripe</strong> — payment processing</li>
       <li><strong>AI processing service</strong> (Replicate or equivalent) — to generate halftone portraits</li>
       <li><strong>Manufacturing and fulfillment partner</strong> — to engrave and ship your tag</li>
-      <li><strong>SendGrid</strong> — to email you order updates and magic links</li>
+      <li><strong>SendGrid</strong> — to email you order updates and 6-digit sign-in codes</li>
       <li><strong>Compliance providers</strong> — to detect fraud</li>
       <li><strong>Government authorities</strong> — only if legally required</li>
     </ul>

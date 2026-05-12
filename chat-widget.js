@@ -49,20 +49,20 @@
         {
           id: 'cancel',
           label: 'Cancellations & changes',
-          intro: 'You have a 24-hour window after ordering to make changes. After that, the order is locked.',
+          intro: 'Each tag is engraved to order. Orders enter production immediately — they cannot be cancelled or modified after checkout.',
           questions: [
             {
               q: 'How do I cancel?',
-              a: 'You can cancel any order, for any reason, within 24 hours of placing it. Email support@marlowe.example with your order number.',
+              a: 'Custom orders are final once placed. If you spot a problem immediately after ordering (typo, wrong address, wrong finish), email support@marlowe.example with your order number right away — we will try to catch it before engraving begins, but cannot guarantee it.',
               link: { label: 'Returns policy', href: 'returns.html' },
             },
             {
               q: 'Can I change my shipping address?',
-              a: 'Yes, within the 24-hour cancellation window. Email us with your order number and the new address.',
+              a: 'Email us immediately at support@marlowe.example with your order number and the corrected address. Production begins the same business day, so we can only fix it if your message reaches us before engraving starts.',
             },
             {
               q: 'Can I change the design after ordering?',
-              a: "The Designer's real-time preview is your final approval. Once 24 hours pass, the design is locked. We can't change spelling, swap shapes, or update the engraving after that point.",
+              a: "No — the Designer's real-time preview is your final approval. Once you place the order, the design is locked. We can't change spelling, swap shapes, or update the engraving.",
             },
           ],
         },
@@ -101,7 +101,7 @@
             },
             {
               q: "What if I don't like the AI portrait?",
-              a: "You can regenerate as many times as you like before checkout (within reasonable limits). Once you've placed the order and the 24-hour window passes, the design is locked.",
+              a: "You can regenerate as many times as you like before checkout (within reasonable limits). Once you've placed the order, the design is locked — orders are final because each tag is engraved to order.",
             },
             {
               q: 'Can I regenerate the portrait?',
@@ -183,15 +183,15 @@
         {
           id: 'account',
           label: 'Account & login',
-          intro: 'Passwordless sign-in. We never store passwords. Magic link or Apple/Google.',
+          intro: 'Passwordless sign-in. We never store passwords. 6-digit email code or Google.',
           questions: [
             {
               q: 'How do I sign in?',
-              a: 'We use passwordless sign-in. Click "Sign in" and enter your email — we\'ll email a one-click link. Or use "Continue with Apple" / "Continue with Google" for instant sign-in. No password to remember.',
+              a: 'We use passwordless sign-in. Click "Sign in" and enter your email — we\'ll email you a 6-digit code to type back. Or use "Continue with Google" for one-tap sign-in. No password to remember.',
             },
             {
               q: "I don't remember signing up — do I have an account?",
-              a: "If you've ever generated a portrait or placed an order with us, you already have an account tied to that email. Enter the same email at sign-in and we'll send a fresh link.",
+              a: "If you've ever generated a portrait or placed an order with us, you already have an account tied to that email. Enter the same email at sign-in and we'll send you a fresh 6-digit code.",
             },
             {
               q: 'Can I check out without signing in?',
@@ -327,15 +327,15 @@
         {
           id: 'cancel',
           label: '取消与修改',
-          intro: '下单后有 24 小时窗口可以修改或取消。窗口关闭后订单锁定。',
+          intro: '每枚牌按单雕刻，下单后立即进入生产——无法取消或修改。',
           questions: [
             {
               q: '如何取消订单？',
-              a: '下单后 24 小时内可任意取消。邮件 support@marlowe.example 加订单号。超过 24 小时订单进入生产，无法取消。',
+              a: '定制订单下单后即视为最终，无法取消或退款。如果你刚下单就发现问题（刻字错、地址错、底色错选），请立即邮件 support@marlowe.example 并附订单号——我们会尽力在开雕前拦下，但不保证一定能赶上。',
               link: { label: '退换货政策', href: 'returns.html' },
             },
-            { q: '能改收货地址吗？', a: '可以——在 24 小时取消窗口内。邮件附上订单号和新地址即可。' },
-            { q: '下单后能改设计吗？', a: 'Designer 实时预览即视为你的最终确认。24 小时窗口关闭后，设计锁定，不能改刻字、形状或表面。' },
+            { q: '能改收货地址吗？', a: '立即邮件 support@marlowe.example 附订单号和新地址。生产当天就开始，必须在我们开雕前收到你的邮件才能改。' },
+            { q: '下单后能改设计吗？', a: '不能——Designer 实时预览即视为你的最终确认。下单后设计立即锁定，刻字、形状、底色都无法再改。' },
           ],
         },
         {
@@ -359,7 +359,7 @@
           intro: 'AI 影雕肖像如何生成：',
           questions: [
             { q: 'AI 肖像怎么生成？', a: '上传一张清晰的宠物照片，系统转换为适合金属雕刻的灰阶影雕图。Designer 实时预览，所见即所刻。' },
-            { q: '如果不喜欢 AI 肖像怎么办？', a: '下单前可无限次重新生成（合理范围内）。下单后 24 小时窗口关闭，设计就锁定了。' },
+            { q: '如果不喜欢 AI 肖像怎么办？', a: '下单前可无限次重新生成（合理范围内）。下单后设计立即锁定——定制商品按单雕刻，不可退改。' },
             { q: '怎么重新生成？', a: '在最终预览页点击"换一张肖像"即可重新跑 AI。形状/底色/刻字保持不变，只换肖像。' },
             { q: '会跟我家狗完全一样吗？', a: '影雕本质是一种"风格化处理"——像照片精度的金属雕刻，不是照片复制。Designer 预览中看到的就是最终雕刻效果。如果不喜欢，不要进入结账。' },
           ],
@@ -398,10 +398,10 @@
         {
           id: 'account',
           label: '账户与登录',
-          intro: '无密码登录。我们从不存密码。邮件登录链接或 Apple/Google 一键登录。',
+          intro: '无密码登录。我们从不存密码。邮箱 6 位验证码或 Google 一键登录。',
           questions: [
-            { q: '怎么登录？', a: '我们用的是无密码登录。点"登录"输入邮箱，我们会发一封一键登录的邮件。或者使用"Apple 继续"/"Google 继续"一键登录。无需记密码。' },
-            { q: '我没记得注册过——我有账户吗？', a: '如果你之前生成过肖像或下过单，那个邮箱就是你的账户。输入同一个邮箱，我们会发新的登录链接。' },
+            { q: '怎么登录？', a: '无密码登录。点"登录"输入邮箱，我们发一封 6 位验证码邮件，回到页面输入即可。或者使用 Google 一键登录。无需记密码。' },
+            { q: '我没记得注册过——我有账户吗？', a: '如果你之前生成过肖像或下过单，那个邮箱就是你的账户。输入同一个邮箱，我们会发新的 6 位验证码。' },
             { q: '能不登录就结账吗？', a: '可以——加入购物车和结账不需要账户。只有"生成 AI 肖像"这一步需要登录，因为每次生成都有真实成本。登录后我们会保存你的设计，方便日后再订。' },
             {
               q: '怎么删除我的账户？',

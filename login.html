@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Sign in — MARLOWE</title>
-<meta name="description" content="Sign in to your Marlowe account — magic link or Apple/Google.">
+<meta name="description" content="Sign in to your Marlowe account — 6-digit email code or Google.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400..700;1,9..144,400..500&family=Manrope:wght@300..700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
@@ -20,6 +20,7 @@
   --brass: #B8956A;
   --brass-deep: #8E6F47;
   --brass-light: #D4B896;
+  --rust: #8B2E2E;
   --line: rgba(31, 41, 55, 0.12);
   --line-soft: rgba(31, 41, 55, 0.06);
 }
@@ -160,7 +161,7 @@ main {
   background: var(--line);
 }
 
-/* Magic-link form ==================================================== */
+/* Email + OTP form =================================================== */
 .field { display: flex; flex-direction: column; gap: 8px; margin-bottom: 16px; }
 .field label {
   font-family: 'JetBrains Mono', monospace;
@@ -181,6 +182,47 @@ main {
 }
 .field input:focus { border-color: var(--brass-deep); }
 .field input::placeholder { color: var(--charcoal-soft); opacity: 0.45; }
+
+/* OTP input — single field, monospace, wide letter-spacing */
+.otp-input {
+  font-family: 'JetBrains Mono', monospace !important;
+  font-size: 24px !important;
+  text-align: center;
+  letter-spacing: 0.5em;
+  padding: 18px 16px 18px 24px !important; /* extra left to compensate for letter-spacing */
+}
+
+/* Remember-me row */
+.remember-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 16px;
+  padding: 4px 2px;
+  cursor: pointer;
+  user-select: none;
+}
+.remember-row input[type="checkbox"] {
+  width: 16px;
+  height: 16px;
+  cursor: pointer;
+  accent-color: var(--charcoal);
+}
+.remember-row label {
+  font-size: 13px;
+  color: var(--charcoal-soft);
+  cursor: pointer;
+  line-height: 1.4;
+}
+.remember-row .sub {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--brass-deep);
+  display: block;
+  margin-top: 2px;
+}
 
 .btn-primary {
   display: inline-flex;
@@ -218,10 +260,10 @@ main {
   text-underline-offset: 3px;
 }
 
-/* Inbox-pending state ================================================ */
-.inbox-state { display: none; text-align: center; }
-.inbox-state.active { display: block; }
-.inbox-mark {
+/* Code-entry state =================================================== */
+.code-state { display: none; text-align: center; }
+.code-state.active { display: block; }
+.code-mark {
   width: 80px;
   height: 80px;
   margin: 0 auto 24px;
@@ -233,15 +275,15 @@ main {
   position: relative;
   color: var(--brass-deep);
 }
-.inbox-mark::after {
+.code-mark::after {
   content: '';
   position: absolute;
   inset: -8px;
   border: 1px solid var(--line);
   border-radius: 50%;
 }
-.inbox-mark svg { width: 36px; height: 36px; }
-.inbox-state h2 {
+.code-mark svg { width: 36px; height: 36px; }
+.code-state h2 {
   font-family: 'Fraunces', serif;
   font-size: 26px;
   font-weight: 500;
@@ -249,26 +291,50 @@ main {
   color: var(--ink);
   margin-bottom: 12px;
 }
-.inbox-state p {
+.code-state .code-lede {
   font-size: 14px;
   color: var(--charcoal-soft);
   line-height: 1.6;
-  margin-bottom: 24px;
+  margin-bottom: 8px;
 }
-.inbox-state strong { color: var(--charcoal); font-weight: 500; }
-.inbox-mock-link {
-  display: inline-block;
+.code-state .code-lede strong { color: var(--charcoal); font-weight: 500; }
+.code-state .code-sub {
   font-family: 'JetBrains Mono', monospace;
   font-size: 11px;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-  color: var(--brass-deep);
-  text-decoration: underline;
-  text-underline-offset: 4px;
-  cursor: pointer;
-  margin-top: 8px;
+  letter-spacing: 0.16em;
+  color: var(--charcoal-soft);
+  margin-bottom: 24px;
 }
-.inbox-mock-link:hover { color: var(--charcoal); }
+
+.error-banner {
+  background: rgba(139, 46, 46, 0.06);
+  border: 1px solid rgba(139, 46, 46, 0.25);
+  color: var(--rust);
+  font-size: 13px;
+  padding: 10px 14px;
+  margin-bottom: 14px;
+  text-align: left;
+  line-height: 1.5;
+  display: none;
+}
+.error-banner.active { display: block; }
+
+/* Mock-only: surfaces the OTP in the page so dev can copy without checking console */
+.mock-hint {
+  margin-top: 14px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  color: var(--charcoal-soft);
+  text-align: center;
+  padding: 10px 12px;
+  background: var(--paper);
+  border: 1px dashed var(--line);
+}
+.mock-hint strong { color: var(--charcoal); }
+.mock-hint .label { color: var(--brass-deep); margin-right: 8px; }
+
+.code-actions { margin-top: 18px; display: flex; flex-direction: column; gap: 4px; align-items: center; }
 .btn-text {
   background: none;
   border: none;
@@ -278,9 +344,10 @@ main {
   text-decoration: underline;
   text-underline-offset: 4px;
   cursor: pointer;
-  margin-top: 16px;
+  padding: 4px 8px;
 }
 .btn-text:hover { color: var(--charcoal); }
+.btn-text:disabled { opacity: 0.4; cursor: not-allowed; pointer-events: none; }
 
 /* Footer mini ======================================================== */
 .footer-mini {
@@ -317,8 +384,8 @@ main {
   <div class="container" style="display: flex; justify-content: center;">
     <div class="auth-card">
 
-      <!-- Default: sign-in form -->
-      <div id="signin-state">
+      <!-- STATE 1: email entry + OAuth -->
+      <div id="email-state">
         <header class="auth-header">
           <div class="eyebrow">§ Sign in</div>
           <h1>Welcome to <em>Marlowe.</em></h1>
@@ -326,11 +393,16 @@ main {
         </header>
 
         <div class="oauth-stack">
-          <button class="oauth-btn apple" onclick="MarloweAuth.signInWithProvider('apple')">
+          <!-- v1 ships Google-only. Apple Sign-In deferred to v1.5 —
+               uncomment this block + add Apple Developer credentials in Supabase
+               when ready. The auth-state.js signInWithProvider() function
+               already supports 'apple' as a valid argument.
+          <button class="oauth-btn apple" onclick="onOAuth('apple')">
             <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M17.05 20.28c-.98.95-2.05.88-3.08.4-1.09-.5-2.09-.52-3.24 0-1.44.62-2.2.44-3.06-.4C2.79 15.25 3.51 7.59 9.05 7.31c1.35.07 2.29.74 3.08.8 1.18-.24 2.31-.93 3.57-.84 1.51.12 2.65.72 3.4 1.8-3.12 1.87-2.38 5.98.48 7.13-.57 1.5-1.31 2.99-2.54 4.09l.01-.01zM12.03 7.25c-.15-2.23 1.66-4.07 3.74-4.25.29 2.58-2.34 4.5-3.74 4.25z"/></svg>
             Continue with Apple
           </button>
-          <button class="oauth-btn" onclick="MarloweAuth.signInWithProvider('google')">
+          -->
+          <button class="oauth-btn" onclick="onOAuth('google')">
             <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>
             Continue with Google
           </button>
@@ -338,13 +410,24 @@ main {
 
         <div class="divider">or with email</div>
 
-        <form id="magic-form" onsubmit="onMagicLinkSubmit(event)">
+        <div class="error-banner" id="email-error"></div>
+
+        <form id="email-form" onsubmit="onSendCode(event)">
           <div class="field">
             <label for="email">Email</label>
             <input type="email" id="email" name="email" required placeholder="you@example.com" autocomplete="email" autofocus>
           </div>
-          <button type="submit" class="btn-primary" id="magic-btn">
-            Send me a link
+
+          <label class="remember-row" for="remember-me">
+            <input type="checkbox" id="remember-me" checked>
+            <span>
+              Keep me signed in on this device
+              <span class="sub">7 days · uncheck on a shared computer</span>
+            </span>
+          </label>
+
+          <button type="submit" class="btn-primary" id="send-code-btn">
+            Send 6-digit code
             <span class="btn-arrow">→</span>
           </button>
         </form>
@@ -354,19 +437,49 @@ main {
         </p>
       </div>
 
-      <!-- After submit: check your inbox -->
-      <div id="inbox-state" class="inbox-state">
-        <div class="inbox-mark">
+      <!-- STATE 2: code entry -->
+      <div id="code-state" class="code-state">
+        <div class="code-mark">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
             <path d="M4 7l8 6 8-6M5 19h14a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2z"/>
           </svg>
         </div>
         <h2>Check your inbox.</h2>
-        <p>We sent a sign-in link to <strong id="sent-email">you</strong>. Click the link to finish signing in. The link expires in 15 minutes.</p>
-        <a class="inbox-mock-link" id="mock-link" href="#" onclick="onMockClickLink(event)">
-          [Mock] Click here to simulate clicking the link →
-        </a>
-        <button class="btn-text" onclick="resetForm()">Use a different email</button>
+        <p class="code-lede">We sent a 6-digit code to <strong id="sent-email">you</strong>.</p>
+        <p class="code-sub">EXPIRES IN 10 MIN</p>
+
+        <div class="error-banner" id="code-error"></div>
+
+        <form id="code-form" onsubmit="onVerifyCode(event)">
+          <div class="field">
+            <label for="code-input" style="text-align: center;">Verification code</label>
+            <input
+              type="text"
+              id="code-input"
+              class="otp-input"
+              inputmode="numeric"
+              autocomplete="one-time-code"
+              maxlength="6"
+              pattern="[0-9]{6}"
+              placeholder="••••••"
+              required
+              autofocus>
+          </div>
+          <button type="submit" class="btn-primary" id="verify-btn">
+            Verify
+            <span class="btn-arrow">→</span>
+          </button>
+        </form>
+
+        <!-- Mock-only: shows the generated code so dev can copy it -->
+        <div class="mock-hint" id="mock-hint" style="display: none;">
+          <span class="label">[Mock]</span>Code: <strong id="mock-code-display">——————</strong>
+        </div>
+
+        <div class="code-actions">
+          <button class="btn-text" id="resend-btn" type="button" onclick="onResend()">Didn't get it? Resend code</button>
+          <button class="btn-text" type="button" onclick="resetForm()">Use a different email</button>
+        </div>
       </div>
 
     </div>
@@ -383,41 +496,133 @@ main {
 
 <script src="auth-state.js"></script>
 <script>
+// In-page state held across the 2-step flow
 let pendingEmail = null;
+let pendingRemember = true;
+let resendCooldown = 0; // seconds remaining
 
-async function onMagicLinkSubmit(e) {
+function showError(elId, message) {
+  const el = document.getElementById(elId);
+  el.textContent = message;
+  el.classList.add('active');
+}
+function clearError(elId) {
+  const el = document.getElementById(elId);
+  el.textContent = '';
+  el.classList.remove('active');
+}
+
+// STEP 1: send 6-digit code to email
+async function onSendCode(e) {
   e.preventDefault();
+  clearError('email-error');
+
   const email = document.getElementById('email').value.trim();
-  const btn = document.getElementById('magic-btn');
+  const remember = document.getElementById('remember-me').checked;
+  const btn = document.getElementById('send-code-btn');
   btn.disabled = true;
 
-  const result = await MarloweAuth.signInWithMagicLink(email);
+  const result = await MarloweAuth.signInWithEmailOtp(email);
 
   if (result.error) {
     btn.disabled = false;
-    alert('Email format looks off. Try again.');
+    showError('email-error', 'That email format looks off. Double-check and try again.');
     return;
   }
 
   pendingEmail = email;
+  pendingRemember = remember;
   document.getElementById('sent-email').textContent = email;
-  document.getElementById('signin-state').style.display = 'none';
-  document.getElementById('inbox-state').classList.add('active');
+
+  // Show the mock OTP on-page during dev (remove this block when backend goes live)
+  if (result.mockCode) {
+    const hint = document.getElementById('mock-hint');
+    document.getElementById('mock-code-display').textContent = result.mockCode;
+    hint.style.display = 'block';
+  }
+
+  document.getElementById('email-state').style.display = 'none';
+  document.getElementById('code-state').classList.add('active');
+  document.getElementById('code-input').value = '';
+  document.getElementById('code-input').focus();
+
+  startResendCooldown(30);
+}
+
+// STEP 2: verify 6-digit code
+async function onVerifyCode(e) {
+  e.preventDefault();
+  clearError('code-error');
+
+  const code = document.getElementById('code-input').value.replace(/\s/g, '');
+  const btn = document.getElementById('verify-btn');
+  btn.disabled = true;
+
+  const result = await MarloweAuth.verifyEmailOtp(pendingEmail, code, pendingRemember);
+
+  if (result.error) {
+    btn.disabled = false;
+    const msg = ({
+      invalid_code: 'That code doesn\'t match. Check the digits and try again.',
+      expired: 'This code expired. Send a fresh one.',
+      no_pending: 'No code is pending — please request one again.',
+    })[result.error] || 'Something went wrong. Try again.';
+    showError('code-error', msg);
+    return;
+  }
+
+  // Success → bounce to wherever they came from
+  const target = MarloweAuth.consumeRedirectTarget('account.html');
+  window.location.replace(target);
+}
+
+// Resend code, with a short cooldown to discourage spam
+async function onResend() {
+  if (!pendingEmail || resendCooldown > 0) return;
+  const result = await MarloweAuth.resendEmailOtp(pendingEmail);
+  if (result.mockCode) {
+    document.getElementById('mock-code-display').textContent = result.mockCode;
+  }
+  clearError('code-error');
+  document.getElementById('code-input').value = '';
+  document.getElementById('code-input').focus();
+  startResendCooldown(30);
+}
+
+function startResendCooldown(seconds) {
+  resendCooldown = seconds;
+  const btn = document.getElementById('resend-btn');
+  btn.disabled = true;
+  btn.textContent = `Resend in ${seconds}s`;
+  const interval = setInterval(() => {
+    resendCooldown--;
+    if (resendCooldown <= 0) {
+      clearInterval(interval);
+      btn.disabled = false;
+      btn.textContent = 'Didn\'t get it? Resend code';
+    } else {
+      btn.textContent = `Resend in ${resendCooldown}s`;
+    }
+  }, 1000);
 }
 
 function resetForm() {
-  document.getElementById('inbox-state').classList.remove('active');
-  document.getElementById('signin-state').style.display = 'block';
-  document.getElementById('magic-btn').disabled = false;
+  clearError('email-error');
+  clearError('code-error');
+  document.getElementById('code-state').classList.remove('active');
+  document.getElementById('email-state').style.display = 'block';
+  document.getElementById('send-code-btn').disabled = false;
+  document.getElementById('verify-btn').disabled = false;
   document.getElementById('email').value = '';
   document.getElementById('email').focus();
+  document.getElementById('mock-hint').style.display = 'none';
+  pendingEmail = null;
 }
 
-// MOCK ONLY: simulate clicking the magic link
-function onMockClickLink(e) {
-  e.preventDefault();
-  if (!pendingEmail) return;
-  window.location.href = 'auth-callback.html?mock=email&email=' + encodeURIComponent(pendingEmail);
+// OAuth path — pass the remember-me setting through to the callback
+function onOAuth(provider) {
+  const remember = document.getElementById('remember-me').checked;
+  MarloweAuth.signInWithProvider(provider, remember);
 }
 
 // Already signed in? Bounce out.

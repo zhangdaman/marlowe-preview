@@ -197,9 +197,8 @@ thank-you.html?order=MX...（订单号 + 物流时间线 + 24h 取消提醒）
 
 | 时间 | 动作 | 触发 |
 |---|---|---|
-| T+0 | 订单确认邮件 | Stripe webhook → SendGrid template |
-| T+24h | **取消窗口关闭，订单进入生产**（不做 proof approval，以 designer 实时预览为准） | Cron 定时任务 |
-| T+24h–10 days | 工厂收单、CNC 切割、PVD/阳极氧化、影雕 | 工厂端协作 |
+| T+0 | 订单确认邮件 + 立即进入生产队列（无取消窗口，每枚按单雕刻） | Stripe webhook → SendGrid template + 工厂队列 |
+| T+0–10 days | 工厂收单、CNC 切割、PVD/阳极氧化、影雕 | 工厂端协作 |
 | T+10–11 days | 包装（亚麻布袋 + 钢印盒）+ 物流取件 | 仓储 |
 | T+11 days | 发货 + tracking 邮件 | 物流 webhook |
 | T+14–16 days | 客户收货 | — |
@@ -366,7 +365,7 @@ AI 成本 ≈ **0.17% 营收**，可忽略。Margin 安全。
 - 法律页（含 AI 数据处理告知，符合 CCPA / GDPR）
 
 **v1 in progress**（决策于 2026-05-07）：
-- **账户系统提到 v1**——见 [docs/auth.md](auth.md)：渐进强制（cart 仍 guest，generate 需登录）+ Magic link + Apple/Google OAuth + Supabase Auth
+- **账户系统提到 v1**——见 [docs/auth.md](auth.md)：渐进强制（cart 仍 guest，generate 需登录）+ 6 位邮箱验证码（OTP）+ Google OAuth + Supabase Auth + 7 天「记住我」。Apple Sign-In 推迟到 v1.5（代码已就绪、UI 已注释）
 - 新页面：`login.html` / `auth-callback.html` / `account.html`
 - Designer 删除 D — Email section，改为「点 Generate 时弹登录模态」
 - 新增 `auth-state.js` 共享 auth wrapper
@@ -374,7 +373,7 @@ AI 成本 ≈ **0.17% 营收**，可忽略。Margin 安全。
 - 上线时间相应延后 1-2 周
 
 **待后端**：
-- 接 **Supabase Auth**（创建 project + 配置 magic link + Apple/Google OAuth）
+- 接 **Supabase Auth**（创建 project + 配置 OTP 邮件模板 + Google OAuth；Apple 推迟）
 - 接 Replicate / Stripe / Redis / SendGrid / R2
 - 真 Cloudflare Turnstile
 - 把所有 `[Atelier address]` / `marlowe.example` 占位替换为真实信息
@@ -429,7 +428,7 @@ AI 成本 ≈ **0.17% 营收**，可忽略。Margin 安全。
 - 邮件模板（SendGrid）
 
 **后端改动估算**：
-- Account / Auth（OAuth via Google + Apple；不强制密码）
+- Account / Auth（v1：邮箱 OTP + Google OAuth；不强制密码。Apple OAuth 推迟到 v1.5）
 - 订单 schema 加 `archived_design`（shape / color / text / halftone_url / consent）
 - Cron 邮件触发器
 
@@ -460,7 +459,7 @@ AI 成本 ≈ **0.17% 营收**，可忽略。Margin 安全。
 
 | 风险 | 影响 | 应对 |
 |---|---|---|
-| **AI 出图不像客户的狗** | 退换纠纷 / 差评 | (a) Designer 实时预览 = "what you see is what we engrave" 法律措辞 ([returns.html](../returns.html) §04)；(b) 影雕调性是"工艺草图"不是"摄影翻译"，期望管理；(c) 不做 proof approval 但有 24h 取消窗口 |
+| **AI 出图不像客户的狗** | 退换纠纷 / 差评 | (a) Designer 实时预览 = "what you see is what we engrave" 法律措辞 ([returns.html](../returns.html) §04)；(b) 影雕调性是"工艺草图"不是"摄影翻译"，期望管理；(c) 客户在 designer 内可反复重新生成至满意为止再下单 |
 | **AI 成本失控** | Margin 受损 | 邮箱 + IP 限流 + Turnstile 三层防御（[docs/api-generate.md](api-generate.md)）；100 个机器人攻击成本 < $1 |
 | **工厂产能 / 品控** | 订单延迟 / 退货率高 | 7-10 个工作日提前给客户预期；工厂端 QA 流程；首批小批量验证 |
 | **Stripe 审核驳回**（涉及 AI 用户照片处理） | 不能收单 | 法律页 ([privacy.html](../privacy.html) §03) 已明确 AI 数据流；Stripe 提交时附带 docs |

@@ -71,14 +71,14 @@ Every leaf answer ends with two persistent options: **Ask another question** (re
 ### Topic 2 — Cancellations & changes
 
 **How do I cancel?**
-> You can cancel any order, for any reason, within 24 hours of placing it. Email support@marlowe.example with your order number. After 24 hours, your tag enters production and the order is locked.
+> Custom orders are final once placed. Each tag is engraved to order and enters production right after checkout, so we can't cancel, modify, or refund. If you spot a problem (typo, wrong finish, wrong address) immediately after ordering, email support@marlowe.example with your order number right away — we'll try to catch it before engraving begins, but can't guarantee it.
 > Read full policy: [Returns](returns.html)
 
 **Can I change my shipping address?**
-> Yes, within the 24-hour cancellation window. Email us with your order number and the new address.
+> Email us immediately with your order number and the corrected address. Production begins the same business day, so we can only fix it if your message reaches us before engraving starts.
 
 **Can I change the design after ordering?**
-> The Designer's real-time preview is your final approval. Once 24 hours pass, the design is locked. We can't change spelling, swap shapes, or update the engraving after that point.
+> No — the Designer's real-time preview is your final approval. Once you place the order, the design is locked. We can't change spelling, swap shapes, or update the engraving.
 
 ### Topic 3 — Returns & exchanges
 
@@ -101,7 +101,7 @@ Every leaf answer ends with two persistent options: **Ask another question** (re
 > Upload a clear photo of your dog. Our system converts it into a halftone (point-pattern) grayscale portrait suitable for engraving on metal. The Designer shows you a real-time preview; what you see is what we engrave.
 
 **What if I don't like the AI portrait?**
-> You can regenerate as many times as you like before checkout (within reasonable limits). Once you've placed the order and the 24-hour window passes, the design is locked.
+> You can regenerate as many times as you like before checkout (within reasonable limits). Once you've placed the order, the design is locked — orders are final because each tag is engraved to order.
 
 **Can I regenerate the portrait?**
 > Yes — in the final preview screen, click "Try a different portrait" to run the AI again. Same shape, finish, and engraving; fresh portrait.
@@ -156,10 +156,10 @@ Every leaf answer ends with two persistent options: **Ask another question** (re
 ### Topic 7 — Account & login
 
 **How do I sign in?**
-> We use passwordless sign-in. Click "Sign in" and enter your email — we'll email a one-click link. Or use "Continue with Apple" / "Continue with Google" for instant sign-in. No password to remember.
+> We use passwordless sign-in. Click "Sign in" and enter your email — we'll email you a 6-digit code to type back. Or use "Continue with Google" for one-tap sign-in. No password to remember.
 
 **I don't remember signing up — do I have an account?**
-> If you've ever generated a portrait or placed an order with us, you already have an account tied to that email. Enter the same email at sign-in and we'll send a fresh link.
+> If you've ever generated a portrait or placed an order with us, you already have an account tied to that email. Enter the same email at sign-in and we'll send you a fresh 6-digit code.
 
 **Can I check out without signing in?**
 > Yes — adding to cart and checking out work without an account. The only step that requires sign-in is generating an AI portrait, since each generation has a real cost. Signing in also saves your design so you can reorder.
@@ -239,14 +239,14 @@ Every leaf answer ends with two persistent options: **Ask another question** (re
 ### 主题 2 — 取消与修改
 
 **如何取消订单？**
-> 下单后 24 小时内可任意取消。邮件 support@marlowe.example 加订单号。超过 24 小时订单进入生产，无法取消。
+> 定制订单下单后即视为最终，无法取消或退款——每枚牌都按单雕刻，下单后立即进入生产。如果你刚下单就发现问题（刻字错、底色错、地址错），请立即邮件 support@marlowe.example 附订单号——我们会尽力在开雕前拦下，但不保证一定能赶上。
 > 详见 [退换货政策](returns.html)
 
 **能改收货地址吗？**
-> 可以——在 24 小时取消窗口内。邮件附上订单号和新地址即可。
+> 立即邮件 support@marlowe.example 附订单号和新地址。生产当天就开始，必须在我们开雕前收到你的邮件才能改。
 
 **下单后能改设计吗？**
-> Designer 实时预览即视为你的最终确认。24 小时窗口关闭后，设计锁定，不能改刻字、形状或表面。
+> 不能——Designer 实时预览即视为你的最终确认。下单后设计立即锁定，刻字、形状、底色都无法再改。
 
 ### 主题 3 — 退换货
 
@@ -269,7 +269,7 @@ Every leaf answer ends with two persistent options: **Ask another question** (re
 > 上传一张清晰的宠物照片，系统转换为适合金属雕刻的灰阶影雕图。Designer 实时预览，所见即所刻。
 
 **如果不喜欢 AI 肖像怎么办？**
-> 下单前可无限次重新生成（合理范围内）。下单后 24 小时窗口关闭，设计就锁定了。
+> 下单前可无限次重新生成（合理范围内）。下单后设计立即锁定——定制商品按单雕刻，不可退改。
 
 **怎么重新生成？**
 > 在最终预览页点击"换一张肖像"即可重新跑 AI。形状/底色/刻字保持不变，只换肖像。
@@ -324,10 +324,10 @@ Every leaf answer ends with two persistent options: **Ask another question** (re
 ### 主题 7 — 账户与登录
 
 **怎么登录？**
-> 我们用的是无密码登录。点"登录"输入邮箱，我们会发一封一键登录的邮件。或者使用"Apple 继续"/"Google 继续"一键登录。无需记密码。
+> 无密码登录。点"登录"输入邮箱，我们发一封 6 位验证码邮件，回到页面输入即可。或者使用 Google 一键登录。无需记密码。
 
 **我没记得注册过——我有账户吗？**
-> 如果你之前生成过肖像或下过单，那个邮箱就是你的账户。输入同一个邮箱，我们会发新的登录链接。
+> 如果你之前生成过肖像或下过单，那个邮箱就是你的账户。输入同一个邮箱，我们会发新的 6 位验证码。
 
 **能不登录就结账吗？**
 > 可以——加入购物车和结账不需要账户。只有"生成 AI 肖像"这一步需要登录，因为每次生成都有真实成本。登录后我们会保存你的设计，方便日后再订。

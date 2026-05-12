@@ -12,8 +12,10 @@
 <!--
   AUTH CALLBACK — 登录回跳页：
     1. OAuth 服务商重定向（Apple / Google）
-    2. Magic link 邮件链接点击
-    3. 模拟模式（?mock=apple|google|email&email=...）
+    2. 模拟模式 OAuth（?mock=apple|google）
+
+  邮箱 OTP 已不再走这一页——验证码在 login-zh.html 上直接验证。
+  ?mock=email 路径仅作向后兼容保留。
 
   TODO BACKEND: 真实环境下 Supabase SDK 会通过 URL hash（#access_token=...&refresh_token=...）
   自动设置 session，前端只需等设置完成后跳转到 MarloweAuth.consumeRedirectTarget()。
@@ -186,9 +188,9 @@ p {
 
   if (errorParam) {
     if (errorParam === 'expired') {
-      showError('链接已过期。', 'Magic link 仅 15 分钟内有效，请重新申请一次。');
+      showError('验证码已过期。', '验证码仅 10 分钟内有效，请重新申请一次。');
     } else if (errorParam === 'oauth_failed') {
-      showError('登录未成功。', '登录过程中遇到问题，请重试一次，或改用邮箱 Magic link 方式。');
+      showError('登录未成功。', '登录过程中遇到问题，请重试一次，或改用邮箱验证码方式。');
     } else {
       showError(); // 默认文案
     }
