@@ -726,8 +726,8 @@ renderSummary();
 <script>
 // 若已登录，自动填充邮箱（仍支持 guest 结账）
 (function prefillFromAccount() {
-  if (!window.Mova CraftAuth) return;
-  const user = Mova CraftAuth.getUser();
+  if (!window.MovaCraftAuth) return;
+  const user = MovaCraftAuth.getUser();
   if (!user || !user.email) return;
   const emailEl = document.getElementById('email');
   if (emailEl && !emailEl.value) emailEl.value = user.email;

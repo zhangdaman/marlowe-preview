@@ -457,7 +457,7 @@ nav.main-nav {
 <script src="chat-widget.js" defer></script>
 <script>
 // Require auth — bounce to login if not signed in
-Mova CraftAuth.requireAuth().then(initAccountPage).catch(() => {});
+MovaCraftAuth.requireAuth().then(initAccountPage).catch(() => {});
 
 function initAccountPage(user) {
   // Header
@@ -711,7 +711,7 @@ function miniSVG(d) {
 // TODO BACKEND: replace localStorage lookup with GET /api/me/designs/:id.
 
 async function onSignOut() {
-  await Mova CraftAuth.signOut();
+  await MovaCraftAuth.signOut();
   window.location.href = 'index.html';
 }
 </script>

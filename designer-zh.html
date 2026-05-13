@@ -1565,7 +1565,7 @@ function useSample(breed) {
 // 用户在 stage-2 customize 面板点 "生成肖像" CTA
 // 已登录 → 直接生成；未登录 → 弹登录模态
 function onGeneratePortrait() {
-  const user = window.Mova CraftAuth ? Mova CraftAuth.getUser() : null;
+  const user = window.MovaCraftAuth ? MovaCraftAuth.getUser() : null;
   if (user) {
     startGeneration();
   } else {
@@ -1583,8 +1583,8 @@ const modalAuthState = {
 };
 
 function openAuthModal() {
-  if (window.Mova CraftAuth) {
-    Mova CraftAuth.setRedirectTarget(window.location.pathname + '#stage-2');
+  if (window.MovaCraftAuth) {
+    MovaCraftAuth.setRedirectTarget(window.location.pathname + '#stage-2');
   }
   renderModalEmailState();
   const modal = document.getElementById('auth-modal');
@@ -1687,7 +1687,7 @@ async function onModalSendCode(event) {
   const remember = document.getElementById('modal-remember').checked;
   const btn = document.getElementById('modal-send-btn');
   btn.disabled = true;
-  const result = await Mova CraftAuth.signInWithEmailOtp(email);
+  const result = await MovaCraftAuth.signInWithEmailOtp(email);
   if (result.error) {
     btn.disabled = false;
     showModalError('modal-email-error', '邮箱格式不对，请检查后重试。');
@@ -1704,7 +1704,7 @@ async function onModalVerifyCode(event) {
   const code = document.getElementById('modal-code-input').value.replace(/\s/g, '');
   const btn = document.getElementById('modal-verify-btn');
   btn.disabled = true;
-  const result = await Mova CraftAuth.verifyEmailOtp(
+  const result = await MovaCraftAuth.verifyEmailOtp(
     modalAuthState.pendingEmail, code, modalAuthState.pendingRemember
   );
   if (result.error) {
@@ -1724,7 +1724,7 @@ async function onModalVerifyCode(event) {
 
 async function onModalResend() {
   if (!modalAuthState.pendingEmail || modalAuthState.resendCooldown > 0) return;
-  const result = await Mova CraftAuth.resendEmailOtp(modalAuthState.pendingEmail);
+  const result = await MovaCraftAuth.resendEmailOtp(modalAuthState.pendingEmail);
   const hint = document.querySelector('.auth-modal-mock-hint strong');
   if (hint && result.mockCode) hint.textContent = result.mockCode;
   clearModalError('modal-code-error');
@@ -1755,7 +1755,7 @@ function startModalResendCooldown(seconds) {
 
 function onModalOAuth(provider) {
   const remember = document.getElementById('modal-remember');
-  Mova CraftAuth.signInWithProvider(provider, remember ? remember.checked : true);
+  MovaCraftAuth.signInWithProvider(provider, remember ? remember.checked : true);
 }
 
 function startGeneration() {

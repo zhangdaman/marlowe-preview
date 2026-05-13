@@ -450,7 +450,7 @@ nav.main-nav {
 <script src="chat-widget.js" defer></script>
 <script>
 // 需要登录 — 未登录就跳到登录页
-Mova CraftAuth.requireAuth().then(initAccountPage).catch(() => {});
+MovaCraftAuth.requireAuth().then(initAccountPage).catch(() => {});
 
 function initAccountPage(user) {
   // Header
@@ -694,7 +694,7 @@ function miniSVG(d) {
 // TODO BACKEND: 把 localStorage 查询替换为 GET /api/me/designs/:id
 
 async function onSignOut() {
-  await Mova CraftAuth.signOut();
+  await MovaCraftAuth.signOut();
   window.location.href = 'index-zh.html';
 }
 </script>

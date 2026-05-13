@@ -550,7 +550,7 @@ function getQuery(name) {
 // Auth pill — 同步登录状态
 (function updateAuthPill() {
   const pill = document.getElementById('nav-auth-pill');
-  if (!pill || !window.Mova CraftAuth) return;
+  if (!pill || !window.MovaCraftAuth) return;
   function paint(user) {
     if (user) {
       const initial = (user.email || '?').charAt(0).toUpperCase();
@@ -562,14 +562,14 @@ function getQuery(name) {
       pill.innerHTML = pill.dataset.i18nSignin || '登录';
     }
   }
-  paint(Mova CraftAuth.getUser());
-  Mova CraftAuth.onAuthChange(paint);
+  paint(MovaCraftAuth.getUser());
+  MovaCraftAuth.onAuthChange(paint);
 })();
 
 // 登录后增加「在账户中查看」按钮
 (function viewInAccountLink() {
-  if (!window.Mova CraftAuth) return;
-  const user = Mova CraftAuth.getUser();
+  if (!window.MovaCraftAuth) return;
+  const user = MovaCraftAuth.getUser();
   if (!user) return;
   const actions = document.querySelector('.actions');
   if (!actions) return;

@@ -1627,7 +1627,7 @@ document.querySelectorAll('.reveal, .section-header, .step, .why-card, .example-
 // 登录态 nav pill
 (function updateAuthPill() {
   const pill = document.getElementById('nav-auth-pill');
-  if (!pill || !window.Mova CraftAuth) return;
+  if (!pill || !window.MovaCraftAuth) return;
   function paint(user) {
     if (user) {
       const initial = (user.email || '?').charAt(0).toUpperCase();
@@ -1639,8 +1639,8 @@ document.querySelectorAll('.reveal, .section-header, .step, .why-card, .example-
       pill.innerHTML = pill.dataset.i18nSignin || '登录';
     }
   }
-  paint(Mova CraftAuth.getUser());
-  Mova CraftAuth.onAuthChange(paint);
+  paint(MovaCraftAuth.getUser());
+  MovaCraftAuth.onAuthChange(paint);
 })();
 </script>
 

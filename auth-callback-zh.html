@@ -18,7 +18,7 @@
   ?mock=email 路径仅作向后兼容保留。
 
   TODO BACKEND: 真实环境下 Supabase SDK 会通过 URL hash（#access_token=...&refresh_token=...）
-  自动设置 session，前端只需等设置完成后跳转到 Mova CraftAuth.consumeRedirectTarget()。
+  自动设置 session，前端只需等设置完成后跳转到 MovaCraftAuth.consumeRedirectTarget()。
 -->
 
 <style>
@@ -200,10 +200,10 @@ p {
   if (mockProvider) {
     const emailFromQuery = getQuery('email');
     try {
-      Mova CraftAuth._mockCompleteSignIn(mockProvider, emailFromQuery);
+      MovaCraftAuth._mockCompleteSignIn(mockProvider, emailFromQuery);
       // 短暂延迟让用户看到欢迎卡片
       setTimeout(() => {
-        const target = Mova CraftAuth.consumeRedirectTarget('account-zh.html');
+        const target = MovaCraftAuth.consumeRedirectTarget('account-zh.html');
         window.location.replace(target);
       }, 900);
     } catch (e) {
@@ -215,9 +215,9 @@ p {
   // 真实流程占位：等 Supabase SDK 解析完 hash 后 getUser 会返回值，轮询一会儿。
   let tries = 0;
   const interval = setInterval(() => {
-    if (Mova CraftAuth.getUser()) {
+    if (MovaCraftAuth.getUser()) {
       clearInterval(interval);
-      const target = Mova CraftAuth.consumeRedirectTarget('account-zh.html');
+      const target = MovaCraftAuth.consumeRedirectTarget('account-zh.html');
       window.location.replace(target);
     } else if (tries++ > 20) {
       clearInterval(interval);

@@ -523,7 +523,7 @@ async function onSendCode(e) {
   const btn = document.getElementById('send-code-btn');
   btn.disabled = true;
 
-  const result = await Mova CraftAuth.signInWithEmailOtp(email);
+  const result = await MovaCraftAuth.signInWithEmailOtp(email);
 
   if (result.error) {
     btn.disabled = false;
@@ -558,7 +558,7 @@ async function onVerifyCode(e) {
   const btn = document.getElementById('verify-btn');
   btn.disabled = true;
 
-  const result = await Mova CraftAuth.verifyEmailOtp(pendingEmail, code, pendingRemember);
+  const result = await MovaCraftAuth.verifyEmailOtp(pendingEmail, code, pendingRemember);
 
   if (result.error) {
     btn.disabled = false;
@@ -571,13 +571,13 @@ async function onVerifyCode(e) {
     return;
   }
 
-  const target = Mova CraftAuth.consumeRedirectTarget('account-zh.html');
+  const target = MovaCraftAuth.consumeRedirectTarget('account-zh.html');
   window.location.replace(target);
 }
 
 async function onResend() {
   if (!pendingEmail || resendCooldown > 0) return;
-  const result = await Mova CraftAuth.resendEmailOtp(pendingEmail);
+  const result = await MovaCraftAuth.resendEmailOtp(pendingEmail);
   if (result.mockCode) {
     document.getElementById('mock-code-display').textContent = result.mockCode;
   }
@@ -619,12 +619,12 @@ function resetForm() {
 
 function onOAuth(provider) {
   const remember = document.getElementById('remember-me').checked;
-  Mova CraftAuth.signInWithProvider(provider, remember);
+  MovaCraftAuth.signInWithProvider(provider, remember);
 }
 
 // 已登录？直接跳走
-if (Mova CraftAuth.getUser()) {
-  const target = Mova CraftAuth.consumeRedirectTarget('account-zh.html');
+if (MovaCraftAuth.getUser()) {
+  const target = MovaCraftAuth.consumeRedirectTarget('account-zh.html');
   window.location.replace(target);
 }
 </script>

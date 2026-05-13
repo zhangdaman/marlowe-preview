@@ -20,7 +20,7 @@
 
   TODO BACKEND: Supabase SDK auto-handles real sessions via URL hash parameters
   (#access_token=...&refresh_token=...). After it sets the session, we just
-  redirect to Mova CraftAuth.consumeRedirectTarget(). No server-side processing
+  redirect to MovaCraftAuth.consumeRedirectTarget(). No server-side processing
   needed — Supabase manages it client-side.
 -->
 
@@ -205,10 +205,10 @@ p {
   if (mockProvider) {
     const emailFromQuery = getQuery('email');
     try {
-      Mova CraftAuth._mockCompleteSignIn(mockProvider, emailFromQuery);
+      MovaCraftAuth._mockCompleteSignIn(mockProvider, emailFromQuery);
       // Brief delay so user sees the welcome card, then redirect.
       setTimeout(() => {
-        const target = Mova CraftAuth.consumeRedirectTarget('account.html');
+        const target = MovaCraftAuth.consumeRedirectTarget('account.html');
         window.location.replace(target);
       }, 900);
     } catch (e) {
@@ -221,9 +221,9 @@ p {
   // Poll briefly.
   let tries = 0;
   const interval = setInterval(() => {
-    if (Mova CraftAuth.getUser()) {
+    if (MovaCraftAuth.getUser()) {
       clearInterval(interval);
-      const target = Mova CraftAuth.consumeRedirectTarget('account.html');
+      const target = MovaCraftAuth.consumeRedirectTarget('account.html');
       window.location.replace(target);
     } else if (tries++ > 20) {
       clearInterval(interval);

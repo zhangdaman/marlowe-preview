@@ -542,7 +542,7 @@ function getQuery(name) {
 // Auth pill — reflects sign-in state
 (function updateAuthPill() {
   const pill = document.getElementById('nav-auth-pill');
-  if (!pill || !window.Mova CraftAuth) return;
+  if (!pill || !window.MovaCraftAuth) return;
   function paint(user) {
     if (user) {
       const initial = (user.email || '?').charAt(0).toUpperCase();
@@ -554,14 +554,14 @@ function getQuery(name) {
       pill.innerHTML = pill.dataset.i18nSignin || 'Sign in';
     }
   }
-  paint(Mova CraftAuth.getUser());
-  Mova CraftAuth.onAuthChange(paint);
+  paint(MovaCraftAuth.getUser());
+  MovaCraftAuth.onAuthChange(paint);
 })();
 
 // "View in Account" link on thank-you if signed in
 (function viewInAccountLink() {
-  if (!window.Mova CraftAuth) return;
-  const user = Mova CraftAuth.getUser();
+  if (!window.MovaCraftAuth) return;
+  const user = MovaCraftAuth.getUser();
   if (!user) return;
   const actions = document.querySelector('.actions');
   if (!actions) return;

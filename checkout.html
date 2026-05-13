@@ -729,8 +729,8 @@ renderSummary();
 <script>
 // Prefill email if user is signed in (guest checkout still allowed)
 (function prefillFromAccount() {
-  if (!window.Mova CraftAuth) return;
-  const user = Mova CraftAuth.getUser();
+  if (!window.MovaCraftAuth) return;
+  const user = MovaCraftAuth.getUser();
   if (!user || !user.email) return;
   const emailEl = document.getElementById('email');
   if (emailEl && !emailEl.value) emailEl.value = user.email;

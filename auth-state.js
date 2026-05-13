@@ -92,7 +92,7 @@
   // Public API
   // ====================================================================
 
-  const Mova CraftAuth = {
+  const MovaCraftAuth = {
     /**
      * @returns {object|null} { id, email, displayName?, avatarUrl?, provider, rememberMe, expiresAt? } or null
      */
@@ -117,7 +117,7 @@
       localStorage.setItem(PENDING_KEY, JSON.stringify({
         email, code, at: Date.now(),
       }));
-      console.info('[Mova CraftAuth mock] OTP code for', email, '→', code,
+      console.info('[MovaCraftAuth mock] OTP code for', email, '→', code,
         '(real backend will email this code)');
       return { ok: true, email, mockCode: code };
     },
@@ -272,7 +272,7 @@
     },
   };
 
-  window.Mova CraftAuth = Mova CraftAuth;
+  window.MovaCraftAuth = MovaCraftAuth;
 
   // Listen for cross-tab sign-in/out via storage events
   window.addEventListener('storage', (e) => {
